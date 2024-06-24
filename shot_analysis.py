@@ -87,10 +87,18 @@ def detect_goal(ball_positions, hoop_positions):
 
 def process_frame(frame):
     global shots_made, goals_scored
+
     # Run object detection inference on the frame
     results = model.infer(frame, tracker="bytetrack.yaml")[0]
+    
     # Extract predictions from the results
     predictions = results.predictions
+
+    # Filter out the detections for 'Person'
+    filtered_predictions = [pred for pred in predictions if pred.class_name != 'people']
+
+    # Replace the predictions in the results with the filtered predictions
+    results.predictions = filtered_predictions
 
     # Load the results into the supervision Detections API
     detections = sv.Detections.from_inference(results)

@@ -40,10 +40,17 @@ def process_frame(frame):
 
     # Run object detection inference on the frame
     results = model.infer(frame,tracker="bytetrack.yaml")[0]
-    # Extract predictions from the results
+
+     # Extract predictions from the results
     predictions = results.predictions
 
-    #print(predictions)
+    # Filter out the detections for 'Person'
+    filtered_predictions = [pred for pred in predictions if pred.class_name != 'people']
+
+    # Replace the predictions in the results with the filtered predictions
+    results.predictions = filtered_predictions
+
+    print(predictions)
     # Run pose estimation on the frame
     pose_results =pose_model(frame,verbose=False,conf=0.4)[0]
 
@@ -242,7 +249,7 @@ def display_elbow_angles(frame, angles):
 #process_image(image_path)
 
 # Process a video
-video_path = "uploads/multi_angle.mp4"
+video_path = "uploads/two_score_two_miss.mp4"
 process_video(video_path)
 
 
