@@ -40,7 +40,10 @@ def process_frame(frame):
 
     # Run object detection inference on the frame
     results = model.infer(frame,tracker="bytetrack.yaml")[0]
+    # Extract predictions from the results
+    predictions = results.predictions
 
+    #print(predictions)
     # Run pose estimation on the frame
     pose_results =pose_model(frame,verbose=False,conf=0.4)[0]
 
@@ -56,7 +59,7 @@ def process_frame(frame):
     step_counter += steps
 
     # Track ball trajectory
-    track_ball(detections, annotated_frame)
+    track_ball(predictions, annotated_frame)
 
     # Calculate and display elbow angles
     elbow_angles = calculate_elbow_angles(pose_results)
@@ -147,15 +150,25 @@ def count_steps(pose_results):
 
     return steps
 
-def track_ball(detections, frame):
+def track_ball(predictions, frame):
     global ball_positions, prev_ball_position
     current_ball_position = None
     min_distance = float('inf')
 
-    for detection in detections:
-        if detection[1] == ball_label:
-            x, y, w, h = detection.bbox
-            ball_center = (int(x + w / 2), int(y + h / 2))
+    for prediction in predictions:
+        if prediction.class_name == ball_label:
+            x = int(prediction.x)
+            y = int(prediction.y)
+            w = int(prediction.width)
+            h = int(prediction.height)
+
+            # Calculate center of the basketball
+            center_x = int(x)
+            center_y = int(y)
+            ball_center = (center_x,center_y)
+
+            # Draw a circle at the ball's center
+            cv2.circle(frame, ball_center, 1, (0, 255, 0), -1)
             if prev_ball_position:
                 distance = np.linalg.norm(np.array(ball_center) - np.array(prev_ball_position))
                 if distance < min_distance:
@@ -164,6 +177,7 @@ def track_ball(detections, frame):
             else:
                 current_ball_position = ball_center
             print(f"Ball detected at: {ball_center}")  # Print ball coordinates
+            cv2.putText(frame, f"Ball Coordinates: {ball_center}", (10,120), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 2)
             break
 
     # Track the ball
@@ -175,7 +189,7 @@ def track_ball(detections, frame):
 
     # Draw the trajectory
     for i in range(1, len(ball_positions)):
-        cv2.line(frame, ball_positions[i - 1], ball_positions[i], (0, 0, 255), 2)
+       cv2.line(frame, ball_positions[i - 1], ball_positions[i], (0, 0, 255), 2)
 
 def calculate_angle(a, b, c):
     """
@@ -228,7 +242,7 @@ def display_elbow_angles(frame, angles):
 #process_image(image_path)
 
 # Process a video
-video_path = "uploads/two_score_two_miss.mp4"
+video_path = "uploads/multi_angle.mp4"
 process_video(video_path)
 
 
