@@ -7,15 +7,13 @@ from gtts import gTTS
 from playsound import playsound
 import tempfile
 
-
 # Initialize the object detection and pose estimation models
-model = get_model(model_id="tracer-basketball/3")
-pose_model = YOLO("AI-Basketball-Referee/yolov8s-pose.pt") # Assuming you have a YOLO pose model
+model = get_model(model_id="basketball-detection-dn6fg/4")
+pose_model = YOLO("AI-Basketball-Referee/yolov8s-pose.pt")  # Assuming you have a YOLO pose model
 
 # Create supervision annotators
 bounding_box_annotator = sv.BoundingBoxAnnotator()
 label_annotator = sv.LabelAnnotator()
-
 
 # Define the body part indices
 body_index = {"left_shoulder": 5, "left_elbow": 7, "left_wrist": 9,
@@ -39,10 +37,10 @@ def process_frame(frame):
     global step_counter, prev_left_ankle_y, prev_right_ankle_y, wait_frames
 
     # Run object detection inference on the frame
-    results = model.infer(frame,tracker="bytetrack.yaml")[0]
+    results = model.infer(frame, tracker="bytetrack.yaml")[0]
 
     # Run pose estimation on the frame
-    pose_results =pose_model(frame,verbose=False,conf=0.4)[0]
+    pose_results = pose_model(frame, verbose=False, conf=0.4)[0]
 
     # Load the results into the supervision Detections API
     detections = sv.Detections.from_inference(results)
@@ -50,7 +48,7 @@ def process_frame(frame):
     # Annotate the frame with bounding boxes and labels
     annotated_frame = bounding_box_annotator.annotate(scene=frame, detections=detections)
     annotated_frame = label_annotator.annotate(scene=annotated_frame, detections=detections)
-    
+
     # Count steps
     steps = count_steps(pose_results)
     step_counter += steps
@@ -64,8 +62,9 @@ def process_frame(frame):
 
     # Annotate the frame with the step count
     cv2.putText(annotated_frame, f"Steps: {step_counter}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-    
+
     return annotated_frame
+
 
 def process_image(image_path):
     # Read the image
@@ -73,12 +72,13 @@ def process_image(image_path):
     if image is None:
         print(f"Could not open or find the image: {image_path}")
         return
-    
+
     # Process and display the image
     annotated_image = process_frame(image)
     cv2.imshow('Annotated Image', annotated_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
 
 def process_video(video_path):
     # Open the video capture
@@ -86,23 +86,24 @@ def process_video(video_path):
     if not video_capture.isOpened():
         print(f"Could not open or find the video: {video_path}")
         return
-    
+
     # Process each frame in the video
     while video_capture.isOpened():
         ret, frame = video_capture.read()
         if not ret:
             break
-        
+
         annotated_frame = process_frame(frame)
-        
+
         # Display the annotated frame
         cv2.imshow('Annotated Video', annotated_frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-    
+
     # Release video capture and close OpenCV windows
     video_capture.release()
     cv2.destroyAllWindows()
+
 
 def count_steps(pose_results):
     global prev_left_ankle_y, prev_right_ankle_y, wait_frames
@@ -119,15 +120,15 @@ def count_steps(pose_results):
         right_ankle = rounded_results[0][body_index["right_ankle"]]
 
         if (
-            (left_knee[2] > 0.5)
-            and (right_knee[2] > 0.5)
-            and (left_ankle[2] > 0.5)
-            and (right_ankle[2] > 0.5)
+                (left_knee[2] > 0.5)
+                and (right_knee[2] > 0.5)
+                and (left_ankle[2] > 0.5)
+                and (right_ankle[2] > 0.5)
         ):
             if (
-                prev_left_ankle_y is not None
-                and prev_right_ankle_y is not None
-                and wait_frames == 0
+                    prev_left_ankle_y is not None
+                    and prev_right_ankle_y is not None
+                    and wait_frames == 0
             ):
                 left_diff = abs(left_ankle[1] - prev_left_ankle_y)
                 right_diff = abs(right_ankle[1] - prev_right_ankle_y)
@@ -146,6 +147,7 @@ def count_steps(pose_results):
         print("No human detected.")
 
     return steps
+
 
 def track_ball(detections, frame):
     global ball_positions, prev_ball_position
@@ -177,6 +179,7 @@ def track_ball(detections, frame):
     for i in range(1, len(ball_positions)):
         cv2.line(frame, ball_positions[i - 1], ball_positions[i], (0, 0, 255), 2)
 
+
 def calculate_angle(a, b, c):
     """
     Calculate the angle between three points.
@@ -186,6 +189,7 @@ def calculate_angle(a, b, c):
     cosine_angle = np.dot(ab, cb) / (np.linalg.norm(ab) * np.linalg.norm(cb))
     angle = np.arccos(cosine_angle)
     return np.degrees(angle)
+
 
 def calculate_elbow_angles(pose_results):
     """
@@ -213,22 +217,25 @@ def calculate_elbow_angles(pose_results):
 
     return angles
 
+
 def display_elbow_angles(frame, angles):
     """
     Display the calculated elbow angles on the frame.
     """
     if "left_elbow" in angles:
-        cv2.putText(frame, f"Left Elbow Angle: {angles['left_elbow']:.2f}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+        cv2.putText(frame, f"Left Elbow Angle: {angles['left_elbow']:.2f}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                    (255, 0, 0), 2)
     if "right_elbow" in angles:
-        cv2.putText(frame, f"Right Elbow Angle: {angles['right_elbow']:.2f}", (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-
-# Example usage
-# Process an image
-#image_path = "uploads/sample_image.jpg"
-#process_image(image_path)
-
-# Process a video
-video_path = "uploads/two_score_two_miss.mp4"
-process_video(video_path)
+        cv2.putText(frame, f"Right Elbow Angle: {angles['right_elbow']:.2f}", (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                    (255, 0, 0), 2)
 
 
+if __name__ == '__main__':
+    # Example usage
+    # Process an image
+    # image_path = "test/sample_image.jpg"
+    # process_image(image_path)
+
+    # Process a video
+    video_path = "test/two_score_two_miss.mp4"
+    process_video(video_path)

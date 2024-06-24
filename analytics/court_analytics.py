@@ -52,5 +52,5 @@ def detect_court(file_path):
 
 
 if __name__ == '__main__':
-    file_path = 'uploads/sample_image.jpg'
+    file_path = '../test/sample_image.jpg'
     detect_court(file_path)

@@ -28,7 +28,7 @@ def detect_players_and_ball(frames):
 
 
 # Usage
-video_path = 'uploads/one_score_one_miss.mp4'
+video_path = 'test/one_score_one_miss.mp4'
 frames, total_frames = extract_frames(video_path)
 
 # Usage
