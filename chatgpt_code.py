@@ -4,6 +4,7 @@ from ultralytics import YOLO
 # Load the YOLOv8 model
 model = YOLO("yolo_models/yolov8s.pt")
 
+
 def extract_frames(video_path):
     cap = cv2.VideoCapture(video_path)
     frames = []
@@ -17,12 +18,14 @@ def extract_frames(video_path):
     cap.release()
     return frames, frame_count
 
+
 def detect_players_and_ball(frames):
     results = []
     for frame in frames:
         result = model(frame)
         results.append(result)
     return results
+
 
 # Usage
 video_path = 'uploads/one_score_one_miss.mp4'
