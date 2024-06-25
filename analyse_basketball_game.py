@@ -1,8 +1,8 @@
 import mediapipe as mp
 
-from analytics.ball_analytics import detect_ball, classify_throw, calculate_throw_time
-from analytics.player_analytics import get_pose_landmarks, calculate_steps, calculate_jump_height, \
-    calculate_distance_from_basket, calculate_player_level_while_throwing
+from basketball_analytics.ball_analytics import classify_throw, calculate_throw_time
+from basketball_analytics.player_analytics import get_pose_landmarks, calculate_jump_height, \
+    calculate_distance_from_basket, calculate_player_level_while_throwing, count_steps
 
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
@@ -15,7 +15,7 @@ def analyze_basketball_video(frames, hoop_position, backboard_y, court_dimension
     landmarks_sequence = [get_pose_landmarks(frame) for frame in frames]
     ball_positions = detect_ball(frames)
 
-    steps = calculate_steps(landmarks_sequence)
+    steps = count_steps(landmarks_sequence)
     jump_height = calculate_jump_height(landmarks_sequence)
     player_position = (landmarks_sequence[-1][mp_pose.PoseLandmark.LEFT_HEEL.value].x,
                        landmarks_sequence[-1][mp_pose.PoseLandmark.LEFT_HEEL.value].y)

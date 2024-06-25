@@ -1,20 +1,15 @@
-from inference import get_model
-import supervision as sv
 import cv2
 import numpy as np
-from ultralytics import YOLO
-from gtts import gTTS
-from playsound import playsound
-import tempfile
+import supervision as sv
+from inference import get_model
 
 # Initialize the object detection and pose estimation models
 model = get_model(model_id="tracer-basketball/3")
-#pose_model = YOLO("AI-Basketball-Referee/yolov8s-pose.pt") # Assuming you have a YOLO pose model
+# pose_model = YOLO("AI-Basketball-Referee/yolov8s-pose.pt") # Assuming you have a YOLO pose model
 
 # Create supervision annotators
 bounding_box_annotator = sv.BoundingBoxAnnotator()
 label_annotator = sv.LabelAnnotator()
-
 
 # Initialize ball trajectory
 ball_positions = []
@@ -46,51 +41,54 @@ def detect_shot(ball_positions, hoop_positions, tolerance=2):
     - bool: True if a shot is detected, False otherwise.
     """
     global ball_in_hoop
-    
+
     if len(ball_positions) > 0 and len(hoop_positions) > 0:
         ball_center = ball_positions[-1]
         hoop_x, hoop_y, hoop_width, hoop_height = hoop_positions[-1]
-        hoop_center=(int(hoop_x), int(hoop_y))
-        
+        hoop_center = (int(hoop_x), int(hoop_y))
+
         # Increase hoop bounding box dimensions by the tolerance factor
         expanded_hoop_width = hoop_width * tolerance
         expanded_hoop_height = hoop_height * tolerance
-        
+
         hoop_top_left = (hoop_center[0] - expanded_hoop_width // 2, hoop_center[1] - expanded_hoop_height // 2)
         hoop_bottom_right = (hoop_center[0] + expanded_hoop_width // 2, hoop_center[1] + expanded_hoop_height // 2)
-        
+
         # Check if the ball's center is within the expanded bounding box
-        if hoop_top_left[0] < ball_center[0] < hoop_bottom_right[0] and hoop_top_left[1] < ball_center[1] < hoop_bottom_right[1]:
+        if hoop_top_left[0] < ball_center[0] < hoop_bottom_right[0] and hoop_top_left[1] < ball_center[1] < \
+                hoop_bottom_right[1]:
             ball_in_hoop = True
             return True
         else:
             ball_in_hoop = False
     return False
 
+
 # Function to determine if a goal was made
 def detect_goal(ball_positions, hoop_positions):
     if len(ball_positions) > 1 and len(hoop_positions) > 0:
         ball_center = ball_positions[-2]  # Use previous ball position
         hoop_center, hoop_width, hoop_height = hoop_positions[-1]
-        
+
         # Define points above and below the hoop for accurate goal tracking
         hoop_top = hoop_center[1] - hoop_height // 2
         hoop_bottom = hoop_center[1] + hoop_height // 2
 
         # Check if the ball's previous position is within the hoop's bounding box
         if (
-            hoop_center[0] - hoop_width // 2 < ball_center[0] < hoop_center[0] + hoop_width // 2
-            and hoop_top < ball_center[1] < hoop_bottom
+                hoop_center[0] - hoop_width // 2 < ball_center[0] < hoop_center[0] + hoop_width // 2
+                and hoop_top < ball_center[1] < hoop_bottom
         ):
             return True
     return False
+
 
 def process_frame(frame):
     global shots_made, goals_scored
 
     # Run object detection inference on the frame
-    results = model.infer(frame, tracker="bytetrack.yaml")[0]
-    
+    results = model.infer(frame, tracker="yolo_tracker.yaml")[0]
+
     # Extract predictions from the results
     predictions = results.predictions
 
@@ -106,13 +104,11 @@ def process_frame(frame):
     # Annotate the frame with bounding boxes and labels
     annotated_frame = bounding_box_annotator.annotate(scene=frame, detections=detections)
     annotated_frame = label_annotator.annotate(scene=annotated_frame, detections=detections)
-    
 
     # Track ball trajectory
     track_ball(predictions, annotated_frame)
 
-   
-     # Track shots and goals
+    # Track shots and goals
     annotated_frame = track_shots_and_goals(predictions, annotated_frame)
 
     # # Detect shots and goals
@@ -122,12 +118,13 @@ def process_frame(frame):
     #     if detect_goal(ball_positions, hoop_positions):
     #         goals_scored += 1
     #         #cv2.putText(annotated_frame, "Goal!", (10, 180), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-    
+
     # # Display shot and goal counters
     # cv2.putText(annotated_frame, f"Shots Made: {shots_made}", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
     # cv2.putText(annotated_frame, f"Goals Scored: {goals_scored}", (10, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-        
+
     return annotated_frame
+
 
 def process_image(image_path):
     # Read the image
@@ -135,12 +132,13 @@ def process_image(image_path):
     if image is None:
         print(f"Could not open or find the image: {image_path}")
         return
-    
+
     # Process and display the image
     annotated_image = process_frame(image)
     cv2.imshow('Annotated Image', annotated_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
 
 def process_video(video_path):
     # Open the video capture
@@ -148,20 +146,20 @@ def process_video(video_path):
     if not video_capture.isOpened():
         print(f"Could not open or find the video: {video_path}")
         return
-    
+
     # Process each frame in the video
     while video_capture.isOpened():
         ret, frame = video_capture.read()
         if not ret:
             break
-        
+
         annotated_frame = process_frame(frame)
-        
+
         # Display the annotated frame
         cv2.imshow('Annotated Video', annotated_frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-    
+
     # Release video capture and close OpenCV windows
     video_capture.release()
     cv2.destroyAllWindows()
@@ -193,8 +191,9 @@ def track_ball(predictions, frame):
                     current_ball_position = ball_center
             else:
                 current_ball_position = ball_center
-            #print(f"Ball detected at: {ball_center}")  # Print ball coordinates
-            cv2.putText(frame, f"Ball Coordinates: {ball_center}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 2)
+            # print(f"Ball detected at: {ball_center}")  # Print ball coordinates
+            cv2.putText(frame, f"Ball Coordinates: {ball_center}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255),
+                        2)
             break
 
     # Track the ball
@@ -203,6 +202,7 @@ def track_ball(predictions, frame):
         prev_ball_position = current_ball_position
     elif prev_ball_position:
         ball_positions.append(prev_ball_position)
+
 
 def track_shots_and_goals(predictions, frame):
     global shot_counter, goal_counter, cooldown_timer, ball_in_hoop
@@ -233,6 +233,7 @@ def track_shots_and_goals(predictions, frame):
     cv2.putText(frame, f"Goals: {goal_counter}", (10, 180), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
     return frame
+
 
 # def track_hoop(predictions, frame):
 #     global hoop_positions
@@ -267,6 +268,7 @@ def track_shots_and_goals(predictions, frame):
 # image_path = "uploads/sample_image.jpg"
 # process_image(image_path)
 
-# Process a video
-video_path = "uploads/two_score_two_miss.mp4"
-process_video(video_path)
+if __name__=='__main__':
+    # Process a video
+    video_path = "uploads/two_score_two_miss.mp4"
+    process_video(video_path)
