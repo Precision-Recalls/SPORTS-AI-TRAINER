@@ -15,11 +15,14 @@ def display_angles(frame, angles):
 
 
 def calculate_angle(a, b, c):
-    """
-    Calculate the angle between three points.
-    """
-    ab = np.array([b[0] - a[0], b[1] - a[1]])
-    cb = np.array([b[0] - c[0], b[1] - c[1]])
-    cosine_angle = np.dot(ab, cb) / (np.linalg.norm(ab) * np.linalg.norm(cb))
-    angle = np.arccos(cosine_angle)
-    return np.degrees(angle)
+    try:
+        """
+        Calculate the angle between three points.
+        """
+        ab = np.array([b[0] - a[0], b[1] - a[1]])
+        cb = np.array([b[0] - c[0], b[1] - c[1]])
+        cosine_angle = np.dot(ab, cb) / (np.linalg.norm(ab) * np.linalg.norm(cb))
+        angle = np.arccos(cosine_angle)
+        return np.degrees(angle)
+    except Exception as e:
+        print(f"There is some issue with angle calculation:- {e}")

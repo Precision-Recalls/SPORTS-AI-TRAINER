@@ -7,7 +7,6 @@ from basketball_analytics.player_analytics import get_pose_landmarks, calculate_
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 
-# Usage
 court_dimensions = {'width': 15, 'height': 28, 'scale_factor': 28 / 1.0}
 
 
