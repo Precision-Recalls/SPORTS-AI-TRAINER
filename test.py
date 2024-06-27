@@ -2,7 +2,7 @@ import cv2
 from ultralytics import YOLO
 
 # Initialize the model
-model=YOLO("/Users/garvagarwal/Desktop/SPORTS-AI-TRAINER/best_yolo8m.pt")
+model=YOLO("/Users/garvagarwal/Desktop/SPORTS-AI-TRAINER/models/best_yolo8m.pt")
 
 
 def process_frame(frame):
