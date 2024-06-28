@@ -9,14 +9,17 @@ from basketball_analytics.ball_analytics import track_ball
 from basketball_analytics.player_analytics import draw_pose_landmarks_and_bboxes, calculate_elbow_angles, count_steps
 from utils import display_angles
 
-model = get_model(model_id="tracer-basketball/3")
-pose_model = YOLO("/Users/garvagarwal/Desktop/SPORTS-AI-TRAINER/assets/models/yolov8s-pose.pt")  # Assuming you have a YOLO pose model
+model = YOLO(r'C:\Users\Abhay\PycharmProjects\SPORTS-AI-TRAINER\best_yolo8s.pt')
+pose_model = YOLO(
+    "/Users/garvagarwal/Desktop/SPORTS-AI-TRAINER/assets/models/yolov8s-pose.pt")  # Assuming you have a YOLO pose model
 
 # Create supervision annotators
 bounding_box_annotator = sv.BoundingBoxAnnotator()
 label_annotator = sv.LabelAnnotator()
 
 step_counter = 0
+
+
 def process_frame(frame):
     global step_counter, prev_left_ankle_y, prev_right_ankle_y, wait_frames
 

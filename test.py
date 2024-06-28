@@ -2,24 +2,24 @@ import cv2
 from ultralytics import YOLO
 
 # Initialize the model
-model=YOLO("/Users/garvagarwal/Desktop/SPORTS-AI-TRAINER/models/best_yolo8m.pt")
+model = YOLO(r"C:\Users\Abhay\PycharmProjects\SPORTS-AI-TRAINER\best_yolo8s.pt")
 
 
 def process_frame(frame):
-    
-    results=model(frame,conf=0.8)
+    iou_threshold = 0.4
+    results = model(frame, conf=0.7, iou=iou_threshold)
     print(results)
     # Visualize the results on the frame
     annotated_frame = results[0].plot()
-   
+
     # for result in results:
     #     boxes = result.boxes  # Boxes object for bounding box outputs
     #     masks = result.masks  # Masks object for segmentation masks outputs
     #     keypoints = result.keypoints  # Keypoints object for pose outputs
     #     probs = result.probs  # Probs object for classification outputs
     #     obb = result.obb  # Oriented boxes object for OBB outputs
-        #result.show()  # display to screen
-        #result.save(filename="result.jpg")  # save to disk
+    # result.show()  # display to screen
+    # result.save(filename="result.jpg")  # save to disk
     # # Annotate the frame with bounding boxes and labels
     # annotated_frame = bounding_box_annotator.annotate(scene=frame, detections=detections)
     # annotated_frame = label_annotator.annotate(scene=annotated_frame, detections=detections)
@@ -72,5 +72,5 @@ def process_video(video_path):
 # process_image(image_path)
 
 # Process a video
-video_path = "/Users/garvagarwal/Desktop/SPORTS-AI-TRAINER/test/one_score_one_miss.mp4"
+video_path = r"C:\Users\Abhay\PycharmProjects\SPORTS-AI-TRAINER\test\one_score_one_miss.mp4"
 process_video(video_path)
