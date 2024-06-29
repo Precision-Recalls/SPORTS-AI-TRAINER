@@ -1,6 +1,5 @@
 torch~=2.3.1
 ultralytics~=8.2.41
-mediapipe~=0.10.14
 supervision~=0.21.0
 opencv-python~=4.8.0.76
 inference~=0.12.1
