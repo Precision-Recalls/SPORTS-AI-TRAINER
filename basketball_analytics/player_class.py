@@ -4,7 +4,6 @@ from common.utils import calculate_angle
 
 class Player:
     def __init__(self, frame, pose_results, body_index):
-        # Load the YOLO model created from main.py - change text to your relative path
         self.pose_results = pose_results
         self.frame = frame
         self.body_index = body_index
@@ -15,38 +14,29 @@ class Player:
         self.min_wait_frames = 8
 
     def count_steps(self):
-        #global prev_left_ankle_y, prev_right_ankle_y, wait_frames
+        # global prev_left_ankle_y, prev_right_ankle_y, wait_frames
         steps = 0
         wait_frames = 0
 
         # Round the results to the nearest decimal
         rounded_results = np.round(self.pose_results.keypoints.data.numpy(), 1)
 
-        # Get the keypoints for the body parts
+        # Get the key points for the body parts
         try:
             left_knee = rounded_results[0][self.body_index["left_knee"]]
             right_knee = rounded_results[0][self.body_index["right_knee"]]
             left_ankle = rounded_results[0][self.body_index["left_ankle"]]
             right_ankle = rounded_results[0][self.body_index["right_ankle"]]
+            keypoints = [left_knee, right_knee, left_ankle, right_ankle]
 
-            if (
-                    (left_knee[2] > 0.5)
-                    and (right_knee[2] > 0.5)
-                    and (left_ankle[2] > 0.5)
-                    and (right_ankle[2] > 0.5)
-            ):
-                if (
-                        self.prev_left_ankle_y is not None
-                        and self.prev_right_ankle_y is not None
-                        and wait_frames == 0
-                ):
+            if all(point[2] > 0.5 for point in keypoints):
+                if self.prev_left_ankle_y is not None and self.prev_right_ankle_y is not None and wait_frames == 0:
                     left_diff = abs(left_ankle[1] - self.prev_left_ankle_y)
                     right_diff = abs(right_ankle[1] - self.prev_right_ankle_y)
 
                     if max(left_diff, right_diff) > self.step_threshold:
                         steps += 1
                         wait_frames = self.min_wait_frames
-
                 self.prev_left_ankle_y = left_ankle[1]
                 self.prev_right_ankle_y = right_ankle[1]
 
@@ -55,7 +45,6 @@ class Player:
             return steps
         except Exception as e:
             print("No human detected.")
-        
 
     def calculate_elbow_angles(self):
         """
@@ -79,4 +68,3 @@ class Player:
             return angles
         except Exception as e:
             print("Unable to calculate elbow angles.")
-    

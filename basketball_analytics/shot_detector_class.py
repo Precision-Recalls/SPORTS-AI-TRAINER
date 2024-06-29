@@ -9,15 +9,11 @@ from basketball_analytics.shot_detection_utils import score, detect_down, detect
 
 class ShotDetector:
     def __init__(self, model, pose_model, class_names, video_link, body_index):
-        # Load the YOLO model created from main.py - change text to your relative path
         self.model = model
+        self.pose_model = pose_model
         self.class_names = class_names
-
-        # Uncomment line below to use webcam (I streamed to my iPhone using Iriun Webcam)
-        # self.cap = cv2.VideoCapture(0)
-
-        # Use video - replace text with your video path
         self.cap = cv2.VideoCapture(video_link)
+        self.body_index = body_index
 
         self.ball_pos = []  # array of tuples ((x_pos, y_pos), frame count, width, height, conf)
         self.hoop_pos = []  # array of tuples ((x_pos, y_pos), frame count, width, height, conf)
@@ -31,8 +27,7 @@ class ShotDetector:
         self.wait_frames = 0
         self.makes = 0
         self.attempts = 0
-        self.body_index = body_index
-        self.pose_model = pose_model  # Assuming you have a YOLO pose model
+
         self.step_counter = 0
 
         # Used to detect shots (upper and lower region)
@@ -56,7 +51,7 @@ class ShotDetector:
                 # End of the video or an error occurred
                 break
 
-            results = self.model(self.frame, conf=0.7, iou=0.4, stream=True)
+            object_detection_results = self.model(self.frame, conf=0.7, iou=0.4, stream=True)
             pose_results = self.pose_model(self.frame, verbose=False, conf=0.7, stream=True)
             step_counter = 0
             if pose_results:
@@ -70,7 +65,7 @@ class ShotDetector:
                 text, position, font_scale, thickness = scale_text(self.frame, f"Steps: {step_counter}", (10, 30), 1, 2)
                 cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
-            for r in results:
+            for r in object_detection_results:
                 boxes = r.boxes
                 for box in boxes:
                     # Bounding box
@@ -93,12 +88,10 @@ class ShotDetector:
                     if (conf > .3 or (
                             in_hoop_region(center, self.hoop_pos) and conf > 0.15)) and current_class == "ball":
                         self.ball_pos.append((center, self.frame_count, w, h, conf))
-                        # cvzone.cornerRect(self.frame, (x1, y1, w, h))
 
                     # Create hoop points if high confidence
                     if conf > .5 and current_class == "basket":
                         self.hoop_pos.append((center, self.frame_count, w, h, conf))
-                        # cvzone.cornerRect(self.frame, (x1, y1, w, h))
 
             self.clean_motion()
             self.shot_detection()
@@ -159,8 +152,6 @@ class ShotDetector:
                         self.fade_counter = self.fade_frames
 
     def display_score(self):
-        # Add text
-        # text = str(self.makes) + " / " + str(self.attempts)
         cv2.putText(self.frame, f"Shots:{self.attempts}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0),
                     3)  # type: ignore
         cv2.putText(self.frame, f"Goals:{self.makes}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0),

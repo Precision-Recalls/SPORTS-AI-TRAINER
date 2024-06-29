@@ -1,5 +1,15 @@
 import cv2
 import numpy as np
+import configparser
+
+
+def load_config(config_file):
+    try:
+        config = configparser.ConfigParser()
+        config.read(config_file)
+        return config
+    except Exception as e:
+        print(f"Error occurred in configuration loading: {e}")
 
 
 def scale_text(frame, text, position, font_scale, thickness):

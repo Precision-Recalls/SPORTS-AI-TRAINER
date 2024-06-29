@@ -1,13 +1,20 @@
 import math
 import numpy as np
 
+from enum import Enum
+
+
+class shotResult(Enum):
+    Goal_Rim_Touch = 'Goal Touching the rim'
+    Goal_Rim_No_Touch = 'Goal without touching the rim'
+    No_Goal_Rim_Touch = 'Ball touching the rim but No goal'
+    No_Goal_No_Rim_Touch = 'No Goal no touching the rim'
+    Insufficient_Information = 'Not sufficient data points'
+
 
 # Detects if the ball is below the net - used to detect shot attempts
 def detect_down(ball_pos, hoop_pos):
-    y = hoop_pos[-1][0][1] + 0.5 * hoop_pos[-1][3]
-    if ball_pos[-1][0][1] > y:
-        return True
-    return False
+    return ball_pos[-1][0][1] > hoop_pos[-1][0][1] + 0.5 * hoop_pos[-1][3]
 
 
 # Detects if the ball is around the backboard - used to detect shot attempts
@@ -17,9 +24,7 @@ def detect_up(ball_pos, hoop_pos):
     y1 = hoop_pos[-1][0][1] - 2 * hoop_pos[-1][3]
     y2 = hoop_pos[-1][0][1]
 
-    if x1 < ball_pos[-1][0][0] < x2 and y1 < ball_pos[-1][0][1] < y2 - 0.5 * hoop_pos[-1][3]:
-        return True
-    return False
+    return x1 < ball_pos[-1][0][0] < x2 and y1 < ball_pos[-1][0][1] < y2 - 0.5 * hoop_pos[-1][3]
 
 
 # Checks if center point is near the hoop
@@ -34,9 +39,7 @@ def in_hoop_region(center, hoop_pos):
     y1 = hoop_pos[-1][0][1] - 1 * hoop_pos[-1][3]
     y2 = hoop_pos[-1][0][1] + 0.5 * hoop_pos[-1][3]
 
-    if x1 < x < x2 and y1 < y < y2:
-        return True
-    return False
+    return x1 < x < x2 and y1 < y < y2
 
 
 # Removes inaccurate data points
@@ -163,7 +166,6 @@ def score(ball_pos, hoop_pos):
     # Create line from two points
     if len(x) > 1:
         m, b = np.polyfit(x, y, 1)
-        print(x, y)
         # Checks if projected line fits between the ends of the rim {x = (y-b)/m}
         predicted_x = ((hoop_pos[-1][0][1] - 0.5 * hoop_pos[-1][3]) - b) / m
         rim_x1 = hoop_pos[-1][0][0] - 0.4 * hoop_pos[-1][2]
@@ -173,45 +175,45 @@ def score(ball_pos, hoop_pos):
 
         if rim_x1 < predicted_x - radius and rim_x2 > predicted_x + radius:
             if count >= 3:
-                return True, "Goal after Touching the rim"
+                return True, shotResult.Goal_Rim_Touch.value
             else:
-                return True, "Clean Goal without touching the rim"
+                return True, shotResult.Goal_Rim_No_Touch.value
 
             # Case 2: Goal after touching the rim
             # elif rim_x1<predicted_x<rim_x2:
-                # return True, "Goal after Touching the rim"
+            # return True, "Goal after Touching the rim"
 
         # Case 3: No goal, either directly or after touching the rim
         elif rim_x2 < predicted_x - radius or rim_x1 > predicted_x + radius:
             if count >= 3:
-                return False, "Ball touching the rim and No goal"
+                return False, shotResult.No_Goal_Rim_Touch.value
             else:
-                return False, "No Goal without touching the rim"
-    return False, "Due to lack of data points shot can't be analysed"
+                return False, shotResult.No_Goal_No_Rim_Touch.value
+    return False, shotResult.Insufficient_Information.value
 
-            # Case 4: No goal after touching the rim
-            # else:
-                # return False, "Ball touching the rim and No goal"
+    # Case 4: No goal after touching the rim
+    # else:
+    # return False, "Ball touching the rim and No goal"
 
-        # elif backboard_touch is True:
-        #     # Case 1: Clean goal, either directly or after touching the rim
-        #     if rim_x1<predicted_x-radius and rim_x2>predicted_x+radius:
-        #         if count>=3:
-        #             return True,"Goal after Touching the rim and backboard"
-        #         else: 
-        #             return True,"Goal after touching the backboard"
+    # elif backboard_touch is True:
+    #     # Case 1: Clean goal, either directly or after touching the rim
+    #     if rim_x1<predicted_x-radius and rim_x2>predicted_x+radius:
+    #         if count>=3:
+    #             return True,"Goal after Touching the rim and backboard"
+    #         else:
+    #             return True,"Goal after touching the backboard"
 
-        #     # Case 2: Goal after touching the rim
-        #     elif rim_x1<predicted_x<rim_x2:
-        #         return True, "Goal after Touching the rim and backboard"
+    #     # Case 2: Goal after touching the rim
+    #     elif rim_x1<predicted_x<rim_x2:
+    #         return True, "Goal after Touching the rim and backboard"
 
-        #     # Case 3: No goal, either directly or after touching the rim
-        #     elif rim_x2<predicted_x-radius or rim_x1>predicted_x+radius:
-        #         if count>=3:
-        #             return False,"No Goal after touching the rim and backboard"
-        #         else:
-        #             return False,"No Goal after touching backboard"
+    #     # Case 3: No goal, either directly or after touching the rim
+    #     elif rim_x2<predicted_x-radius or rim_x1>predicted_x+radius:
+    #         if count>=3:
+    #             return False,"No Goal after touching the rim and backboard"
+    #         else:
+    #             return False,"No Goal after touching backboard"
 
-        #     # Case 4: No goal after touching the rim and backboard
-        #     else:
-        #         return False,"No goal after touching the rim and backboard"
+    #     # Case 4: No goal after touching the rim and backboard
+    #     else:
+    #         return False,"No goal after touching the rim and backboard"

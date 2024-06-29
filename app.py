@@ -1,14 +1,24 @@
 from ultralytics import YOLO
 from basketball_analytics.shot_detector_class import ShotDetector
+from common.utils import load_config
 
-model = YOLO(r"assets\models\best_yolo8s.pt")
-pose_model = YOLO(r'assets\models\yolov8s-pose.pt')
-# Define the body part indices
-body_index = {"left_shoulder": 5, "left_elbow": 7, "left_wrist": 9,
-              "right_shoulder": 6, "right_elbow": 8, "right_wrist": 10,
-              "left_knee": 13, "right_knee": 14, "left_ankle": 15, "right_ankle": 16}
-class_names = ['ball', 'basket', 'person']
+config = load_config('configs/config.ini')
+object_detection_model_path = config['paths']['object_detection_model_path']
+pose_detection_model_path = config['paths']['pose_detection_model_path']
+sample_video_path = config['paths']['sample_video_path']
+# Define the body part indices and class names
+body_index = config['constants']['body_index']
+class_names = config['constants']['class_names']
+
+# Load model objects
+object_detection_model = YOLO(object_detection_model_path)
+pose_detection_model = YOLO(pose_detection_model_path)
 
 
-def analyze_basketball_video(video_path='test\two_score_two_miss.mp4'):
-    shot_detector = ShotDetector(model, pose_model, class_names, video_path, body_index)
+def analyze_basketball_video(video_path):
+    ShotDetector(object_detection_model, pose_detection_model, class_names, video_path, body_index)
+
+
+def main():
+    # If user does not give path of the video then default analysis will be shown
+    analyze_basketball_video(sample_video_path)
