@@ -15,16 +15,10 @@ class BasketBallGame:
         self.class_names = class_names
         self.cap = cv2.VideoCapture(video_link)
         self.body_index = body_index
-        self.player = Player(self.frame, self.body_index)
+        self.player = Player(self.body_index)
 
         self.frame_count = 0
         self.frame = None
-        # Steps counting variables
-        self.prev_left_ankle_y = None
-        self.prev_right_ankle_y = None
-        self.step_threshold = 12
-        self.min_wait_frames = 8
-        self.wait_frames = 0
         self.step_counter = 0
         # Shots related variables
         self.ball_pos = []  # array of tuples ((x_pos, y_pos), frame count, width, height, conf)
@@ -47,21 +41,21 @@ class BasketBallGame:
     def run(self):
         while True:
             ret, self.frame = self.cap.read()
-
             if not ret:
                 # End of the video or an error occurred
                 break
 
             object_detection_results = self.model(self.frame, conf=0.7, iou=0.4, stream=True)
-            pose_results = self.pose_model(self.frame, verbose=False, conf=0.7, stream=True)
+            pose_results = self.pose_model(self.frame, verbose=False, conf=0.7)
             step_counter = 0
             if pose_results:
                 # Round the results to the nearest decimal
-                rounded_pose_results = np.round(pose_results.keypoints.data.numpy(), 1)
+                rounded_pose_results = np.round(pose_results[0].keypoints.data.numpy(), 1)
                 steps = self.player.count_steps(rounded_pose_results)
                 step_counter += steps
                 elbow_angles = self.player.calculate_elbow_angles(rounded_pose_results)
-                display_angles(self.frame, elbow_angles)
+                if elbow_angles:
+                    display_angles(self.frame, elbow_angles)
 
                 # Annotate the frame with the step count
                 text, position, font_scale, thickness = scale_text(self.frame, f"Steps: {step_counter}", (10, 30), 1, 2)
