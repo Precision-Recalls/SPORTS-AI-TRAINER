@@ -1,5 +1,5 @@
 from ultralytics import YOLO
-from basketball_analytics.shot_detector_class import ShotDetector
+from basketball_analytics.basket_ball_class import BasketBallGame
 from common.utils import load_config
 
 config = load_config('configs/config.ini')
@@ -16,7 +16,7 @@ pose_detection_model = YOLO(pose_detection_model_path)
 
 
 def analyze_basketball_video(video_path):
-    ShotDetector(object_detection_model, pose_detection_model, class_names, video_path, body_index)
+    BasketBallGame(object_detection_model, pose_detection_model, class_names, video_path, body_index)
 
 
 def main():

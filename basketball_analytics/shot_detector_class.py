@@ -1,165 +1,219 @@
-import cv2
 import math
 import numpy as np
-from basketball_analytics.player_class import Player
-from common.utils import display_angles, scale_text
-from basketball_analytics.shot_detection_utils import score, detect_down, detect_up, in_hoop_region, clean_hoop_pos, \
-    clean_ball_pos
+
+from enum import Enum
 
 
-class ShotDetector:
-    def __init__(self, model, pose_model, class_names, video_link, body_index):
-        self.model = model
-        self.pose_model = pose_model
-        self.class_names = class_names
-        self.cap = cv2.VideoCapture(video_link)
-        self.body_index = body_index
+class shotResult(Enum):
+    Goal_Rim_Touch = 'Goal Touching the rim'
+    Goal_Rim_No_Touch = 'Goal without touching the rim'
+    No_Goal_Rim_Touch = 'Ball touching the rim but No goal'
+    No_Goal_No_Rim_Touch = 'No Goal no touching the rim'
+    Insufficient_Information = 'Not sufficient data points'
 
-        self.ball_pos = []  # array of tuples ((x_pos, y_pos), frame count, width, height, conf)
-        self.hoop_pos = []  # array of tuples ((x_pos, y_pos), frame count, width, height, conf)
 
-        self.frame_count = 0
-        self.frame = None
-        self.prev_left_ankle_y = None
-        self.prev_right_ankle_y = None
-        self.step_threshold = 12
-        self.min_wait_frames = 8
-        self.wait_frames = 0
-        self.makes = 0
-        self.attempts = 0
+# Detects if the ball is below the net - used to detect shot attempts
+def detect_down(ball_pos, hoop_pos):
+    return ball_pos[-1][0][1] > hoop_pos[-1][0][1] + 0.5 * hoop_pos[-1][3]
 
-        self.step_counter = 0
 
-        # Used to detect shots (upper and lower region)
-        self.up = False
-        self.down = False
-        self.up_frame = 0
-        self.down_frame = 0
+# Detects if the ball is around the backboard - used to detect shot attempts
+def detect_up(ball_pos, hoop_pos):
+    x1 = hoop_pos[-1][0][0] - 4 * hoop_pos[-1][2]
+    x2 = hoop_pos[-1][0][0] + 4 * hoop_pos[-1][2]
+    y1 = hoop_pos[-1][0][1] - 2 * hoop_pos[-1][3]
+    y2 = hoop_pos[-1][0][1]
 
-        # Used for green and red colors after make/miss
-        self.fade_frames = 20
-        self.fade_counter = 0
-        self.overlay_color = (0, 0, 0)
+    return x1 < ball_pos[-1][0][0] < x2 and y1 < ball_pos[-1][0][1] < y2 - 0.5 * hoop_pos[-1][3]
 
-        self.run()
 
-    def run(self):
-        while True:
-            ret, self.frame = self.cap.read()
+# Checks if center point is near the hoop
+def in_hoop_region(center, hoop_pos):
+    if len(hoop_pos) < 1:
+        return False
+    x = center[0]
+    y = center[1]
 
-            if not ret:
-                # End of the video or an error occurred
+    x1 = hoop_pos[-1][0][0] - 1 * hoop_pos[-1][2]
+    x2 = hoop_pos[-1][0][0] + 1 * hoop_pos[-1][2]
+    y1 = hoop_pos[-1][0][1] - 1 * hoop_pos[-1][3]
+    y2 = hoop_pos[-1][0][1] + 0.5 * hoop_pos[-1][3]
+
+    return x1 < x < x2 and y1 < y < y2
+
+
+# Removes inaccurate data points
+def clean_ball_pos(ball_pos, frame_count):
+    # Removes inaccurate ball size to prevent jumping to wrong ball
+    if len(ball_pos) > 1:
+        # Width and Height
+        w1 = ball_pos[-2][2]
+        h1 = ball_pos[-2][3]
+        w2 = ball_pos[-1][2]
+        h2 = ball_pos[-1][3]
+
+        # X and Y coordinates
+        x1 = ball_pos[-2][0][0]
+        y1 = ball_pos[-2][0][1]
+        x2 = ball_pos[-1][0][0]
+        y2 = ball_pos[-1][0][1]
+
+        # Frame count
+        f1 = ball_pos[-2][1]
+        f2 = ball_pos[-1][1]
+        f_dif = f2 - f1
+
+        dist = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+        max_dist = 4 * math.sqrt((w1) ** 2 + (h1) ** 2)
+
+        # Ball should not move a 4x its diameter within 5 frames
+        if (dist > max_dist) and (f_dif < 5):
+            ball_pos.pop()
+
+        # Ball should be relatively square
+        elif (w2 * 1.4 < h2) or (h2 * 1.4 < w2):
+            ball_pos.pop()
+
+    # Remove points older than 30 frames
+    if len(ball_pos) > 0:
+        if frame_count - ball_pos[0][1] > 30:
+            ball_pos.pop(0)
+
+    return ball_pos
+
+
+def clean_hoop_pos(hoop_pos):
+    # Prevents jumping from one hoop to another
+    if len(hoop_pos) > 1:
+        x1 = hoop_pos[-2][0][0]
+        y1 = hoop_pos[-2][0][1]
+        x2 = hoop_pos[-1][0][0]
+        y2 = hoop_pos[-1][0][1]
+
+        w1 = hoop_pos[-2][2]
+        h1 = hoop_pos[-2][3]
+        w2 = hoop_pos[-1][2]
+        h2 = hoop_pos[-1][3]
+
+        f1 = hoop_pos[-2][1]
+        f2 = hoop_pos[-1][1]
+
+        f_dif = f2 - f1
+
+        dist = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+        max_dist = 0.5 * math.sqrt(w1 ** 2 + h1 ** 2)
+
+        # Hoop should not move 0.5x its diameter within 5 frames
+        if dist > max_dist and f_dif < 5:
+            hoop_pos.pop()
+
+        # Hoop should be relatively square
+        if (w2 * 1.3 < h2) or (h2 * 1.3 < w2):
+            hoop_pos.pop()
+
+    # Remove old points
+    if len(hoop_pos) > 25:
+        hoop_pos.pop(0)
+
+    return hoop_pos
+
+
+def score(ball_pos, hoop_pos):
+    x = []
+    y = []
+    rim_height = hoop_pos[-1][0][1] - 0.5 * hoop_pos[-1][3]
+
+    radius = (sum(ball[3] for ball in ball_pos) / len(ball_pos)) / 2
+    count = 0
+
+    # For loop to count the number of times the ball touches the rim
+    for i in reversed(range(len(ball_pos))):
+        # 5 here is the margin of error for the ball to touch the rim
+        if rim_height - 5 < ball_pos[i][0][1] + radius < rim_height + 5:
+            count += 1
+
+    backboard_pos_y_ends = [hoop_pos[-1][0][1] - 4 * hoop_pos[-1][3], hoop_pos[-1][0][1] + 2 * hoop_pos[-1][3]]
+    # backboard_pos_x_ends=[hoop_pos[-1][0][0] - 4 * hoop_pos[-1][2], hoop_pos[-1][0][0] + 4 * hoop_pos[-1][2]]
+
+    backboard_touch = False
+    max_ball_x = 0
+
+    for i in reversed(range(len(ball_pos))):
+
+        # if the ball lies in the y-axis range of the backbaord(backboard_pos) and above the rim         
+        # and if x-axis coordinate of the ball decreases ones after it was increasing then, it is
+        # counted as the touch on the backboard 
+
+        if ball_pos[i][0][1] < rim_height and (
+                backboard_pos_y_ends[1] > ball_pos[i][0][1] > backboard_pos_y_ends[0]):
+            if max_ball_x > ball_pos[i][0][0]:
+                backboard_touch = True
                 break
 
-            object_detection_results = self.model(self.frame, conf=0.7, iou=0.4, stream=True)
-            pose_results = self.pose_model(self.frame, verbose=False, conf=0.7, stream=True)
-            step_counter = 0
-            if pose_results:
-                player = Player(self.frame, pose_results, self.body_index)
-                steps = player.count_steps()
-                step_counter += steps  # type: ignore
-                elbow_angles = player.calculate_elbow_angles()
-                display_angles(self.frame, elbow_angles)
+            max_ball_x = max(max_ball_x, ball_pos[i][0][0])
 
-                # Annotate the frame with the step count
-                text, position, font_scale, thickness = scale_text(self.frame, f"Steps: {step_counter}", (10, 30), 1, 2)
-                cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
+    # Get first point above rim and first point below rim
+    for i in reversed(range(len(ball_pos))):
+        if ball_pos[i][0][1] < rim_height:
+            x.append(ball_pos[i][0][0])
+            y.append(ball_pos[i][0][1])
+            x.append(ball_pos[i + 1][0][0])
+            y.append(ball_pos[i + 1][0][1])
+            break
 
-            for r in object_detection_results:
-                boxes = r.boxes
-                for box in boxes:
-                    # Bounding box
-                    x1, y1, x2, y2 = box.xyxy[0]
-                    x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-                    w, h = x2 - x1, y2 - y1
+    # Create line from two points
+    if len(x) > 1:
+        m, b = np.polyfit(x, y, 1)
+        # Checks if projected line fits between the ends of the rim {x = (y-b)/m}
+        predicted_x = ((hoop_pos[-1][0][1] - 0.5 * hoop_pos[-1][3]) - b) / m
+        rim_x1 = hoop_pos[-1][0][0] - 0.4 * hoop_pos[-1][2]
+        rim_x2 = hoop_pos[-1][0][0] + 0.4 * hoop_pos[-1][2]
 
-                    # Confidence
-                    conf = math.ceil((box.conf[0] * 100)) / 100
+        # Case 1: Clean goal, either directly or after touching the rim
 
-                    # Class Name
-                    cls = int(box.cls[0])
-                    current_class = self.class_names[cls]
+        if rim_x1 < predicted_x - radius and rim_x2 > predicted_x + radius:
+            if count >= 3:
+                return True, shotResult.Goal_Rim_Touch.value
+            else:
+                return True, shotResult.Goal_Rim_No_Touch.value
 
-                    center = (int(x1 + w / 2), int(y1 + h / 2))
+            # Case 2: Goal after touching the rim
+            # elif rim_x1<predicted_x<rim_x2:
+            # return True, "Goal after Touching the rim"
 
-                    cv2.rectangle(self.frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        # Case 3: No goal, either directly or after touching the rim
+        elif rim_x2 < predicted_x - radius or rim_x1 > predicted_x + radius:
+            if count >= 3:
+                return False, shotResult.No_Goal_Rim_Touch.value
+            else:
+                return False, shotResult.No_Goal_No_Rim_Touch.value
+    return False, shotResult.Insufficient_Information.value
 
-                    # Only create ball points if high confidence or near hoop
-                    if (conf > .3 or (
-                            in_hoop_region(center, self.hoop_pos) and conf > 0.15)) and current_class == "ball":
-                        self.ball_pos.append((center, self.frame_count, w, h, conf))
+    # Case 4: No goal after touching the rim
+    # else:
+    # return False, "Ball touching the rim and No goal"
 
-                    # Create hoop points if high confidence
-                    if conf > .5 and current_class == "basket":
-                        self.hoop_pos.append((center, self.frame_count, w, h, conf))
+    # elif backboard_touch is True:
+    #     # Case 1: Clean goal, either directly or after touching the rim
+    #     if rim_x1<predicted_x-radius and rim_x2>predicted_x+radius:
+    #         if count>=3:
+    #             return True,"Goal after Touching the rim and backboard"
+    #         else:
+    #             return True,"Goal after touching the backboard"
 
-            self.clean_motion()
-            self.shot_detection()
-            self.display_score()
-            self.frame_count += 1
+    #     # Case 2: Goal after touching the rim
+    #     elif rim_x1<predicted_x<rim_x2:
+    #         return True, "Goal after Touching the rim and backboard"
 
-            cv2.imshow('Frame', self.frame)
+    #     # Case 3: No goal, either directly or after touching the rim
+    #     elif rim_x2<predicted_x-radius or rim_x1>predicted_x+radius:
+    #         if count>=3:
+    #             return False,"No Goal after touching the rim and backboard"
+    #         else:
+    #             return False,"No Goal after touching backboard"
 
-            # Close if 'q' is clicked
-            if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
-                break
-
-        self.cap.release()
-        cv2.destroyAllWindows()
-
-    def clean_motion(self):
-        # Clean and display ball motion
-        self.ball_pos = clean_ball_pos(self.ball_pos, self.frame_count)
-        for i in range(0, len(self.ball_pos)):
-            cv2.circle(self.frame, self.ball_pos[i][0], 2, (0, 0, 255), 2)  # type: ignore
-
-        # Clean hoop motion and display current hoop center
-        if len(self.hoop_pos) > 1:
-            self.hoop_pos = clean_hoop_pos(self.hoop_pos)
-            cv2.circle(self.frame, self.hoop_pos[-1][0], 2, (128, 128, 0), 2)  # type: ignore
-
-    def shot_detection(self):
-        if len(self.hoop_pos) > 0 and len(self.ball_pos) > 0:
-            # Detecting when ball is in 'up' and 'down' area - ball can only be in 'down' area after it is in 'up'
-            if not self.up:
-                self.up = detect_up(self.ball_pos, self.hoop_pos)
-                if self.up:
-                    self.up_frame = self.ball_pos[-1][1]
-
-            if self.up and not self.down:
-                self.down = detect_down(self.ball_pos, self.hoop_pos)
-                if self.down:
-                    self.down_frame = self.ball_pos[-1][1]
-
-            # If ball goes from 'up' area to 'down' area in that order, increase attempt and reset
-            if self.frame_count % 10 == 0:
-                if self.up and self.down and self.up_frame < self.down_frame:
-                    self.attempts += 1
-                    self.up = False
-                    self.down = False
-
-                    is_goal, description = score(self.ball_pos, self.hoop_pos)
-
-                    # If it is a make, put a green overlay
-                    if is_goal:
-                        self.makes += 1
-                        self.overlay_color = (0, 255, 0)
-                        self.fade_counter = self.fade_frames
-
-                    # If it is a miss, put a red overlay
-                    else:
-                        self.overlay_color = (0, 0, 255)
-                        self.fade_counter = self.fade_frames
-
-    def display_score(self):
-        cv2.putText(self.frame, f"Shots:{self.attempts}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0),
-                    3)  # type: ignore
-        cv2.putText(self.frame, f"Goals:{self.makes}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0),
-                    3)  # type: ignore
-
-        # Gradually fade out color after shot
-        if self.fade_counter > 0:
-            alpha = 0.2 * (self.fade_counter / self.fade_frames)
-            self.frame = cv2.addWeighted(self.frame, 1 - alpha, np.full_like(self.frame, self.overlay_color), alpha,
-                                         0)  # type: ignore
-            self.fade_counter -= 1
+    #     # Case 4: No goal after touching the rim and backboard
+    #     else:
+    #         return False,"No goal after touching the rim and backboard"

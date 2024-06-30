@@ -3,7 +3,7 @@ import numpy as np
 from ultralytics import YOLO
 
 from basketball_analytics.player_class import Player
-from basketball_analytics.shot_detector_class import ShotDetector
+from basketball_analytics.basket_ball_class import BasketBallGame
 from common.utils import scale_text, display_angles
 
 model = YOLO(r"C:\Users\Abhay\PycharmProjects\SPORTS-AI-TRAINER\best_yolo8s.pt")
@@ -16,15 +16,16 @@ body_index = {"left_shoulder": 5, "left_elbow": 7, "left_wrist": 9,
 class_names = ['ball', 'basket', 'person']
 
 
-
 def process_frame(frame):
     # Run pose estimation on the frame
+    global step_counter
     pose_results = pose_model(frame, verbose=False, conf=0.7)[0]
+    rounded_pose_results = np.round(pose_results.keypoints.data.numpy(), 1)
     if pose_results:
-        player = Player(frame, pose_results, body_index)
-        steps = player.count_steps()
-        step_counter += steps # type: ignore
-        elbow_angles = player.calculate_elbow_angles()
+        player = Player(frame, body_index)
+        steps = player.count_steps(rounded_pose_results)
+        step_counter += steps  # type: ignore
+        elbow_angles = player.calculate_elbow_angles(rounded_pose_results)
         display_angles(frame, elbow_angles)
 
     # Annotate the frame with the step count
@@ -48,7 +49,6 @@ def process_image(image_path):
 
 
 def process_video(video_path):
-    
     # Open the video capture
     video_capture = cv2.VideoCapture(video_path)
     if not video_capture.isOpened():
