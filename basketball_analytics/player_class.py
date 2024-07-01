@@ -1,5 +1,5 @@
 from common.utils import calculate_angle
-
+import numpy as np
 
 class Player:
 
@@ -12,6 +12,10 @@ class Player:
         self.min_wait_frames = 8
         self.wait_frames = 0
         self.steps = 0
+        # Initialize last valid elbow angles
+        self.last_left_elbow_angle = None
+        self.last_right_elbow_angle = None
+
 
     def count_steps(self, rounded_pose_results):
         # Get the key points for the body parts

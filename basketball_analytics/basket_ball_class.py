@@ -20,11 +20,8 @@ class BasketBallGame:
         self.last_shot_description = ""
         self.frame_count = 0
         self.frame = None
-        self.step_counter = 0
+        #self.step_counter = 0
         
-        
-        self.total_steps = 0
-        #self.steps_before_shot = 0
         # Shots related variables
         self.ball_pos = []  # array of tuples ((x_pos, y_pos), frame count, width, height, conf)
         self.hoop_pos = []  # array of tuples ((x_pos, y_pos), frame count, width, height, conf)
@@ -45,13 +42,17 @@ class BasketBallGame:
         self.prev_x_center = None
         self.prev_y_center = None
         self.prev_delta_y = None
-        self.release_angle=0
+        #self.release_angle=0
         # Initialize the dribble counter
         self.dribble_count = 0
         #self.release_angle=None
         #self.steps_before_shot_array = []
         self.current_release_angle = None
         self.current_level_of_player=None
+        self.current_player_distance_from_basket=None
+
+        self.release_frame = None
+        self.shot_times = []  # List to store time taken for each shot
 
         # Threshold for the y-coordinate change to be considered as a dribble
         self.dribble_threshold = 3
@@ -68,14 +69,12 @@ class BasketBallGame:
             object_detection_results = self.model(self.frame, conf=0.7, iou=0.4, stream=True)
             pose_results = self.pose_model(self.frame, verbose=False, conf=0.7)
             step_counter = 0
-            steps_before_shot = 0
+            
             
             if pose_results:
                 # Round the results to the nearest decimal
                 rounded_pose_results = np.round(pose_results[0].keypoints.data.numpy(), 1)
                 steps = self.player.count_steps(rounded_pose_results)
-                steps_before_shot += steps  # Update steps_before_shot
-                
                 step_counter += steps
                 #steps_before_shot += steps
                 elbow_angles = self.player.calculate_elbow_angles(rounded_pose_results)
@@ -113,7 +112,7 @@ class BasketBallGame:
                         if (conf > .3 or (
                                 in_hoop_region(center, self.hoop_pos) and conf > 0.15)):
                             self.ball_pos.append((center, self.frame_count, w, h, conf))
-                            self.calculate_release_angle_and_player_level(self.ball_pos,pose_results,self.hoop_pos,self.player_pos)
+                            self.calculate_release_parameters(self.ball_pos,pose_results,self.hoop_pos,self.player_pos)
 
                         # Update the dribble count
                             self.update_dribble_count(self.ball_pos,pose_results)
@@ -153,7 +152,7 @@ class BasketBallGame:
             self.hoop_pos = clean_hoop_pos(self.hoop_pos)
             cv2.circle(self.frame, self.hoop_pos[-1][0], 2, (128, 128, 0), 2)  # type: ignore
 
-    def calculate_release_angle_and_player_level(self, ball_pos, pose_results,hoop_pos,player_pos):
+    def calculate_release_parameters(self, ball_pos, pose_results,hoop_pos,player_pos):
         try: 
             rounded_pose_results = np.round(pose_results[0].keypoints.data.numpy(), 1)
             # Get the key points for the body parts
@@ -162,37 +161,48 @@ class BasketBallGame:
             
             # Calculate the radius of the ball
             radius = (sum(ball[3] for ball in ball_pos) / len(ball_pos)) / 2
+
             x_centre,y_centre = ball_pos[-1][0]
             right_wrist_array = np.array(rounded_pose_results[0][self.body_index["right_wrist"]][:2])
+
             #left_wrist = np.array(rounded_pose_results[0][self.body_index["left_wrist"]][:2])
             ball_position = np.array([x_centre,y_centre])
             
             ball_above_elbow = y_centre < right_elbow[1]
             ball_within_distance = (6*radius)>np.linalg.norm(ball_position - right_wrist_array) >= (3* radius)
             
-             # Initialize release_detected flag
+            # Initialize release_detected flag
             if not hasattr(self, 'release_detected'):
                 self.release_detected = False
 
             # Check if the ball is above the left elbow and within a certain distance from the right wrist
             if  not self.release_detected and ball_above_elbow and ball_within_distance:
-                print("Ball is above the right elbow and within a certain distance from the right wrist")
-                # Calculate the release angle
+                #print("Ball is above the right elbow and within a certain distance from the right wrist")
+
+                # Calculate the release angle while throwing
                 ball_pos_x, ball_pos_y = ball_pos[-1][0]
                 dx = ball_pos_x - right_wrist[0]
                 dy = ball_pos_y - right_wrist[1]
                 release_angle = np.degrees(np.arctan2(dy, dx))
                 
+                #calculate player level from hoop while throwing
                 player_top_y_coordinate = player_pos[-1][0][1]-(player_pos[-1][3]/2)
                 hoop_top_y_coordinate = hoop_pos[-1][0][1]-(hoop_pos[-1][3]/2)
-                print(f"Player top y coordinate: {player_top_y_coordinate}")
-                print(f"Hoop top y coordinate: {hoop_top_y_coordinate}")
                 player_level=(player_top_y_coordinate-hoop_top_y_coordinate)
+
+                #calculate player's distance from basket while throwing
+                player_centre_x= player_pos[-1][0][0]
+                player_width=player_pos[-1][2]
+                hoop_center_x=hoop_pos[-1][0][0]
+                hoop_width=hoop_pos[-1][2]
+                player_distance_from_basket=((hoop_center_x-player_centre_x)-(player_width/2)-(hoop_width/2))
                 if release_angle < 0:
                     release_angle=-release_angle
                 self.release_detected = True
                 self.current_release_angle = release_angle
                 self.current_level_of_player=player_level
+                self.current_player_distance_from_basket=player_distance_from_basket
+                self.release_frame = self.frame_count  # Store the release frame
                     
         except Exception as e:
             print(f"Error occurred while calculating release angle: {e}")
@@ -261,11 +271,20 @@ class BasketBallGame:
                     self.current_release_angle=None
                     self.release_detected=False
                     self.current_level_of_player=None
+                    self.current_player_distance_from_basket=None
                     
                     is_goal, description = score(self.ball_pos, self.hoop_pos)
                     self.last_shot_description = description  # Update last_shot_description
                     #print(f"Attempt: {self.attempts} - {description}")
                     print(f"Attempt: {self.attempts} - {description}")
+
+                    if self.release_frame is not None:
+                        frame_rate = self.cap.get(cv2.CAP_PROP_FPS)
+                        shot_time = (self.down_frame - self.release_frame) / frame_rate
+                        self.shot_times.append(shot_time)  # Append the shot time to the list
+                        print(f"Time taken for the shot: {shot_time:.2f} seconds")
+
+                    self.release_frame = None  # Reset the release frame
                     
                     # If it is a make, put a green overlay
                     if is_goal:
@@ -298,8 +317,29 @@ class BasketBallGame:
             text, position, font_scale,thickness = scale_text(self.frame, f"Release angle: {self.current_release_angle:.2f}", (10, 155), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
         if self.current_level_of_player is not None:    
-            text, position, font_scale,thickness = scale_text(self.frame, f"Player Level From Rim: {self.current_level_of_player:.2f}", (10, 175), 1, 2)
+            text, position, font_scale,thickness = scale_text(self.frame, f"Player's Level From Rim: {self.current_level_of_player:.2f}", (10, 175), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
+
+        if self.current_player_distance_from_basket is not None:
+            text, position, font_scale,thickness = scale_text(self.frame, f"Player's Distance From Rim: {self.current_player_distance_from_basket:.2f}", (10, 195), 1, 2)
+            cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
+
+        # Display shot times for each shot
+        if self.shot_times:
+            frame_width = self.frame.shape[1]
+            frame_height = self.frame.shape[0]
+            x_position = frame_width - 270  # Adjust the x-position as needed
+            y_position = 30  # Adjust the y-position as needed
+
+            for i, shot_time in enumerate(self.shot_times):
+                text = f"Shot {i+1} time: {shot_time:.2f} seconds"
+                text, _, font_scale, thickness = scale_text(self.frame, text, (x_position, y_position), 1, 2)
+                cv2.putText(self.frame, text, (x_position, y_position), cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
+                y_position += 20  # Increase the y-position for the next shot time
+
+
+
+
                       
         # Gradually fade out color after shot
         if self.fade_counter > 0:

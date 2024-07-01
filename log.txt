@@ -1,0 +1,1519 @@
+
+0: 480x800 1 ball, 1 basket, 1 person, 183.7ms
+Speed: 1.8ms preprocess, 183.7ms inference, 0.4ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 181.7ms
+Speed: 2.0ms preprocess, 181.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 183.4ms
+Speed: 1.8ms preprocess, 183.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 167.5ms
+Speed: 2.1ms preprocess, 167.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 167.8ms
+Speed: 1.9ms preprocess, 167.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.6ms
+Speed: 1.9ms preprocess, 165.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.0ms
+Speed: 1.9ms preprocess, 165.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 173.0ms
+Speed: 2.1ms preprocess, 173.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 170.0ms
+Speed: 1.9ms preprocess, 170.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 168.3ms
+Speed: 1.9ms preprocess, 168.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 166.2ms
+Speed: 1.9ms preprocess, 166.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.1ms
+Speed: 1.8ms preprocess, 165.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.3ms
+Speed: 1.9ms preprocess, 164.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 167.3ms
+Speed: 1.9ms preprocess, 167.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.5ms
+Speed: 2.0ms preprocess, 164.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.7ms
+Speed: 1.8ms preprocess, 164.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 170.0ms
+Speed: 1.9ms preprocess, 170.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 166.0ms
+Speed: 1.9ms preprocess, 166.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.9ms
+Speed: 1.9ms preprocess, 165.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.7ms
+Speed: 1.8ms preprocess, 165.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 166.0ms
+Speed: 1.9ms preprocess, 166.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.8ms
+Speed: 1.8ms preprocess, 164.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.1ms
+Speed: 1.8ms preprocess, 165.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 166.5ms
+Speed: 1.8ms preprocess, 166.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.1ms
+Speed: 1.9ms preprocess, 165.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 156.8ms
+Speed: 1.7ms preprocess, 156.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 157.7ms
+Speed: 1.6ms preprocess, 157.7ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 157.9ms
+Ball is above the right elbow and within a certain distance from the right wrist
+Speed: 1.7ms preprocess, 157.9ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 156.9ms
+Speed: 1.8ms preprocess, 156.9ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 157.8ms
+Speed: 1.7ms preprocess, 157.8ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 156.9ms
+Speed: 1.7ms preprocess, 156.9ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.9ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.8ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.2ms
+Speed: 1.9ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.7ms
+Speed: 1.9ms preprocess, 163.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.5ms
+Speed: 1.8ms preprocess, 165.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.8ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.9ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.8ms
+Speed: 1.8ms preprocess, 163.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.8ms
+Speed: 1.8ms preprocess, 163.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.8ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.8ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.9ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.2ms
+Speed: 1.8ms preprocess, 164.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 169.8ms
+Speed: 1.9ms preprocess, 169.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 167.1ms
+Speed: 2.0ms preprocess, 167.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.3ms
+Speed: 2.0ms preprocess, 165.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.8ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.8ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.5ms
+Speed: 1.8ms preprocess, 164.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.5ms
+Speed: 1.8ms preprocess, 165.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.1ms
+Speed: 1.9ms preprocess, 164.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.9ms
+Speed: 1.9ms preprocess, 163.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 166.2ms
+Speed: 1.8ms preprocess, 166.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.3ms
+Speed: 1.9ms preprocess, 165.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.9ms
+Speed: 1.9ms preprocess, 163.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.3ms
+Speed: 1.8ms preprocess, 164.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.8ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.0ms
+Speed: 1.8ms preprocess, 164.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.7ms
+Speed: 1.8ms preprocess, 163.7ms inference, 0.4ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.8ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 168.8ms
+Speed: 1.9ms preprocess, 168.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+Attempt: 1 - Ball touching the rim but No goal
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 161.9ms
+Speed: 1.9ms preprocess, 161.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 161.6ms
+Speed: 2.0ms preprocess, 161.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.1ms
+Speed: 1.7ms preprocess, 162.1ms inference, 0.4ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.2ms
+Speed: 1.7ms preprocess, 162.2ms inference, 0.4ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.4ms
+Speed: 1.8ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.9ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 157.8ms
+Speed: 1.9ms preprocess, 157.8ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.7ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.9ms
+Speed: 1.9ms preprocess, 163.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.8ms
+Speed: 1.9ms preprocess, 163.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.9ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.2ms
+Speed: 1.9ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.6ms
+Speed: 1.9ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.2ms
+Speed: 1.8ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.9ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.8ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.8ms
+Speed: 1.9ms preprocess, 163.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.7ms
+Speed: 2.0ms preprocess, 163.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Ball is above the right elbow and within a certain distance from the right wrist
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.8ms
+Speed: 1.9ms preprocess, 163.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.9ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.7ms
+Speed: 2.0ms preprocess, 164.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.9ms
+Speed: 1.9ms preprocess, 164.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.9ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.9ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 158.8ms
+Speed: 1.9ms preprocess, 158.8ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 157.1ms
+Speed: 1.9ms preprocess, 157.1ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 156.6ms
+Speed: 1.9ms preprocess, 156.6ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 156.8ms
+Speed: 1.9ms preprocess, 156.8ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 159.5ms
+Speed: 1.8ms preprocess, 159.5ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 157.5ms
+Speed: 1.9ms preprocess, 157.5ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 157.3ms
+Speed: 1.9ms preprocess, 157.3ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 156.8ms
+Speed: 1.8ms preprocess, 156.8ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 156.8ms
+Speed: 1.8ms preprocess, 156.8ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 157.5ms
+Speed: 1.8ms preprocess, 157.5ms inference, 0.2ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.2ms
+Speed: 1.8ms preprocess, 164.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.9ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.8ms
+Speed: 1.9ms preprocess, 163.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.8ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 161.8ms
+Speed: 1.9ms preprocess, 161.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 2.0ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.9ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 2.0ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.9ms
+Speed: 1.9ms preprocess, 163.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.9ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.9ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 166.5ms
+Speed: 2.0ms preprocess, 166.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.7ms
+Speed: 1.9ms preprocess, 164.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 166.0ms
+Speed: 1.9ms preprocess, 166.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.6ms
+Speed: 1.9ms preprocess, 165.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.3ms
+Speed: 1.9ms preprocess, 164.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.0ms
+Speed: 1.9ms preprocess, 164.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.4ms
+Speed: 1.9ms preprocess, 164.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+Attempt: 2 - Ball touching the rim but No goal
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.7ms
+Speed: 1.9ms preprocess, 163.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.2ms
+Speed: 1.8ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.6ms
+Speed: 1.8ms preprocess, 164.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.6ms
+Speed: 1.8ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.2ms
+Speed: 1.8ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 161.9ms
+Speed: 1.8ms preprocess, 161.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.1ms
+Speed: 1.8ms preprocess, 162.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.8ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.8ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.2ms
+Speed: 1.8ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.9ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 161.9ms
+Ball is above the right elbow and within a certain distance from the right wrist
+Speed: 1.8ms preprocess, 161.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.2ms
+Speed: 1.8ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.8ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.9ms
+Speed: 1.9ms preprocess, 163.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 2 balls, 1 basket, 1 person, 164.1ms
+Speed: 1.9ms preprocess, 164.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 2 balls, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 2 balls, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.8ms
+Speed: 1.9ms preprocess, 163.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.8ms
+Speed: 1.9ms preprocess, 163.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.7ms
+Speed: 1.8ms preprocess, 164.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.8ms
+Speed: 1.9ms preprocess, 163.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.9ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 161.8ms
+Speed: 1.9ms preprocess, 161.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.8ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 161.8ms
+Speed: 1.9ms preprocess, 161.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.9ms
+Speed: 1.9ms preprocess, 163.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.8ms
+Speed: 1.9ms preprocess, 163.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.8ms
+Speed: 1.9ms preprocess, 163.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.8ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.8ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.9ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 168.2ms
+Speed: 1.8ms preprocess, 168.2ms inference, 0.4ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.8ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.8ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.4ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.8ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+Attempt: 3 - Ball touching the rim but No goal
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.0ms
+Speed: 1.9ms preprocess, 162.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.9ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 161.9ms
+Speed: 1.9ms preprocess, 161.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.6ms
+Speed: 1.9ms preprocess, 164.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.0ms
+Speed: 1.9ms preprocess, 162.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.9ms
+Speed: 1.9ms preprocess, 165.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.2ms
+Speed: 2.0ms preprocess, 164.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.9ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 164.9ms
+Speed: 1.9ms preprocess, 164.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.7ms
+Speed: 1.8ms preprocess, 163.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.1ms
+Speed: 1.8ms preprocess, 164.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.9ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.0ms
+Speed: 1.9ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 164.3ms
+Speed: 1.9ms preprocess, 164.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.2ms
+Speed: 1.8ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.8ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.8ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.8ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.0ms
+Speed: 1.8ms preprocess, 162.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.2ms
+Speed: 1.7ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.8ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.7ms
+Ball is above the right elbow and within a certain distance from the right wrist
+Speed: 1.9ms preprocess, 163.7ms inference, 0.4ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 161.8ms
+Speed: 1.8ms preprocess, 161.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.2ms
+Speed: 1.9ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.1ms
+Speed: 1.9ms preprocess, 164.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.9ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.9ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.8ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.8ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.2ms
+Speed: 1.8ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.9ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.2ms
+Speed: 1.9ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.8ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.9ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 person, 162.6ms
+Speed: 2.0ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.8ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.9ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.4ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.8ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.4ms postprocess per image at shape (1, 3, 480, 800)
+Attempt: 4 - Goal without touching the rim
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 2.0ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.1ms
+Speed: 1.9ms preprocess, 162.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 161.8ms
+Speed: 2.0ms preprocess, 161.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.9ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.8ms
+Speed: 1.9ms preprocess, 164.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.0ms
+Speed: 1.9ms preprocess, 164.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.0ms
+Speed: 1.9ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.2ms
+Speed: 1.8ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 165.2ms
+Speed: 1.9ms preprocess, 165.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.2ms
+Speed: 1.8ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.4ms
+Speed: 2.0ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.7ms
+Speed: 1.9ms preprocess, 163.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.2ms
+Speed: 1.9ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.8ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.7ms preprocess, 163.0ms inference, 0.4ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.1ms
+Speed: 1.8ms preprocess, 162.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 2.0ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.8ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.8ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Ball is above the right elbow and within a certain distance from the right wrist
+Speed: 1.8ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.9ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.8ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.8ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.9ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.8ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.8ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.9ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.0ms
+Speed: 1.9ms preprocess, 163.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.4ms
+Speed: 1.9ms preprocess, 163.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.9ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.9ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.5ms
+Speed: 1.9ms preprocess, 163.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.9ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.7ms
+Speed: 1.9ms preprocess, 163.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.2ms
+Speed: 1.8ms preprocess, 162.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 168.9ms
+Speed: 1.8ms preprocess, 168.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.8ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 basket, 1 person, 162.0ms
+Speed: 1.9ms preprocess, 162.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 person, 161.0ms
+Speed: 1.8ms preprocess, 161.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 person, 162.6ms
+Speed: 1.9ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 person, 161.8ms
+Speed: 1.8ms preprocess, 161.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.1ms
+Speed: 1.8ms preprocess, 163.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.4ms
+Speed: 1.9ms preprocess, 162.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.8ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.4ms
+Speed: 1.7ms preprocess, 164.4ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+Attempt: 5 - Goal without touching the rim
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.1ms
+Speed: 1.9ms preprocess, 162.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.1ms
+Speed: 1.9ms preprocess, 162.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.5ms
+Speed: 1.9ms preprocess, 162.5ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 161.9ms
+Speed: 1.9ms preprocess, 161.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.0ms
+Speed: 1.8ms preprocess, 162.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.3ms
+Speed: 1.8ms preprocess, 162.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 161.9ms
+Speed: 1.8ms preprocess, 161.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.2ms
+Speed: 1.8ms preprocess, 163.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.8ms
+Speed: 1.8ms preprocess, 162.8ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.1ms
+Speed: 1.9ms preprocess, 162.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.1ms
+Speed: 1.8ms preprocess, 162.1ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.9ms
+Speed: 1.8ms preprocess, 162.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.8ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.8ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 167.2ms
+Speed: 1.9ms preprocess, 167.2ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 164.0ms
+Speed: 1.9ms preprocess, 164.0ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.9ms
+Speed: 1.9ms preprocess, 163.9ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.6ms
+Speed: 1.9ms preprocess, 163.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.7ms
+Speed: 1.9ms preprocess, 162.7ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 163.3ms
+Speed: 1.9ms preprocess, 163.3ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
+
+0: 480x800 1 ball, 1 basket, 1 person, 162.6ms
+Speed: 1.9ms preprocess, 162.6ms inference, 0.3ms postprocess per image at shape (1, 3, 480, 800)
