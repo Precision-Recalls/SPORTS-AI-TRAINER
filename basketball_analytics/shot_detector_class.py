@@ -134,25 +134,25 @@ def score(ball_pos, hoop_pos):
         if rim_height - 5 < ball_pos[i][0][1] + radius < rim_height + 5:
             count += 1
 
-    backboard_pos_y_ends = [hoop_pos[-1][0][1] - 4 * hoop_pos[-1][3], hoop_pos[-1][0][1] + 2 * hoop_pos[-1][3]]
+    #backboard_pos_y_ends = [hoop_pos[-1][0][1] - 4 * hoop_pos[-1][3], hoop_pos[-1][0][1] + 2 * hoop_pos[-1][3]]
     # backboard_pos_x_ends=[hoop_pos[-1][0][0] - 4 * hoop_pos[-1][2], hoop_pos[-1][0][0] + 4 * hoop_pos[-1][2]]
 
-    backboard_touch = False
-    max_ball_x = 0
+    #backboard_touch = False
+    #max_ball_x = 0
 
-    for i in reversed(range(len(ball_pos))):
+    # for i in reversed(range(len(ball_pos))):
 
-        # if the ball lies in the y-axis range of the backbaord(backboard_pos) and above the rim         
-        # and if x-axis coordinate of the ball decreases ones after it was increasing then, it is
-        # counted as the touch on the backboard 
+    #     # if the ball lies in the y-axis range of the backbaord(backboard_pos) and above the rim         
+    #     # and if x-axis coordinate of the ball decreases ones after it was increasing then, it is
+    #     # counted as the touch on the backboard 
 
-        if ball_pos[i][0][1] < rim_height and (
-                backboard_pos_y_ends[1] > ball_pos[i][0][1] > backboard_pos_y_ends[0]):
-            if max_ball_x > ball_pos[i][0][0]:
-                backboard_touch = True
-                break
+    #     if ball_pos[i][0][1] < rim_height and (
+    #             backboard_pos_y_ends[1] > ball_pos[i][0][1] > backboard_pos_y_ends[0]):
+    #         if max_ball_x > ball_pos[i][0][0]:
+    #             backboard_touch = True
+    #             break
 
-            max_ball_x = max(max_ball_x, ball_pos[i][0][0])
+    #         max_ball_x = max(max_ball_x, ball_pos[i][0][0])
 
     # Get first point above rim and first point below rim
     for i in reversed(range(len(ball_pos))):

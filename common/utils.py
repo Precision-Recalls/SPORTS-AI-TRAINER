@@ -29,12 +29,12 @@ def display_angles(frame, angles):
     """
     if "left_elbow" in angles:
         text, position, font_scale, thickness = scale_text(frame, f"Left Elbow Angle: {angles['left_elbow']:.2f}",
-                                                           (10, 60), 1, 2)
+                                                           (10, 115), 1, 2)
         cv2.putText(frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
     if "right_elbow" in angles:
         text, position, font_scale, thickness = scale_text(frame, f"Right Elbow Angle: {angles['right_elbow']:.2f}",
-                                                           (10, 90), 1, 2)
+                                                           (10, 135), 1, 2)
         cv2.putText(frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
 
@@ -50,3 +50,4 @@ def calculate_angle(a, b, c):
         return np.degrees(angle)
     except Exception as e:
         print(f"There is some issue with angle calculation:- {e}")
+
