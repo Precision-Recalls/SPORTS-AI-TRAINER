@@ -48,6 +48,7 @@ class BasketBallGame:
             object_detection_results = self.model(self.frame, conf=0.7, iou=0.4, stream=True)
             pose_results = self.pose_model(self.frame, verbose=False, conf=0.7)
             step_counter = 0
+            rounded_pose_results = None
             if pose_results:
                 # Round the results to the nearest decimal
                 rounded_pose_results = np.round(pose_results[0].keypoints.data.numpy(), 1)
@@ -84,7 +85,6 @@ class BasketBallGame:
                     if (conf > .3 or (
                             in_hoop_region(center, self.hoop_pos) and conf > 0.15)) and current_class == "ball":
                         self.ball_pos.append((center, self.frame_count, w, h, conf))
-
                     # Create hoop points if high confidence
                     if conf > .5 and current_class == "basket":
                         self.hoop_pos.append((center, self.frame_count, w, h, conf))

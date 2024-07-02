@@ -60,3 +60,10 @@ class Player:
             return angles
         except Exception as e:
             print(f"Unable to calculate elbow angles. :- {e}")
+
+    def calculate_release_angle(self, rounded_pose_results):
+        try:
+            pass
+        except Exception as e:
+            print(f"There is somee error in release angle calculation :- {e}")
+
