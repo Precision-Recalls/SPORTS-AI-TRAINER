@@ -18,7 +18,6 @@ def detect_court(file_path):
 
     # Detect lines using Hough Line Transform
     lines = cv2.HoughLinesP(edges, 1, np.pi / 180, threshold=100, minLineLength=100, maxLineGap=10)
-    print(lines)
 
     # Draw the lines on the image
     if lines is not None:

@@ -1,4 +1,7 @@
 from common.utils import calculate_angle
+import logging
+
+logger = logging.Logger('CRITICAL')
 
 
 class Player:
@@ -8,10 +11,13 @@ class Player:
         # Initialize counters and previous positions
         self.prev_left_ankle_y = None
         self.prev_right_ankle_y = None
-        self.step_threshold = 8
+        self.step_threshold = 7
         self.min_wait_frames = 8
         self.wait_frames = 0
         self.steps = 0
+        # Initialize last valid elbow angles
+        self.last_left_elbow_angle = None
+        self.last_right_elbow_angle = None
 
     def count_steps(self, rounded_pose_results):
         # Get the key points for the body parts
@@ -25,8 +31,8 @@ class Player:
             if all(point[2] > 0.5 for point in keypoints):
                 if self.prev_left_ankle_y is not None and self.prev_right_ankle_y is not None and self.wait_frames == 0:
 
-                    left_diff = abs(left_ankle[1] - self.prev_right_ankle_y)
-                    right_diff = abs(right_ankle[1] - self.prev_left_ankle_y)
+                    left_diff = abs(left_ankle[1] - self.prev_left_ankle_y)
+                    right_diff = abs(right_ankle[1] - self.prev_right_ankle_y)
                     if max(left_diff, right_diff) > self.step_threshold:
                         self.steps += 1
                         self.wait_frames = self.min_wait_frames
@@ -59,11 +65,4 @@ class Player:
             angles["right_elbow"] = right_elbow_angle
             return angles
         except Exception as e:
-            print(f"Unable to calculate elbow angles. :- {e}")
-
-    def calculate_release_angle(self, rounded_pose_results):
-        try:
-            pass
-        except Exception as e:
-            print(f"There is somee error in release angle calculation :- {e}")
-
+            logger.error(f"Unable to calculate elbow angles. :- {e}")
