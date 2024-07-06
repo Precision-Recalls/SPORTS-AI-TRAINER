@@ -48,11 +48,16 @@ class BasketBallGame:
                                                                    (10, 75), 1, 2)
                 cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
             if object_detection_results:
-                self.frame = self.shot_detector.run(self.frame_count, self.frame, step_counter, object_detection_results,
-                                                    pose_results)
+                self.frame = self.shot_detector.run(
+                    self.frame_count,
+                    self.frame,
+                    step_counter,
+                    object_detection_results,
+                    pose_results
+                )
             self.frame_count += 1
             self.video_writer.write(self.frame)
-            cv2.imshow('Frame', self.frame)
+            # cv2.imshow('Frame', self.frame)
 
             # Close if 'q' is clicked
             if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam

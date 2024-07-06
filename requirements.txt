@@ -5,3 +5,4 @@ opencv-python~=4.8.0.76
 inference~=0.12.1
 numpy~=1.26.4
 matplotlib~=3.9.0
+flask~=3.0.3
