@@ -331,6 +331,26 @@ class ShotDetector:
                 if self.up and self.down and self.up_frame < self.down_frame:
                     self.last_attempt_count = self.attempts
                     self.attempts += 1
+                    self.frame_steps.append(self.step_counter)
+                    self.frame_dribble.append(self.dribble_count)
+
+                    is_goal, description = self.score()
+                    self.last_shot_description = description  # Update last_shot_description
+
+                    if self.release_frame is not None:
+                        shot_time = (self.down_frame - self.release_frame) / self.frame_rate
+                        self.shot_times.append(shot_time)  # Append the shot time to the list
+
+                    # If it is a make, put a green overlay
+                    if is_goal:
+                        self.makes += 1
+                        self.overlay_color = (0, 255, 0)
+                        self.fade_counter = self.fade_frames
+
+                    # If it is a miss, put a red overlay
+                    else:
+                        self.overlay_color = (0, 0, 255)
+                        self.fade_counter = self.fade_frames
                     self.individual_shot_data = {
                         'attempts': self.attempts,
                         'goals': self.makes,
@@ -344,8 +364,6 @@ class ShotDetector:
                         'shot_time': self.shot_times[-1],
                         'steps': self.frame_steps[-1] - self.frame_steps[-2]
                     }
-                    self.frame_steps.append(self.step_counter)
-                    self.frame_dribble.append(self.dribble_count)
                     self.up = False
                     self.down = False
                     self.current_release_angle = None
@@ -354,26 +372,7 @@ class ShotDetector:
                     self.current_player_distance_from_basket = None
                     self.current_shot_speed = None
                     self.current_shot_power = None
-
-                    is_goal, description = self.score()
-                    self.last_shot_description = description  # Update last_shot_description
-
-                    if self.release_frame is not None:
-                        shot_time = (self.down_frame - self.release_frame) / self.frame_rate
-                        self.shot_times.append(shot_time)  # Append the shot time to the list
-
                     self.release_frame = None  # Reset the release frame
-
-                    # If it is a make, put a green overlay
-                    if is_goal:
-                        self.makes += 1
-                        self.overlay_color = (0, 255, 0)
-                        self.fade_counter = self.fade_frames
-
-                    # If it is a miss, put a red overlay
-                    else:
-                        self.overlay_color = (0, 0, 255)
-                        self.fade_counter = self.fade_frames
 
     # Detects if the ball is below the net - used to detect shot attempts
     def detect_down(self):

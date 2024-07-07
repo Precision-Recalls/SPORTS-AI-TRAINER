@@ -24,6 +24,30 @@ class BasketBallGame:
         self.video_writer = video_writer(self.cap, output_video_path)
         self.run()
 
+    def to_list(self):
+        """
+        Returns the attributes of the class as a list.
+        """
+        return self.all_shot_data
+
+    def __iter__(self):
+        """
+        Makes the class iterable by returning an iterator over the list.
+        """
+        return iter(self.to_list())
+
+    def __getitem__(self, index):
+        """
+        Allows indexing into the class as if it were a list.
+        """
+        return self.to_list()[index]
+
+    def __len__(self):
+        """
+        Returns the length of the list (number of elements in the class).
+        """
+        return len(self.to_list())
+
     def run(self):
         try:
             while True:
