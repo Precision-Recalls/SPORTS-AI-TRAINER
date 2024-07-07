@@ -20,48 +20,59 @@ class BasketBallGame:
         self.frame_count = 0
         self.frame = None
         self.frame_steps = []
+        self.all_shot_data = []
         self.video_writer = video_writer(self.cap, output_video_path)
         self.run()
 
     def run(self):
-        while True:
-            ret, self.frame = self.cap.read()
-            if not ret:
-                # End of the video or an error occurred
-                break
+        try:
+            while True:
+                ret, self.frame = self.cap.read()
+                if not ret:
+                    # End of the video or an error occurred
+                    break
 
-            object_detection_results = self.model(self.frame, conf=0.7, iou=0.4, stream=True)
-            pose_results = self.pose_model(self.frame, verbose=False, conf=0.7)
-            step_counter = 0
-            if pose_results:
-                # Round the results to the nearest decimal
-                rounded_pose_results = np.round(pose_results[0].keypoints.data.numpy(), 1)
-                steps = self.player.count_steps(rounded_pose_results)
-                step_counter += steps
-                # steps_before_shot += steps
-                elbow_angles = self.player.calculate_elbow_angles(rounded_pose_results)
-                if elbow_angles:
-                    display_angles(self.frame, elbow_angles)
+                object_detection_results = self.model(self.frame, conf=0.7, iou=0.4, stream=True)
+                pose_results = self.pose_model(self.frame, verbose=False, conf=0.7)
+                step_counter = 0
+                elbow_angles = {}
+                if pose_results:
+                    # Round the results to the nearest decimal
+                    rounded_pose_results = np.round(pose_results[0].keypoints.data.numpy(), 1)
+                    steps = self.player.count_steps(rounded_pose_results)
+                    step_counter += steps
+                    # steps_before_shot += steps
+                    elbow_angles = self.player.calculate_elbow_angles(rounded_pose_results)
+                    # if elbow_angles:
+                    #     display_angles(self.frame, elbow_angles)
 
-                # Annotate the frame with the step count
-                text, position, font_scale, thickness = scale_text(self.frame, f"Total Steps Taken: {step_counter}",
-                                                                   (10, 75), 1, 2)
-                cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
-            if object_detection_results:
-                self.frame = self.shot_detector.run(
-                    self.frame_count,
-                    self.frame,
-                    step_counter,
-                    object_detection_results,
-                    pose_results
-                )
-            self.frame_count += 1
-            self.video_writer.write(self.frame)
-            # cv2.imshow('Frame', self.frame)
+                    # Annotate the frame with the step count
+                    text, position, font_scale, thickness = scale_text(self.frame, f"Total Steps Taken: {step_counter}",
+                                                                       (10, 75), 1, 2)
+                    cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
+                if object_detection_results:
+                    self.frame, shot_attempt_data = self.shot_detector.run(
+                        self.frame_count,
+                        self.frame,
+                        step_counter,
+                        object_detection_results,
+                        pose_results
+                    )
+                    if shot_attempt_data:
+                        shot_attempt_data['left_elbow_angle'] = elbow_angles['left_elbow']
+                        shot_attempt_data['right_elbow_angle'] = elbow_angles['right_elbow']
+                        self.all_shot_data.append(shot_attempt_data)
+                self.frame_count += 1
+                self.video_writer.write(self.frame)
+                # cv2.imshow('Frame', self.frame)
 
-            # Close if 'q' is clicked
-            if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
-                break
-        self.cap.release()
-        self.video_writer.release()
-        cv2.destroyAllWindows()
+                # Close if 'q' is clicked
+                if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
+                    break
+        except Exception as e:
+            print(f'There is some issue with video file processing :- {e}')
+        finally:
+            self.cap.release()
+            self.video_writer.release()
+            cv2.destroyAllWindows()
+            return self.all_shot_data

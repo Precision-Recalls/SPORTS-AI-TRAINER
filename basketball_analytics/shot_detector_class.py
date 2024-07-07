@@ -32,6 +32,7 @@ class ShotDetector:
         self.center = None
         self.makes = 0
         self.attempts = 0
+        self.last_attempt_count = -1
         # Used to detect shots (upper and lower region)
         self.up = False
         self.down = False
@@ -52,8 +53,10 @@ class ShotDetector:
         self.current_release_angle = None
         self.current_level_of_player = None
         self.current_player_distance_from_basket = None
+        self.current_shot_speed = None
+        self.current_shot_power = None
 
-        self.release_frame = -1
+        self.release_frame = None
         self.shot_times = []  # List to store time taken for each shot
         self.frame_steps = [0]
         self.frame_dribble = [0]
@@ -61,6 +64,7 @@ class ShotDetector:
 
         # Threshold for the y-coordinate change to be considered as a dribble
         self.dribble_threshold = 3
+        self.individual_shot_data = {}
 
     def run(self, frame_count, frame, step_counter, object_detection_results, pose_results):
         self.frame_count = frame_count
@@ -68,6 +72,7 @@ class ShotDetector:
         self.pose_results = pose_results
         self.detection_results = object_detection_results
         self.step_counter = step_counter
+        self.individual_shot_data = {}
 
         for r in object_detection_results:
             boxes = r.boxes
@@ -102,7 +107,7 @@ class ShotDetector:
         self.clean_motion()
         self.shot_detection()
         self.display_score()
-        return self.frame
+        return self.frame, self.individual_shot_data
 
     def calculate_release_parameters(self):
         try:
@@ -122,10 +127,6 @@ class ShotDetector:
 
             ball_above_elbow = y_centre < right_elbow[1]
             ball_within_distance = (6 * radius) > np.linalg.norm(ball_position - right_wrist_array) >= (3 * radius)
-
-            # Initialize release_detected flag
-            if not hasattr(self, 'release_detected'):
-                self.release_detected = False
 
             # Check if the ball is above the left elbow and within a certain distance from the right wrist
             if not self.release_detected and ball_above_elbow and ball_within_distance:
@@ -154,6 +155,28 @@ class ShotDetector:
                 self.current_level_of_player = player_level
                 self.current_player_distance_from_basket = player_distance_from_basket
                 self.release_frame = self.frame_count  # Store the release frame
+
+            if self.release_frame is not None:
+                # Get the ball positions after the release frame
+                ball_positions_after_release = [pos for pos in self.ball_pos if
+                                                pos[1] > self.release_frame and pos[1] - self.release_frame < 3]
+
+                if len(ball_positions_after_release) >= 2:
+                    # Calculate the time elapsed between the first and second positions after release
+                    time_elapsed = (ball_positions_after_release[1][1] - ball_positions_after_release[0][
+                        1]) / self.frame_rate
+
+                    # Calculate the distance traveled by the ball
+                    x1, y1 = ball_positions_after_release[1][0]
+                    x2, y2 = ball_positions_after_release[0][0]
+                    distance_traveled = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+
+                    # Calculate the speed of the ball
+                    self.current_shot_speed = distance_traveled / time_elapsed
+
+                    # Calculate the energy of the ball (assuming a constant mass)
+                    ball_mass = 0.625  # Mass of a standard basketball in kg
+                    self.current_shot_power = (0.5 * ball_mass * self.current_shot_speed ** 2) / time_elapsed
 
         except Exception as e:
             print(f"Error occurred while calculating release angle: {e}")
@@ -209,9 +232,9 @@ class ShotDetector:
                                                            (10, 95), 1, 2)
         cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
-        # text, position, font_scale, thickness = scale_text(self.frame, f"Total steps per attempt: {self.frame_steps[-1]-self.frame_steps[-2]}",
-        #                                                    (10, 95), 1, 2)
-        # cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
+        # text, position, font_scale, thickness = scale_text(self.frame, f"Total steps per attempt: {
+        # self.frame_steps[-1]-self.frame_steps[-2]}", (10, 95), 1, 2) cv2.putText(self.frame, text, position,
+        # cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
         if self.current_release_angle is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
@@ -230,35 +253,47 @@ class ShotDetector:
                                                                (10, 195), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
-        # # Display shot times for each shot
-        # if self.shot_times:
-        #     frame_width = self.frame.shape[1]
-        #     frame_height = self.frame.shape[0]
-        #     x_position = frame_width - 270  # Adjust the x-position as needed
-        #     y_position = 30  # Adjust the y-position as needed
-        #
-        #     for i, shot_time in enumerate(self.shot_times):
-        #         text = f"Shot {i + 1} time: {shot_time:.2f} seconds"
-        #         text, _, font_scale, thickness = scale_text(self.frame, text, (x_position, y_position), 1, 2)
-        #         cv2.putText(self.frame, text, (x_position, y_position), cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0),
-        #                     thickness)
-        #         y_position += 20  # Increase the y-position for the next shot time
+        if self.current_shot_speed is not None:
+            text, position, font_scale, thickness = scale_text(self.frame,
+                                                               f"Ball Speed : {self.current_shot_speed:.2f}",
+                                                               (10, 115), 1, 2)
+            cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
+
+        if self.current_shot_power is not None:
+            text, position, font_scale, thickness = scale_text(self.frame,
+                                                               f"Ball Power : {self.current_shot_power:.2f}",
+                                                               (10, 135), 1, 2)
+            cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
         # Display shot times for each shot
-        if self.frame_dribble:
+        if self.shot_times:
             frame_width = self.frame.shape[1]
             frame_height = self.frame.shape[0]
             x_position = frame_width - 270  # Adjust the x-position as needed
             y_position = 30  # Adjust the y-position as needed
-            prev_shot_dribbles = self.frame_dribble[0]
-            for i, dribbles in enumerate(self.frame_dribble[1:]):
-                text = f"Ball dribbled in {i+1}th attempt: {dribbles-prev_shot_dribbles}"
+
+            for i, shot_time in enumerate(self.shot_times):
+                text = f"Shot {i + 1} time: {shot_time:.2f} seconds"
                 text, _, font_scale, thickness = scale_text(self.frame, text, (x_position, y_position), 1, 2)
-                cv2.putText(self.frame, text, (x_position, y_position), cv2.FONT_HERSHEY_SIMPLEX, font_scale,
-                            (0, 0, 0),
+                cv2.putText(self.frame, text, (x_position, y_position), cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0),
                             thickness)
                 y_position += 20  # Increase the y-position for the next shot time
-                prev_shot_dribbles = dribbles
+
+        # # Display shot times for each shot
+        # if self.frame_dribble:
+        #     frame_width = self.frame.shape[1]
+        #     frame_height = self.frame.shape[0]
+        #     x_position = frame_width - 270  # Adjust the x-position as needed
+        #     y_position = 30  # Adjust the y-position as needed
+        #     prev_shot_dribbles = self.frame_dribble[0]
+        #     for i, dribbles in enumerate(self.frame_dribble[1:]):
+        #         text = f"Ball dribbled in {i + 1}th attempt: {dribbles - prev_shot_dribbles}"
+        #         text, _, font_scale, thickness = scale_text(self.frame, text, (x_position, y_position), 1, 2)
+        #         cv2.putText(self.frame, text, (x_position, y_position), cv2.FONT_HERSHEY_SIMPLEX, font_scale,
+        #                     (0, 0, 0),
+        #                     thickness)
+        #         y_position += 20  # Increase the y-position for the next shot time
+        #         prev_shot_dribbles = dribbles
 
         # Gradually fade out color after shot
         if self.fade_counter > 0:
@@ -294,7 +329,21 @@ class ShotDetector:
             # If ball goes from 'up' area to 'down' area in that order, increase attempt and reset
             if self.frame_count % 10 == 0:
                 if self.up and self.down and self.up_frame < self.down_frame:
+                    self.last_attempt_count = self.attempts
                     self.attempts += 1
+                    self.individual_shot_data = {
+                        'attempts': self.attempts,
+                        'goals': self.makes,
+                        'shot_desc': self.last_shot_description,
+                        'dribble_count': self.frame_dribble[-1] - self.frame_dribble[-2],
+                        'release_angle': self.current_release_angle,
+                        'level_from_rim': self.current_level_of_player,
+                        'distance_from_basket': self.current_player_distance_from_basket,
+                        'shot_speed': self.current_shot_speed,
+                        'shot_power': self.current_shot_power,
+                        'shot_time': self.shot_times[-1],
+                        'steps': self.frame_steps[-1] - self.frame_steps[-2]
+                    }
                     self.frame_steps.append(self.step_counter)
                     self.frame_dribble.append(self.dribble_count)
                     self.up = False
@@ -303,6 +352,8 @@ class ShotDetector:
                     self.release_detected = False
                     self.current_level_of_player = None
                     self.current_player_distance_from_basket = None
+                    self.current_shot_speed = None
+                    self.current_shot_power = None
 
                     is_goal, description = self.score()
                     self.last_shot_description = description  # Update last_shot_description

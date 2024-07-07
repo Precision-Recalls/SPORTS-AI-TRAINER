@@ -1,6 +1,8 @@
 import base64
 import os
+from dataclasses import dataclass
 from threading import Thread
+from typing import Dict, Any
 
 import cv2
 import numpy as np
@@ -38,12 +40,51 @@ os.makedirs(frame_upload_folder, exist_ok=True)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 
+@dataclass
+class BasketballGameAnalyticsObject:
+    attempts: int = 0
+    goals: int = 0
+    shot_desc: str = ''
+    dribble_count: int = 0
+    release_angle: float = 0.0
+    level_from_rim: float = 0.0
+    distance_from_basket: float = 0.0
+    shot_speed: float = 0.0
+    shot_power: float = 0.0
+    shot_time: float = 0.0
+    steps: int = 0
+    left_elbow_angle: float = 0.0
+    right_elbow_angle: float = 0.0
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Converts the ApiResponse instance to a dictionary.
+        """
+        return {
+            "status": "success",
+            "message": "video processing done!",
+            'attempts': self.attempts,
+            'goals': self.goals,
+            'shot_desc': self.shot_desc,
+            'dribble_count': self.dribble_count,
+            'release_angle': self.release_angle,
+            'level_from_rim': self.level_from_rim,
+            'distance_from_basket': self.distance_from_basket,
+            'shot_speed': self.shot_speed,
+            'shot_power': self.shot_power,
+            'shot_time': self.shot_time,
+            'steps': self.steps,
+            'left_elbow_angle': self.left_elbow_angle,
+            'right_elbow_angle': self.right_elbow_angle
+        }
+
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 
 def analyze_parameters(file_path, param_list):
-    BasketBallGame(
+    shots_data = BasketBallGame(
         object_detection_model,
         pose_detection_model,
         class_names,
@@ -51,12 +92,14 @@ def analyze_parameters(file_path, param_list):
         basketball_output_video_path,
         body_index
     )
+    shots_response_data = [{{key: shot_data[key] for key in param_list}} for shot_data in shots_data]
     with open(basketball_output_video_path, 'rb') as video_file:
         video_data = video_file.read()
         encoded_video = base64.b64encode(video_data).decode('utf-8')
 
     # Emit the complete video to the client
     socketio.emit('video_processed', {'video': encoded_video})
+    socketio.emit('video_processed', {'analytics': shots_response_data})
 
 
 # Home route
