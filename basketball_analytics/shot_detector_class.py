@@ -494,15 +494,13 @@ class ShotDetector:
                 x.append(self.ball_pos[i + 1][0][0])
                 y.append(self.ball_pos[i + 1][0][1])
                 break
-
         # Create line from two points
         if len(x) > 1:
             m, b = np.polyfit(x, y, 1)
             # Checks if projected line fits between the ends of the rim {x = (y-b)/m}
             predicted_x = ((self.hoop_pos[-1][0][1] - 0.5 * self.hoop_pos[-1][3]) - b) / m
-            rim_x1 = self.hoop_pos[-1][0][0] - 0.4 * self.hoop_pos[-1][2]
-            rim_x2 = self.hoop_pos[-1][0][0] + 0.4 * self.hoop_pos[-1][2]
-
+            rim_x1 = self.hoop_pos[-1][0][0] - 0.42 * self.hoop_pos[-1][2]
+            rim_x2 = self.hoop_pos[-1][0][0] + 0.42 * self.hoop_pos[-1][2]
             # Case 1: Clean goal, either directly or after touching the rim
             if rim_x1 < predicted_x - radius and rim_x2 > predicted_x + radius:
                 if count >= 3:
