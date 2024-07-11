@@ -21,6 +21,14 @@ def scale_text(frame, text, position, font_scale, thickness):
     return text, position, font_scale, thickness
 
 
+def add_text(image_text_dict, img):
+    for _, values in image_text_dict.items():
+        img_text, text_pos = values['text'], values['position']
+        text, position, font_scale, thickness = scale_text(img, img_text, text_pos, 1, 2)
+        cv2.putText(img, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
+    return img
+
+
 def display_angles(frame, angles):
     """
     Display the calculated elbow angles on the frame.

@@ -253,6 +253,17 @@ class ShotDetector:
                                                                (10, 195), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
+        # # Display shot times for each shot
+        # if self.shot_times:
+        #     frame_width = self.frame.shape[1]
+        #     frame_height = self.frame.shape[0]
+        #     x_position = frame_width - 270  # Adjust the x-position as needed
+        #     y_position = 30  # Adjust the y-position as needed
+        #
+        # for i, shot_time in enumerate(self.shot_times): text = f"Shot {i + 1} time: {shot_time:.2f} seconds" text,
+        # _, font_scale, thickness = scale_text(self.frame, text, (x_position, y_position), 1, 2) cv2.putText(
+        # self.frame, text, (x_position, y_position), cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
+        # y_position += 20  # Increase the y-position for the next shot time
         if self.current_shot_speed is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
                                                                f"Ball Speed : {self.current_shot_speed:.2f}",

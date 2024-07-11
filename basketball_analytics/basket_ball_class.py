@@ -3,7 +3,7 @@ import numpy as np
 
 from basketball_analytics.player_class import Player
 from basketball_analytics.shot_detector_class import ShotDetector
-from common.utils import display_angles, scale_text, video_writer
+from common.utils import scale_text, video_writer
 
 
 class BasketBallGame:

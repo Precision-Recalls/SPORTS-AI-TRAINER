@@ -1,4 +1,3 @@
-import base64
 import os
 from threading import Thread
 
@@ -6,31 +5,19 @@ import cv2
 import numpy as np
 from flask import Flask, send_file, Response, request, jsonify
 from flask_socketio import SocketIO
-from ultralytics import YOLO
-
-from basketball_analytics.basket_ball_class import BasketBallGame
+from enum import Enum
 from common.utils import load_config
+from resources.basketball_res import analyze_basketball_parameters
+from resources.yoga_res import analyze_yoga_video
 
 app = Flask(__name__)
 
 config = load_config('configs/config.ini')
-object_detection_model_path = config['paths']['object_detection_model_path']
-pose_detection_model_path = config['paths']['pose_detection_model_path']
-# Load model objects
-object_detection_model = YOLO(object_detection_model_path)
-pose_detection_model = YOLO(pose_detection_model_path)
-sample_video_path = config['paths']['sample_video_path']
-basketball_output_video_path = config['paths']['basketball_output_video_path']
-# Define the body part indices and class names
-class_names = eval(config['constants']['class_names'])
-body_index = eval(config['constants']['body_index'])
+allowed_extensions = eval(config['constants']['allowed_extensions'])
 
-output_folder = config['paths']['output_folder']
 upload_folder = config['paths']['upload_folder']
 # Directory to save frames
 frame_upload_folder = config['paths']['frame_upload_folder']
-
-allowed_extensions = eval(config['constants']['allowed_extensions'])
 # Ensure the upload folder exists
 os.makedirs(upload_folder, exist_ok=True)
 os.makedirs(frame_upload_folder, exist_ok=True)
@@ -38,27 +25,14 @@ os.makedirs(frame_upload_folder, exist_ok=True)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 
+class DrillType(Enum):
+    Yoga = 'yoga'
+    BasketBall = 'basketball'
+    Others = 'others'
+
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
-
-
-def analyze_parameters(file_path, param_list):
-    shots_data = BasketBallGame(
-        object_detection_model,
-        pose_detection_model,
-        class_names,
-        file_path,
-        basketball_output_video_path,
-        body_index
-    )
-    shots_response_data = [{key: shot_data[key] for key in param_list} for shot_data in shots_data.to_list()]
-    with open(basketball_output_video_path, 'rb') as video_file:
-        video_data = video_file.read()
-        encoded_video = base64.b64encode(video_data).decode('utf-8')
-
-    # Emit the complete video to the client
-    socketio.emit('video_processed', {'video': encoded_video})
-    socketio.emit('video_processed', {'analytics': shots_response_data})
 
 
 # Home route
@@ -91,17 +65,27 @@ def upload_video():
 
 
 # Route to process a video file (e.g., extract frames)
-@app.route('/process/<filename>', methods=['GET'])
-def process_video(filename):
+@app.route('/process', methods=['POST'])
+def process_video():
+    data = request.json()
+    filename = data['results']['filename']
+    param_list = data['results']['param_list']  # ['attempts', 'dribble_count']
+    drill_type = data['results']['drill_type']  # 'yoga'
+
     file_path = os.path.join(upload_folder, filename)
 
     if not os.path.exists(file_path):
         return jsonify({"error": "File not found"}), 404
 
-    param_list = ['attempts', 'dribble_count']  # request.json
-    # Process frame asynchronously
-    thread = Thread(target=analyze_parameters, args=(file_path, param_list))
-    thread.start()
+    if drill_type == DrillType.Yoga.value:
+        thread = Thread(target=analyze_yoga_video, args=(file_path, param_list))
+        thread.start()
+    elif drill_type == DrillType.BasketBall.value:
+        thread = Thread(target=analyze_basketball_parameters, args=(file_path, param_list))
+        thread.start()
+    else:
+        # TODO we can add more drill types here
+        pass
     return jsonify({"message": "File received and processing started"}), 200
 
 
