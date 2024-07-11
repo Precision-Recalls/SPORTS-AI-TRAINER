@@ -2,12 +2,12 @@ import base64
 import logging
 
 from ultralytics import YOLO
-
-from app import config, socketio
 from basketball_analytics.basket_ball_class import BasketBallGame
+from common.utils import load_config
 
 logger = logging.Logger('INFO')
 
+config = load_config('configs/config.ini')
 object_detection_model_path = config['paths']['object_detection_model_path']
 pose_detection_model_path = config['paths']['pose_detection_model_path']
 # Load model objects
@@ -21,10 +21,8 @@ body_index = eval(config['constants']['body_index'])
 
 output_folder = config['paths']['output_folder']
 
-allowed_extensions = eval(config['constants']['allowed_extensions'])
 
-
-def analyze_basketball_parameters(file_path, param_list):
+def analyze_basketball_parameters(file_path, socketio, param_list):
     shots_data = BasketBallGame(
         object_detection_model,
         pose_detection_model,

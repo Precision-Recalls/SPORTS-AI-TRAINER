@@ -8,10 +8,12 @@ import mediapipe as mp
 from ultralytics import YOLO
 
 import common
-from app import config
+from common.utils import load_config
+
 from yoga_analytics.yoga_class import Yoga
 from yoga_analytics.yoga_classifier_trainer import YogaClassifierTrainingClass
 
+config = load_config('configs/config.ini')
 logger = logging.Logger('INFO')
 
 now = datetime.datetime.now().date()
@@ -80,6 +82,9 @@ def analyze_yoga_video(video_path, param_list):
                                           mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=1))
                 output_frame = yoga_class.run(frame)
                 video_writer.write(output_frame)
+            # Close if 'q' is clicked
+            if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
+                break
         input_video_cap.release()
         video_writer.release()
         cv2.destroyAllWindows()

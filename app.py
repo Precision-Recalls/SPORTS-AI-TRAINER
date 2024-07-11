@@ -67,10 +67,10 @@ def upload_video():
 # Route to process a video file (e.g., extract frames)
 @app.route('/process', methods=['POST'])
 def process_video():
-    data = request.json()
-    filename = data['results']['filename']
-    param_list = data['results']['param_list']  # ['attempts', 'dribble_count']
-    drill_type = data['results']['drill_type']  # 'yoga'
+    data = request.json
+    filename = data['filename']
+    param_list = data['param_list']  # ['attempts', 'dribble_count']
+    drill_type = data['drill_type']  # 'yoga'
 
     file_path = os.path.join(upload_folder, filename)
 
@@ -81,7 +81,7 @@ def process_video():
         thread = Thread(target=analyze_yoga_video, args=(file_path, param_list))
         thread.start()
     elif drill_type == DrillType.BasketBall.value:
-        thread = Thread(target=analyze_basketball_parameters, args=(file_path, param_list))
+        thread = Thread(target=analyze_basketball_parameters, args=(file_path, socketio, param_list))
         thread.start()
     else:
         # TODO we can add more drill types here
