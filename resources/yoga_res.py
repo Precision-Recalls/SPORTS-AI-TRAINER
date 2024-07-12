@@ -1,3 +1,4 @@
+import concurrent.futures
 import datetime
 import logging
 import os
@@ -9,7 +10,6 @@ from ultralytics import YOLO
 
 import common
 from common.utils import load_config
-
 from yoga_analytics.yoga_class import Yoga
 from yoga_analytics.yoga_classifier_trainer import YogaClassifierTrainingClass
 
@@ -49,18 +49,28 @@ def start_yoga_classifier_training():
         logger.error(f"There is some issue with yoga classifier training :- {e}")
 
 
+def landmark_drawer(frame):
+    output_frame = frame
+    with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
+        results = pose.process(frame)
+        if results.pose_landmarks:
+            mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
+                                      mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=1),
+                                      mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=1))
+            output_frame = yoga_class.run(frame)
+    return output_frame
+
+
+def write_frame(writer, frame):
+    writer.write(frame)
+
+
 def analyze_yoga_image(img_path):
     try:
         img = cv2.imread(img_path)
-        with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
-            results = pose.process(img)
-            # Render detections
-            mp_drawing.draw_landmarks(img, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                                      mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=1),
-                                      mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=1))
-            output_image = yoga_class.run(img)
-            cv2.imwrite(yoga_output_image_path, output_image)
-            logger.info('Output image file got saved!')
+        processed_img = landmark_drawer(img)
+        cv2.imwrite(yoga_output_image_path, processed_img)
+        logger.info('Output image file got saved!')
     except Exception as e:
         logger.error(f"There is some error in image processing for yoga! :- {e}")
 
@@ -74,14 +84,8 @@ def analyze_yoga_video(video_path, param_list):
             if not ret:
                 # End of the video or an error occurred
                 break
-            with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
-                results = pose.process(frame)
-                # Render detections
-                mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                                          mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=1),
-                                          mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=1))
-                output_frame = yoga_class.run(frame)
-                video_writer.write(output_frame)
+            processed_frame = landmark_drawer(frame)
+            write_frame(video_writer, processed_frame)
             # Close if 'q' is clicked
             if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
                 break

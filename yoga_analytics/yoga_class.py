@@ -44,6 +44,7 @@ class Yoga:
         self.model_yolo = yolo_model
         self.pose_map = create_pose_mappings(yoga_pose_mapping_filepath)
         self.pose_coordinates_path = pose_coordinates_path
+        self.pose_classifying_threshold = 0.6
         self.clf_model = None
         self.image = None
         self.repetition_count = 0
@@ -90,8 +91,10 @@ class Yoga:
                 self.clf_model.eval()
                 with torch.no_grad():
                     logit = self.clf_model(keypoints_tensor)
-                    pred = torch.softmax(logit, dim=1).argmax(dim=1).item()
-                    self.current_prediction = self.yoga_classes[pred]
+                    class_probabilities = torch.softmax(logit, dim=1)
+                    if class_probabilities.max() >= self.pose_classifying_threshold:
+                        pred = torch.softmax(logit, dim=1).argmax(dim=1).item()
+                        self.current_prediction = self.yoga_classes[pred]
                 logger.info(f"Prediction for the current frame is :- {self.current_prediction}")
         except Exception as e:
             logger.error(f"Some issue with prediction method :- {e}")
@@ -99,8 +102,9 @@ class Yoga:
     def count_repetition(self):
         if self.prev_prediction != self.current_prediction:
             if self.current_prediction not in self.pose_counter:
-                self.pose_counter[self.current_prediction] = 1
+                self.pose_counter[self.current_prediction] = 0
             self.pose_counter[self.current_prediction] += 1
+        self.prev_prediction = self.current_prediction
 
     def calculate_pose_accuracy(self):
         # Calculate the PCK accuracy
@@ -109,20 +113,20 @@ class Yoga:
             pose_coordinates = pickle.load(fp)
         if self.current_prediction != 'No Pose':
             ground_truth_keypoints = pose_coordinates[self.current_prediction]
-            self.pck_accuracy = round(calculate_pck(self.predicted_keypoints, ground_truth_keypoints, threshold), 2)
+            self.pck_accuracy = min(round(calculate_pck(self.predicted_keypoints, ground_truth_keypoints, threshold), 2), 1)
             logger.info(f"Pose accuracy is :- {self.pck_accuracy}")
 
     def display_parameters(self):
         # Display description of the last shot made
         final_prediction = 'No Pose'
         image_text_dict = {
-            'pose': {'text': f"Pose: {final_prediction}", 'position': (10, 20)}
+            'pose': {'text': f"Pose: {final_prediction}", 'position': (10, 40)}
         }
         if self.current_prediction != 'No Pose':
             final_prediction = self.pose_map[self.current_prediction]
             image_text_dict = {
-                'pose': {'text': f"Pose: {final_prediction}", 'position': (10, 20)},
-                'accuracy': {'text': f"Pose Accuracy: {self.pck_accuracy}", 'position': (10, 40)},
-                'count': {'text': f"Count: {self.pose_counter[self.current_prediction]}", 'position': (10, 60)}
+                'pose': {'text': f"Pose: {final_prediction}", 'position': (10, 40)},
+                'accuracy': {'text': f"Pose Accuracy: {self.pck_accuracy}", 'position': (10, 65)},
+                'count': {'text': f"Count: {self.pose_counter[self.current_prediction]}", 'position': (10, 90)}
             }
         return add_text(image_text_dict, self.image)
