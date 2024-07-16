@@ -11,7 +11,7 @@ logger = logging.Logger('CRITICAL')
 
 
 def create_pose_mappings(yoga_pose_mapping_filepath):
-    pose_map = {}
+    pose_map = {'No Pose': 'No Pose'}
     with open(yoga_pose_mapping_filepath) as pose_map_file:
         file_contents = eval(pose_map_file.read())['Poses']
         for pose in file_contents:
@@ -44,7 +44,7 @@ class Yoga:
         self.model_yolo = yolo_model
         self.pose_map = create_pose_mappings(yoga_pose_mapping_filepath)
         self.pose_coordinates_path = pose_coordinates_path
-        self.pose_classifying_threshold = 0.6
+        self.pose_classifying_threshold = 0.7
         self.clf_model = None
         self.image = None
         self.repetition_count = 0
@@ -52,11 +52,20 @@ class Yoga:
         self.prev_prediction = 'No Pose'
         self.current_prediction = 'No Pose'
         self.pose_counter = {}
+        self.pose_duration = {}
+        self.pose_frames = {}
         self.predicted_keypoints = None
+        self.frame_rate = 0.0
+        self.current_frame = 0
+        self.threshold = 0.7  # Example threshold distance
+        with open(self.pose_coordinates_path, "rb") as fp:  # Unpickling
+            self.pose_coordinates = pickle.load(fp)
 
-    def run(self, image):
+    def run(self, image, frame_rate):
         self.clf_model = self.load_yoga_classifier_model()
         self.image = image
+        self.current_frame += 1
+        self.frame_rate = frame_rate
         self.make_prediction()
         self.count_repetition()
         self.calculate_pose_accuracy()
@@ -92,41 +101,57 @@ class Yoga:
                 with torch.no_grad():
                     logit = self.clf_model(keypoints_tensor)
                     class_probabilities = torch.softmax(logit, dim=1)
-                    if class_probabilities.max() >= self.pose_classifying_threshold:
-                        pred = torch.softmax(logit, dim=1).argmax(dim=1).item()
-                        self.current_prediction = self.yoga_classes[pred]
+                    pred = self.yoga_classes[class_probabilities.argmax(dim=1).item()]
+                    if class_probabilities.max() > self.pose_classifying_threshold:
+                        self.current_prediction = pred
                 logger.info(f"Prediction for the current frame is :- {self.current_prediction}")
         except Exception as e:
             logger.error(f"Some issue with prediction method :- {e}")
 
     def count_repetition(self):
-        if self.prev_prediction != self.current_prediction:
-            if self.current_prediction not in self.pose_counter:
-                self.pose_counter[self.current_prediction] = 0
-            self.pose_counter[self.current_prediction] += 1
-        self.prev_prediction = self.current_prediction
+        try:
+            if self.prev_prediction != self.current_prediction:
+                if self.current_prediction not in self.pose_counter:
+                    self.pose_counter[self.current_prediction] = 0
+                    self.pose_frames[self.current_prediction] = [self.current_frame]
+                    self.pose_duration[self.current_prediction] = ['Ongoing']
+                if self.prev_prediction in self.pose_duration:
+                    self.pose_frames[self.prev_prediction].append(self.current_frame)
+                    self.pose_duration[self.prev_prediction].append(round((
+                                                                             self.pose_frames[self.prev_prediction][
+                                                                                 -1]
+                                                                             - self.pose_frames[self.prev_prediction][
+                                                                                 -2]) / self.frame_rate, 2))
+                self.pose_counter[self.current_prediction] += 1
+        except Exception as e:
+            logger.error(f"Issue with pose repetition count :- {e.__traceback__}")
 
     def calculate_pose_accuracy(self):
-        # Calculate the PCK accuracy
-        threshold = 0.7  # Example threshold distance
-        with open(self.pose_coordinates_path, "rb") as fp:  # Unpickling
-            pose_coordinates = pickle.load(fp)
-        if self.current_prediction != 'No Pose':
-            ground_truth_keypoints = pose_coordinates[self.current_prediction]
-            self.pck_accuracy = min(round(calculate_pck(self.predicted_keypoints, ground_truth_keypoints, threshold), 2), 1)
-            logger.info(f"Pose accuracy is :- {self.pck_accuracy}")
+        try:
+            # Calculate the PCK accuracy
+            if self.current_prediction != 'No Pose':
+                ground_truth_keypoints = self.pose_coordinates[self.current_prediction]
+                self.pck_accuracy = min(
+                    round(calculate_pck(self.predicted_keypoints, ground_truth_keypoints, self.threshold), 2), 1)
+                logger.info(f"Pose accuracy is :- {self.pck_accuracy}")
+        except Exception as e:
+            logger.error(f"Issue with pose accuracy calculation :- {e.__traceback__}")
 
     def display_parameters(self):
-        # Display description of the last shot made
-        final_prediction = 'No Pose'
-        image_text_dict = {
-            'pose': {'text': f"Pose: {final_prediction}", 'position': (10, 40)}
-        }
-        if self.current_prediction != 'No Pose':
-            final_prediction = self.pose_map[self.current_prediction]
-            image_text_dict = {
-                'pose': {'text': f"Pose: {final_prediction}", 'position': (10, 40)},
-                'accuracy': {'text': f"Pose Accuracy: {self.pck_accuracy}", 'position': (10, 65)},
-                'count': {'text': f"Count: {self.pose_counter[self.current_prediction]}", 'position': (10, 90)}
-            }
-        return add_text(image_text_dict, self.image)
+        try:
+            # Display description of the last shot made
+            final_prediction = self.pose_map[self.prev_prediction]
+            image_text_dict = {'pose': {'text': f"Pose: {final_prediction}", 'position': (15, 110)}}
+            if self.prev_prediction != 'No Pose':
+                current_pose_duration = self.pose_duration[self.prev_prediction][-1]
+                pose_counter = self.pose_counter[self.prev_prediction]
+                image_text_dict = {
+                    'pose': {'text': f"Pose: {final_prediction}", 'position': (15, 110)},
+                    'accuracy': {'text': f"Pose Accuracy: {self.pck_accuracy}", 'position': (15, 140)},
+                    'duration': {'text': f"Pose Duration: {current_pose_duration}", 'position': (15, 170)},
+                    'count': {'text': f"Count: {pose_counter}", 'position': (15, 200)}
+                }
+            self.prev_prediction = self.current_prediction
+            return add_text(image_text_dict, self.image)
+        except Exception as e:
+            logger.error(f"Issue with display parameters method :- {e.__traceback__}")

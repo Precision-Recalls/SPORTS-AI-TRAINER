@@ -1,8 +1,9 @@
-import concurrent.futures
 import datetime
 import logging
 import os
 import random
+import sys
+import traceback
 
 import cv2
 import mediapipe as mp
@@ -49,7 +50,7 @@ def start_yoga_classifier_training():
         logger.error(f"There is some issue with yoga classifier training :- {e}")
 
 
-def landmark_drawer(frame):
+def landmark_drawer(frame, frame_rate=None):
     output_frame = frame
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
         results = pose.process(frame)
@@ -57,7 +58,7 @@ def landmark_drawer(frame):
             mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
                                       mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=1),
                                       mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=1))
-            output_frame = yoga_class.run(frame)
+            output_frame = yoga_class.run(frame, frame_rate)
     return output_frame
 
 
@@ -78,13 +79,15 @@ def analyze_yoga_image(img_path):
 def analyze_yoga_video(video_path, param_list):
     try:
         input_video_cap = cv2.VideoCapture(video_path)
+        frame_rate = input_video_cap.get(cv2.CAP_PROP_FPS)
         video_writer = common.utils.video_writer(input_video_cap, yoga_output_video_path)
         while True:
             ret, frame = input_video_cap.read()
             if not ret:
                 # End of the video or an error occurred
                 break
-            processed_frame = landmark_drawer(frame)
+            processed_frame = landmark_drawer(frame, frame_rate)
+            cv2.imshow('output_frame', processed_frame)
             write_frame(video_writer, processed_frame)
             # Close if 'q' is clicked
             if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
@@ -93,4 +96,4 @@ def analyze_yoga_video(video_path, param_list):
         video_writer.release()
         cv2.destroyAllWindows()
     except Exception as e:
-        logger.error(f"Some error with yoga video processing :- {e}")
+        logger.error(f"Some error with yoga video processing :- {e.__traceback__}")
