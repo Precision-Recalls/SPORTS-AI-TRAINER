@@ -30,7 +30,7 @@ yoga_classes = eval(config['constants']['yoga_classes'])
 yoga_output_video_path = os.path.abspath(os.path.join(yoga_output_directory, f'yoga_output_video_{now}_{randint}.mp4'))
 yoga_output_image_path = os.path.abspath(os.path.join(yoga_output_directory, f'yoga_image_{now}_{randint}.jpg'))
 
-yolo_model = YOLO("yolov8m-pose.pt")
+yolo_model = config['paths']['yoga_pose_model']
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 yoga_class = Yoga(yoga_classes, yolo_model, yoga_classifier_model_path, yoga_pose_mapping_filepath,
