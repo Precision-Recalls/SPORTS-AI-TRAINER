@@ -148,7 +148,7 @@ class ShotDetector:
                 hoop_center_x = self.hoop_pos[-1][0][0]
                 hoop_width = self.hoop_pos[-1][2]
                 player_distance_from_basket = (
-                        (hoop_center_x - player_centre_x) - (player_width / 2) - (hoop_width / 2))*scale_factor
+                        ((hoop_center_x - player_centre_x) - (player_width / 2) - (hoop_width / 2))*scale_factor)+0.9
                 if release_angle < 0:
                     release_angle = -release_angle
                 self.release_detected = True
