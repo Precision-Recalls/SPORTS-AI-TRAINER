@@ -65,6 +65,7 @@ class ShotDetector:
         # Threshold for the y-coordinate change to be considered as a dribble
         self.dribble_threshold = 3
         self.individual_shot_data = {}
+        self.scale_factor=None
 
     def run(self, frame_count, frame, step_counter, object_detection_results, pose_results):
         self.frame_count = frame_count
@@ -127,7 +128,7 @@ class ShotDetector:
 
             ball_above_elbow = y_centre < right_elbow[1]
             ball_within_distance = (6 * radius) > np.linalg.norm(ball_position - right_wrist_array) >= (3 * radius)
-
+            
             # Check if the ball is above the left elbow and within a certain distance from the right wrist
             if not self.release_detected and ball_above_elbow and ball_within_distance:
                 # Calculate the release angle while throwing
@@ -135,11 +136,11 @@ class ShotDetector:
                 dx = ball_pos_x - right_wrist[0]
                 dy = ball_pos_y - right_wrist[1]
                 release_angle = np.degrees(np.arctan2(dy, dx))
-
+                scale_factor=(0.45/self.hoop_pos[-1][2])
                 # calculate player level from hoop while throwing
                 player_top_y_coordinate = self.player_pos[-1][0][1] - (self.player_pos[-1][3] / 2)
                 hoop_top_y_coordinate = self.hoop_pos[-1][0][1] - (self.hoop_pos[-1][3] / 2)
-                player_level = (player_top_y_coordinate - hoop_top_y_coordinate)
+                player_level = (player_top_y_coordinate - hoop_top_y_coordinate)*scale_factor
 
                 # calculate player's distance from basket while throwing
                 player_centre_x = self.player_pos[-1][0][0]
@@ -147,7 +148,7 @@ class ShotDetector:
                 hoop_center_x = self.hoop_pos[-1][0][0]
                 hoop_width = self.hoop_pos[-1][2]
                 player_distance_from_basket = (
-                        (hoop_center_x - player_centre_x) - (player_width / 2) - (hoop_width / 2))
+                        (hoop_center_x - player_centre_x) - (player_width / 2) - (hoop_width / 2))*scale_factor
                 if release_angle < 0:
                     release_angle = -release_angle
                 self.release_detected = True
@@ -165,18 +166,18 @@ class ShotDetector:
                     # Calculate the time elapsed between the first and second positions after release
                     time_elapsed = (ball_positions_after_release[1][1] - ball_positions_after_release[0][
                         1]) / self.frame_rate
-
+                    scale_factor1=(0.24/max(ball_positions_after_release[0][2],ball_positions_after_release[0][3]))
                     # Calculate the distance traveled by the ball
                     x1, y1 = ball_positions_after_release[1][0]
                     x2, y2 = ball_positions_after_release[0][0]
                     distance_traveled = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
-
+                    distance_traveled_meters=distance_traveled*scale_factor1
                     # Calculate the speed of the ball
-                    self.current_shot_speed = distance_traveled / time_elapsed
+                    self.current_shot_speed = distance_traveled_meters / time_elapsed
 
                     # Calculate the energy of the ball (assuming a constant mass)
                     ball_mass = 0.625  # Mass of a standard basketball in kg
-                    self.current_shot_power = (0.5 * ball_mass * self.current_shot_speed ** 2) / time_elapsed
+                    self.current_shot_power = (0.5 * ball_mass * (self.current_shot_speed ** 2))
 
         except Exception as e:
             print(f"Error occurred while calculating release angle: {e}")
@@ -243,13 +244,13 @@ class ShotDetector:
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
         if self.current_level_of_player is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
-                                                               f"Player's Level From Rim: {self.current_level_of_player:.2f}",
+                                                               f"Player's Level From Rim: {self.current_level_of_player:.2f} m",
                                                                (10, 175), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
         if self.current_player_distance_from_basket is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
-                                                               f"Player's Distance From Rim: {self.current_player_distance_from_basket:.2f}",
+                                                               f"Player's Distance From Rim: {self.current_player_distance_from_basket:.2f} m",
                                                                (10, 195), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
@@ -266,13 +267,13 @@ class ShotDetector:
         # y_position += 20  # Increase the y-position for the next shot time
         if self.current_shot_speed is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
-                                                               f"Ball Speed : {self.current_shot_speed:.2f}",
+                                                               f"Ball Speed : {self.current_shot_speed:.2f} m/s",
                                                                (10, 115), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
         if self.current_shot_power is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
-                                                               f"Ball Power : {self.current_shot_power:.2f}",
+                                                               f"Shot Power : {self.current_shot_power:.2f} J",
                                                                (10, 135), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
