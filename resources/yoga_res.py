@@ -98,6 +98,7 @@ def analyze_yoga_image(img_path):
 #         cv2.destroyAllWindows()
 #     except Exception as e:
 #         logger.error(f"Some error with yoga video processing :- {e.__traceback__}")
+
 def analyze_yoga_video(video_blob_name, param_list):
     try:
         input_video_data = download_blob(video_blob_name)

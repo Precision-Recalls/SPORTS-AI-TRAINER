@@ -68,11 +68,7 @@ def process_video():
     filename = data['filename']
     param_list = data['param_list']  # ['attempts', 'dribble_count']
     drill_type = data['drill_type']  # 'yoga','basketball'
-    # file_path = os.path.join(upload_folder, filename)
-
-    # if not os.path.exists(file_path):
-    #     return jsonify({"error": "File not found"}), 404
-
+    
     if drill_type == DrillType.Yoga.value:
         thread = Thread(target=analyze_yoga_video, args=(filename, param_list))
         thread.start()

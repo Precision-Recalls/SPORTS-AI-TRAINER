@@ -85,6 +85,7 @@ class Yoga:
 
     def get_pose_keypoints(self, image):
         results = self.model_yolo(image, verbose=False)
+    
         for r in results:
             keypoints = r.keypoints.xyn.cpu().numpy()[0]
             keypoints = keypoints.reshape((1, keypoints.shape[0] * keypoints.shape[1]))[0].tolist()
@@ -94,6 +95,7 @@ class Yoga:
         try:
             self.predicted_keypoints = self.get_pose_keypoints(self.image)
             # Preprocess keypoints data
+            
             if self.predicted_keypoints:
                 keypoints_tensor = torch.tensor(self.predicted_keypoints[2:], dtype=torch.float32).unsqueeze(0)
                 self.clf_model.cpu()
@@ -102,6 +104,7 @@ class Yoga:
                     logit = self.clf_model(keypoints_tensor)
                     class_probabilities = torch.softmax(logit, dim=1)
                     pred = self.yoga_classes[class_probabilities.argmax(dim=1).item()]
+                    print("third if")
                     if class_probabilities.max() > self.pose_classifying_threshold:
                         self.current_prediction = pred
                 logger.info(f"Prediction for the current frame is :- {self.current_prediction}")
