@@ -8,3 +8,4 @@ tqdm~=4.66.4
 scikit-learn~=1.5.1
 flask~=3.0.3
 torchmetrics~=1.4.0.post0
+mediapipe==0.8.10.1
