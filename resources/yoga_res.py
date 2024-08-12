@@ -2,14 +2,15 @@ import datetime
 import logging
 import os
 import random
-import sys
-import traceback
+
+from common.azure_storage import upload_blob, download_blob
+import tempfile
 
 import cv2
 import mediapipe as mp
 from ultralytics import YOLO
 
-import common
+
 from common.utils import load_config
 from yoga_analytics.yoga_class import Yoga
 from yoga_analytics.yoga_classifier_trainer import YogaClassifierTrainingClass
@@ -76,24 +77,67 @@ def analyze_yoga_image(img_path):
         logger.error(f"There is some error in image processing for yoga! :- {e}")
 
 
-def analyze_yoga_video(video_path, param_list):
+# def analyze_yoga_video(video_path, param_list):
+#     try:
+#         input_video_cap = cv2.VideoCapture(video_path)
+#         frame_rate = input_video_cap.get(cv2.CAP_PROP_FPS)
+#         video_writer = common.utils.video_writer(input_video_cap, yoga_output_video_path)
+#         while True:
+#             ret, frame = input_video_cap.read()
+#             if not ret:
+#                 # End of the video or an error occurred
+#                 break
+#             processed_frame = landmark_drawer(frame, frame_rate)
+#             cv2.imshow('output_frame', processed_frame)
+#             write_frame(video_writer, processed_frame)
+#             # Close if 'q' is clicked
+#             if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
+#                 break
+#         input_video_cap.release()
+#         video_writer.release()
+#         cv2.destroyAllWindows()
+#     except Exception as e:
+#         logger.error(f"Some error with yoga video processing :- {e.__traceback__}")
+
+def analyze_yoga_video(video_blob_name, param_list):
     try:
-        input_video_cap = cv2.VideoCapture(video_path)
-        frame_rate = input_video_cap.get(cv2.CAP_PROP_FPS)
-        video_writer = common.utils.video_writer(input_video_cap, yoga_output_video_path)
-        while True:
-            ret, frame = input_video_cap.read()
-            if not ret:
-                # End of the video or an error occurred
-                break
-            processed_frame = landmark_drawer(frame, frame_rate)
-            cv2.imshow('output_frame', processed_frame)
-            write_frame(video_writer, processed_frame)
-            # Close if 'q' is clicked
-            if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
-                break
-        input_video_cap.release()
-        video_writer.release()
-        cv2.destroyAllWindows()
+        input_video_data = download_blob(video_blob_name)
+        output_blob_name = f"processed_{video_blob_name}"
+        
+        with tempfile.NamedTemporaryFile(suffix='.mp4', delete=False) as temp_input_file:
+            temp_input_file.write(input_video_data)
+            temp_input_file.seek(0)
+            
+            input_video_cap = cv2.VideoCapture(temp_input_file.name)
+            frame_rate = input_video_cap.get(cv2.CAP_PROP_FPS)
+            
+            temp_output_file = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False)
+            video_writer = cv2.VideoWriter(temp_output_file.name, 
+                                           cv2.VideoWriter_fourcc(*'mp4v'), 
+                                           frame_rate, 
+                                           (int(input_video_cap.get(3)), int(input_video_cap.get(4))))
+            
+            while True:
+                ret, frame = input_video_cap.read()
+                if not ret:
+                    break
+                
+                processed_frame = landmark_drawer(frame, frame_rate)
+                video_writer.write(processed_frame)
+            
+            input_video_cap.release()
+            video_writer.release()
+            
+            with open(temp_output_file.name, 'rb') as processed_video:
+                upload_blob(output_blob_name, processed_video.read())
+            
+            os.unlink(temp_input_file.name)
+            os.unlink(temp_output_file.name)
+        
+        logger.info('Yoga video processing completed and uploaded to blob storage.')
+        
     except Exception as e:
-        logger.error(f"Some error with yoga video processing :- {e.__traceback__}")
+        logger.error(f"Error in yoga video processing: {e}")
+
+
+

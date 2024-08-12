@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 import configparser
-
-
+from azure.storage.blob import BlobClient
+import os
 def load_config(config_file):
     try:
         config = configparser.ConfigParser()
@@ -66,9 +66,30 @@ def calculate_angle(a, b, c):
         print(f"There is some issue with angle calculation:- {e}")
 
 
-def video_writer(cap, output_path):
+# def video_writer(cap, output_path):
+#     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+#     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+#     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+#     fps = cap.get(cv2.CAP_PROP_FPS)
+#     return cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+def video_writer(cap, blob_client):
+    frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    return cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+    
+    class BlobVideoWriter:
+        def __init__(self, blob_client, fourcc, fps, frameSize):
+            self.blob_client = blob_client
+            self.writer = cv2.VideoWriter('temp.mp4', fourcc, fps, frameSize)
+        
+        def write(self, frame):
+            self.writer.write(frame)
+        
+        def release(self):
+            self.writer.release()
+            with open('temp.mp4', 'rb') as video_file:
+                self.blob_client.upload_blob(video_file.read(), overwrite=True)
+            os.remove('temp.mp4')
+    
+    return BlobVideoWriter(blob_client, fourcc, fps, (frame_width, frame_height))

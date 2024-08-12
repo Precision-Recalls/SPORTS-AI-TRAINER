@@ -1,6 +1,7 @@
 import os
 from threading import Thread
-
+from azure.storage.blob import BlobServiceClient
+import io
 import cv2
 import numpy as np
 from flask import Flask, send_file, Response, request, jsonify
@@ -9,7 +10,8 @@ from enum import Enum
 from common.utils import load_config
 from resources.basketball_res import analyze_basketball_parameters
 from resources.yoga_res import analyze_yoga_video
-
+from common.azure_storage import upload_blob
+import tempfile
 app = Flask(__name__)
 
 config = load_config('configs/config.ini')
@@ -44,24 +46,19 @@ def home():
 # Route to upload a video file
 @app.route('/upload', methods=['POST'])
 def upload_video():
-    try:
-        if 'file' not in request.files:
-            return jsonify({"error": "No file part"}), 400
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
 
-        file = request.files['file']
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
 
-        if file.filename == '':
-            return jsonify({"error": "No selected file"}), 400
-
-        if file and allowed_file(file.filename):
-            filename = file.filename
-            file_path = os.path.join(upload_folder, filename)
-            file.save(file_path)
-            return jsonify({"message": "File uploaded successfully", "file_path": file_path}), 201
-        else:
-            return jsonify({"error": "File type not allowed"}), 400
-    except FileNotFoundError as e:
-        print(f'Internal server error while uploading file :- {e}')
+    if file and allowed_file(file.filename):
+        file_data = file.read()
+        upload_blob(file.filename, file_data)
+        return jsonify({"message": "File uploaded successfully", "file_name": file.filename}), 201
+    else:
+        return jsonify({"error": "File type not allowed"}), 400
 
 
 # Route to process a video file (e.g., extract frames)
@@ -70,18 +67,13 @@ def process_video():
     data = request.json
     filename = data['filename']
     param_list = data['param_list']  # ['attempts', 'dribble_count']
-    drill_type = data['drill_type']  # 'yoga'
-
-    file_path = os.path.join(upload_folder, filename)
-
-    if not os.path.exists(file_path):
-        return jsonify({"error": "File not found"}), 404
-
+    drill_type = data['drill_type']  # 'yoga','basketball'
+    
     if drill_type == DrillType.Yoga.value:
-        thread = Thread(target=analyze_yoga_video, args=(file_path, param_list))
+        thread = Thread(target=analyze_yoga_video, args=(filename, param_list))
         thread.start()
     elif drill_type == DrillType.BasketBall.value:
-        thread = Thread(target=analyze_basketball_parameters, args=(file_path, socketio, param_list))
+        thread = Thread(target=analyze_basketball_parameters, args=(filename, socketio, param_list))
         thread.start()
     else:
         # TODO we can add more drill types here
@@ -126,9 +118,18 @@ def upload_stream():
 # Route to serve a video file which was already analysed
 @app.route('/view/<filename>', methods=['GET'])
 def serve_video(filename):
-    # TODO here we can take video_name/id of previously analyzed from UI
-    video_path = os.path.join(output_folder, filename)
-    return send_file(video_path, mimetype='video/mp4')
+    blob_service_client = BlobServiceClient.from_connection_string(config['azure']['connection_string'])
+    container_client = blob_service_client.get_container_client(config['azure']['container_name'])
+    blob_client = container_client.get_blob_client(f"processed_{filename}")
+
+    video_data = blob_client.download_blob().readall()
+    video_stream = io.BytesIO(video_data)
+    
+    return send_file(
+        video_stream,
+        mimetype='video/mp4',
+        as_attachment=True,
+        download_name=f"processed_{filename}")
 
 
 # Route to stream video from the camera

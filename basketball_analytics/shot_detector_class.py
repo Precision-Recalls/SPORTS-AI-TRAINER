@@ -136,7 +136,7 @@ class ShotDetector:
                 dx = ball_pos_x - right_wrist[0]
                 dy = ball_pos_y - right_wrist[1]
                 release_angle = np.degrees(np.arctan2(dy, dx))
-                scale_factor=(0.45/self.hoop_pos[-1][2])
+
                 # calculate player level from hoop while throwing
                 player_top_y_coordinate = self.player_pos[-1][0][1] - (self.player_pos[-1][3] / 2)
                 hoop_top_y_coordinate = self.hoop_pos[-1][0][1] - (self.hoop_pos[-1][3] / 2)
@@ -166,18 +166,18 @@ class ShotDetector:
                     # Calculate the time elapsed between the first and second positions after release
                     time_elapsed = (ball_positions_after_release[1][1] - ball_positions_after_release[0][
                         1]) / self.frame_rate
-                    scale_factor1=(0.24/max(ball_positions_after_release[0][2],ball_positions_after_release[0][3]))
+
                     # Calculate the distance traveled by the ball
                     x1, y1 = ball_positions_after_release[1][0]
                     x2, y2 = ball_positions_after_release[0][0]
                     distance_traveled = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
-                    distance_traveled_meters=distance_traveled*scale_factor1
+
                     # Calculate the speed of the ball
                     self.current_shot_speed = distance_traveled_meters / time_elapsed
 
                     # Calculate the energy of the ball (assuming a constant mass)
                     ball_mass = 0.625  # Mass of a standard basketball in kg
-                    self.current_shot_power = (0.5 * ball_mass * (self.current_shot_speed ** 2))
+                    self.current_shot_power = (0.5 * ball_mass * self.current_shot_speed ** 2) / time_elapsed
 
         except Exception as e:
             print(f"Error occurred while calculating release angle: {e}")
@@ -273,7 +273,7 @@ class ShotDetector:
 
         if self.current_shot_power is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
-                                                               f"Shot Power : {self.current_shot_power:.2f} J",
+                                                               f"Ball Power : {self.current_shot_power:.2f}",
                                                                (10, 135), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
