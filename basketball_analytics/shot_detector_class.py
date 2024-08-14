@@ -362,6 +362,7 @@ class ShotDetector:
                     else:
                         self.overlay_color = (0, 0, 255)
                         self.fade_counter = self.fade_frames
+
                     self.individual_shot_data = {
                         'attempts': self.attempts,
                         'goals': self.makes,

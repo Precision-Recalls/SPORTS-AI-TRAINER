@@ -1,6 +1,11 @@
-import cv2
-import numpy as np
 import configparser
+
+import cv2
+import os
+import numpy as np
+import logging
+
+logger = logging.Logger('CRITICAL')
 
 
 def load_config(config_file):
@@ -9,7 +14,7 @@ def load_config(config_file):
         config.read(config_file)
         return config
     except Exception as e:
-        print(f"Error occurred in configuration loading: {e}")
+        logger.error(f"Error occurred in configuration loading: {e}")
 
 
 def scale_text(frame, text, position, font_scale, thickness):
@@ -25,7 +30,7 @@ def add_text(image_text_dict, img):
     for _, values in image_text_dict.items():
         img_text, text_pos = values['text'], values['position']
         text, position, font_scale, thickness = scale_text(img, img_text, text_pos, 1, 2)
-        cv2.putText(img, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
+        cv2.putText(img, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 255), thickness)
     return img
 
 
@@ -63,12 +68,30 @@ def calculate_angle(a, b, c):
         calculate_angle.last_angle = np.degrees(angle)  # Store the last calculated angle
         return calculate_angle.last_angle
     except Exception as e:
-        print(f"There is some issue with angle calculation:- {e}")
+        logger.error(f"There is some issue with angle calculation:- {e}")
 
 
-def video_writer(cap, output_path):
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    return cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+def video_writer(cap, blob_client):
+    try:
+        frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        fps = int(cap.get(cv2.CAP_PROP_FPS))
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+
+        class BlobVideoWriter:
+            def __init__(self, blob_client, fourcc, fps, frameSize):
+                self.blob_client = blob_client
+                self.writer = cv2.VideoWriter('temp.mp4', fourcc, fps, frameSize)
+
+            def write(self, frame):
+                self.writer.write(frame)
+
+            def release(self):
+                self.writer.release()
+                with open('temp.mp4', 'rb') as video_file:
+                    self.blob_client.upload_blob(video_file.read(), overwrite=True)
+                os.remove('temp.mp4')
+
+        return BlobVideoWriter(blob_client, fourcc, fps, (frame_width, frame_height))
+    except Exception as e:
+        logger.error(f"There is some issue with video writer function:- {e}")
