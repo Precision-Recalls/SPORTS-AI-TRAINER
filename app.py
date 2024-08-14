@@ -1,6 +1,6 @@
+import logging
 from enum import Enum
 from threading import Thread
-import logging
 
 from flask import Flask, request, jsonify
 
@@ -34,22 +34,19 @@ def home():
 
 @app.route('/upload', methods=['POST'])
 def upload_video():
-    try:
-        if 'file' not in request.files:
-            return jsonify({"error": "No file part"}), 400
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
 
-        file = request.files['file']
-        if file.filename == '':
-            return jsonify({"error": "No selected file"}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
 
-        if file and allowed_file(file.filename):
-            file_data = file.read()
-            upload_blob(file.filename, file_data)
-            return jsonify({"message": "File uploaded successfully", "file_name": file.filename}), 201
-        else:
-            return jsonify({"error": "File type not allowed"}), 400
-    except Exception as e:
-        logger.error(f"There is some error with video uploading :- {e}")
+    if file and allowed_file(file.filename):
+        file_data = file.read()
+        upload_blob(file.filename, file_data)
+        return jsonify({"message": "File uploaded successfully", "file_name": file.filename}), 201
+    else:
+        return jsonify({"error": "File type not allowed"}), 400
 
 
 @app.route('/process', methods=['POST'])

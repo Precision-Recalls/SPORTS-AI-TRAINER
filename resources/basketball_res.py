@@ -39,4 +39,4 @@ def analyze_basketball_parameters(video_blob_name, param_list):
         video_data = download_blob(output_blob_name)
         return shots_response_data
     except Exception as e:
-        logger.error(f"Some error with yoga video processing :- {e.__traceback__}")
+        logger.error(f"Some error with yoga video processing :- {e}")

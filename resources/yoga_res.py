@@ -17,16 +17,15 @@ now = datetime.datetime.now().date()
 randint = random.randint(100, 200)
 
 yoga_classifier_model_path = config['paths']['yoga_classifier_model_path']
+yoga_yolo_model_path = config['paths']['yoga_pose_model']
 pose_coordinates_path = config['paths']['pose_coordinates_path']
-yoga_output_directory = config['paths']['yoga_output_path']
 image_folder = config['paths']['yoga_poses_image_folder']
 yoga_pose_mapping_filepath = config['paths']['yoga_pose_mapping_filepath']
 yoga_classes = eval(config['constants']['yoga_classes'])
 azure_connection_string = config['azure']['connection_string']
 azure_container_name = config['azure']['container_name']
 
-
-yolo_model = YOLO("assets/models/yolov8m-pose.pt")
+yolo_model = YOLO(yoga_yolo_model_path)
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 

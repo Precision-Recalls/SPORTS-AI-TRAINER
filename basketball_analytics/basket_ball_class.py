@@ -20,7 +20,6 @@ class BasketBallGame:
         self.output_blob_name = output_blob_name
         self.body_index = body_index
         self.player = Player(self.body_index)
-
         self.frame_count = 0
         self.frame = None
         self.frame_steps = []
@@ -28,6 +27,7 @@ class BasketBallGame:
 
         self.blob_service_client = BlobServiceClient.from_connection_string(azure_connection_string)
         container_client = self.blob_service_client.get_container_client(azure_container_name)
+
         self.video_blob_client = container_client.get_blob_client(self.video_blob_name)
         self.output_blob_client = container_client.get_blob_client(self.output_blob_name)
 
@@ -57,9 +57,9 @@ class BasketBallGame:
                     steps = self.player.count_steps(rounded_pose_results)
                     step_counter += steps
                     elbow_angles = self.player.calculate_elbow_angles(rounded_pose_results)
-
                     text, position, font_scale, thickness = scale_text(self.frame, f"Total Steps Taken: {step_counter}",
                                                                        (10, 75), 1, 2)
+
                     cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
                 if object_detection_results:
@@ -72,6 +72,7 @@ class BasketBallGame:
                     )
                     if shot_attempt_data:
                         self.all_shot_data.append(shot_attempt_data)
+
                 self.frame_count += 1
                 self.video_writer.write(self.frame)
                 # Close if 'q' is clicked

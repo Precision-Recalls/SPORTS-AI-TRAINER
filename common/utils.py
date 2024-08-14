@@ -1,9 +1,9 @@
 import configparser
+import logging
+import os
 
 import cv2
-import os
 import numpy as np
-import logging
 
 logger = logging.Logger('CRITICAL')
 
