@@ -54,14 +54,13 @@ def upload_video():
 def process_video():
     data = request.json
     filename = data['filename']
-    param_list = data['param_list']  # ['attempts', 'dribble_count']
     drill_type = data['drill_type']  # 'yoga','basketball'
-    
+
     if drill_type == DrillType.Yoga.value:
-        thread = Thread(target=analyze_yoga_video, args=(filename, param_list))
+        thread = Thread(target=analyze_yoga_video, args=(filename,))
         thread.start()
     elif drill_type == DrillType.BasketBall.value:
-        thread = Thread(target=analyze_basketball_parameters, args=(filename, param_list))
+        thread = Thread(target=analyze_basketball_parameters, args=(filename,))
         thread.start()
     else:
         # TODO we can add more drill types here

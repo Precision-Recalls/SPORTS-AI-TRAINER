@@ -3,7 +3,7 @@ import logging
 import os
 import cv2
 import numpy as np
-
+import sys
 logger = logging.Logger('CRITICAL')
 
 
@@ -67,7 +67,11 @@ def calculate_angle(a, b, c):
         calculate_angle.last_angle = np.degrees(angle)  # Store the last calculated angle
         return calculate_angle.last_angle
     except Exception as e:
-        logger.error(f"There is some issue with angle calculation:- {e}")
+        exc_type, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        logger.error(f'There is some issue with angle calculation {exc_tb.tb_lineno}th line '
+                         f'in {fname}, error {exc_type}')
+        
 
 
 def video_writer(cap, blob_client):
@@ -93,4 +97,7 @@ def video_writer(cap, blob_client):
 
         return BlobVideoWriter(blob_client, fourcc, fps, (frame_width, frame_height))
     except Exception as e:
-        logger.error(f"There is some issue with video writer function:- {e}")
+        exc_type, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        logger.error(f'There is some issue with video writer function {exc_tb.tb_lineno}th line '
+                         f'in {fname}, error {exc_type}')

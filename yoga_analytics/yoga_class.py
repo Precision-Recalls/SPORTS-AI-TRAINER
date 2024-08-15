@@ -1,7 +1,8 @@
 import logging
 import pickle
 import tempfile
-
+import sys
+import os
 import cv2
 import numpy as np
 import torch
@@ -116,7 +117,11 @@ class Yoga:
             # TODO we can also add flexibility, toughness, overall accuracy etc.
             self.yoga_final_stats = {'pose_counts': self.pose_counter, 'pose_duration': self.pose_duration}
         except Exception as e:
-            logger.error(f"There is some error with yoga video processing :- {e}")
+            exc_type, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'There is some error with yoga video processing at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
+
         finally:
             self.cap.release()
             self.video_writer.release()
@@ -131,7 +136,11 @@ class Yoga:
             logger.info('Yoga classifier model got loaded!')
             return model_pose
         except Exception as e:
-            logger.error(f'There is some error in classifier model loading :- {e}')
+            exc_type, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'There is some error in classifier model loading  at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
+
 
     def get_pose_keypoints(self):
         results = self.model_yolo(self.frame, verbose=False)
@@ -157,7 +166,11 @@ class Yoga:
                         self.current_prediction = pred
                 logger.info(f"Prediction for the current frame is :- {self.current_prediction}")
         except Exception as e:
-            logger.error(f"Some issue with prediction method :- {e}")
+            exc_type, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'Some issue with prediction method at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
+
 
     def count_repetition(self):
         try:
@@ -177,7 +190,12 @@ class Yoga:
                                                                                       -2]) / self.frame_rate, 2))
                 self.pose_counter[self.current_prediction] += 1
         except Exception as e:
-            logger.error(f"Issue with pose repetition count :- {e.__traceback__}")
+            exc_type, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'Issue with pose repetition count at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
+
+
 
     def calculate_pose_accuracy(self):
         try:
@@ -188,7 +206,12 @@ class Yoga:
                     round(calculate_pck(self.predicted_keypoints, ground_truth_keypoints, self.threshold), 2), 1)
                 logger.info(f"Pose accuracy is :- {self.pck_accuracy}")
         except Exception as e:
-            logger.error(f"Issue with pose accuracy calculation :- {e.__traceback__}")
+            exc_type, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'Issue with pose accuracy calculation at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
+
+
 
     def display_parameters(self):
         try:
@@ -207,7 +230,11 @@ class Yoga:
             self.prev_prediction = self.current_prediction
             self.processed_frame = add_text(image_text_dict, self.frame)
         except Exception as e:
-            logger.error(f"Issue with display parameters method :- {e.__traceback__}")
+            exc_type, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'ssue with display parameters method  at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
+
 
     def to_list(self):
         """

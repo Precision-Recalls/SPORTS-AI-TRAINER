@@ -117,7 +117,7 @@ class ShotDetector:
             self.display_score()
             return self.frame, self.individual_shot_data
         except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
+            exc_type, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             logger.error(f'There is issue in shot detector at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
 
@@ -195,7 +195,7 @@ class ShotDetector:
                     self.current_shot_power = (0.5 * ball_mass * self.current_shot_speed ** 2)
 
         except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
+            exc_type, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             logger.error(
                 f'There is issue in release parameters calculation at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
