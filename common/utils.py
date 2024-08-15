@@ -70,7 +70,7 @@ def calculate_angle(a, b, c):
         logger.error(f"There is some issue with angle calculation:- {e}")
 
 
-def video_writer(cap, blob_client):
+def write_video(cap, blob_client):
     try:
         frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))

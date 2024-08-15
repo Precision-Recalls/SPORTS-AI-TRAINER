@@ -3,12 +3,12 @@ import pickle
 import tempfile
 
 import cv2
+import mediapipe as mp
 import numpy as np
 import torch
-import mediapipe as mp
-
-from common.utils import add_text, video_writer
 from azure.storage.blob import BlobServiceClient
+
+from common.utils import add_text, write_video
 from yoga_analytics.yoga_classifier_trainer import YogaClassifier
 
 logger = logging.Logger('CRITICAL')
@@ -67,7 +67,7 @@ class Yoga:
             self.cap = cv2.VideoCapture(temp_video_file.name)
 
         self.frame_rate = self.cap.get(cv2.CAP_PROP_FPS)
-        self.video_writer = video_writer(self.cap, self.output_blob_client)
+        self.video_writer = write_video(self.cap, self.output_blob_client)
 
         self.yoga_final_stats = {}
         self.processed_frame = None

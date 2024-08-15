@@ -5,7 +5,6 @@ import random
 import mediapipe as mp
 from ultralytics import YOLO
 
-from common.azure_storage import download_blob
 from common.utils import load_config
 from yoga_analytics.yoga_class import Yoga
 from yoga_analytics.yoga_classifier_trainer import YogaClassifierTrainingClass
@@ -44,16 +43,13 @@ def start_yoga_classifier_training():
         logger.error(f"There is some issue with yoga classifier training :- {e}")
 
 
-def analyze_yoga_video(video_blob_name, param_list):
+def analyze_yoga_video(video_blob_name):
     try:
         output_blob_name = f"processed_{video_blob_name}"
         yoga_class = Yoga(yoga_classes, video_blob_name, output_blob_name, yolo_model, yoga_classifier_model_path,
                           yoga_pose_mapping_filepath, pose_coordinates_path, azure_connection_string,
                           azure_container_name)
         yoga_class_response = yoga_class.yoga_final_stats
-        yoga_final_response_data = [{key: yoga_data[key] for key in param_list} for yoga_data in
-                                    yoga_class_response.to_list()]
-        video_data = download_blob(output_blob_name)
-        return yoga_final_response_data
+        return yoga_class_response
     except Exception as e:
         logger.error(f"Some error with yoga video processing :- {e}")

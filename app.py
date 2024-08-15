@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify
 from common.azure_storage import upload_blob
 from common.utils import load_config
 from resources.basketball_res import analyze_basketball_parameters
+from resources.fitness_res import analyze_fitness_video
 from resources.yoga_res import analyze_yoga_video
 
 app = Flask(__name__)
@@ -19,6 +20,7 @@ allowed_extensions = eval(config['constants']['allowed_extensions'])
 class DrillType(Enum):
     Yoga = 'yoga'
     BasketBall = 'basketball'
+    Fitness = 'fitness'
     Others = 'others'
 
 
@@ -54,18 +56,18 @@ def upload_video():
 def process_video():
     data = request.json
     filename = data['filename']
-    param_list = data['param_list']  # ['attempts', 'dribble_count']
-    drill_type = data['drill_type']  # 'yoga','basketball'
+    drill_type = data['drill_type']  # 'yoga','basketball', 'fitness'
+    drill_name = data['drill_name']  # 'pull_up_bar', 'dead lift'
     
     if drill_type == DrillType.Yoga.value:
-        thread = Thread(target=analyze_yoga_video, args=(filename, param_list))
+        thread = Thread(target=analyze_yoga_video, args=(filename,))
         thread.start()
     elif drill_type == DrillType.BasketBall.value:
-        thread = Thread(target=analyze_basketball_parameters, args=(filename, param_list))
+        thread = Thread(target=analyze_basketball_parameters, args=(filename,))
         thread.start()
-    else:
-        # TODO we can add more drill types here
-        pass
+    elif drill_type == DrillType.Fitness.value:
+        thread = Thread(target=analyze_fitness_video, args=(filename, drill_name))
+        thread.start()
     return jsonify({"message": "File received and processing started"}), 200
 
 

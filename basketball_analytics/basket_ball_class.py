@@ -1,16 +1,15 @@
+import logging
 import os
 import sys
+import tempfile
 
 import cv2
 import numpy as np
-
-import logging
-import tempfile
 from azure.storage.blob import BlobServiceClient
+
 from basketball_analytics.player_class import Player
 from basketball_analytics.shot_detector_class import ShotDetector
-
-from common.utils import scale_text, video_writer
+from common.utils import scale_text, write_video
 
 logger = logging.Logger('ERROR')
 
@@ -43,7 +42,7 @@ class BasketBallGame:
 
         self.frame_rate = self.cap.get(cv2.CAP_PROP_FPS)
         self.shot_detector = ShotDetector(self.class_names, self.body_index, self.frame_rate)
-        self.video_writer = video_writer(self.cap, self.output_blob_client)
+        self.video_writer = write_video(self.cap, self.output_blob_client)
         self.run()
 
     def run(self):
