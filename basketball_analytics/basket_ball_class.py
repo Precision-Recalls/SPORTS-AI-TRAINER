@@ -1,10 +1,12 @@
 import cv2
 import numpy as np
+
 import logging
 import tempfile
 from azure.storage.blob import BlobServiceClient
 from basketball_analytics.player_class import Player
 from basketball_analytics.shot_detector_class import ShotDetector
+
 from common.utils import scale_text, video_writer
 
 logger = logging.Logger('ERROR')
@@ -79,7 +81,7 @@ class BasketBallGame:
                 if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
                     break
         except Exception as e:
-            logger.error(f'There is some issue with video file processing: {e}')
+            logger.error(f'There is some issue with basketball video file processing: {e}')
         finally:
             self.cap.release()
             self.video_writer.release()

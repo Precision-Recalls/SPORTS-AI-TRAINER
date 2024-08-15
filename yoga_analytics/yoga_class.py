@@ -144,6 +144,7 @@ class Yoga:
         try:
             self.predicted_keypoints = self.get_pose_keypoints()
             # Preprocess keypoints data
+            
             if self.predicted_keypoints:
                 keypoints_tensor = torch.tensor(self.predicted_keypoints[2:], dtype=torch.float32).unsqueeze(0)
                 self.clf_model.cpu()

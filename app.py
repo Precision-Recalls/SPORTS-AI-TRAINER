@@ -49,24 +49,24 @@ def upload_video():
         return jsonify({"error": "File type not allowed"}), 400
 
 
+# Route to process a video file (e.g., extract frames)
 @app.route('/process', methods=['POST'])
 def process_video():
-    try:
-        data = request.json
-        filename = data['filename']
-        param_list = data['param_list']
-        drill_type = data['drill_type']
-
-        if drill_type == DrillType.Yoga.value:
-            thread = Thread(target=analyze_yoga_video, args=(filename, param_list))
-            thread.start()
-        elif drill_type == DrillType.BasketBall.value:
-            thread = Thread(target=analyze_basketball_parameters, args=(filename, param_list))
-            thread.start()
-
-        return jsonify({"message": "File received and processing started"}), 200
-    except Exception as e:
-        logger.error(f"There is some error with video processing :- {e}")
+    data = request.json
+    filename = data['filename']
+    param_list = data['param_list']  # ['attempts', 'dribble_count']
+    drill_type = data['drill_type']  # 'yoga','basketball'
+    
+    if drill_type == DrillType.Yoga.value:
+        thread = Thread(target=analyze_yoga_video, args=(filename, param_list))
+        thread.start()
+    elif drill_type == DrillType.BasketBall.value:
+        thread = Thread(target=analyze_basketball_parameters, args=(filename, param_list))
+        thread.start()
+    else:
+        # TODO we can add more drill types here
+        pass
+    return jsonify({"message": "File received and processing started"}), 200
 
 
 if __name__ == '__main__':

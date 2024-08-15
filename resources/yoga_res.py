@@ -26,6 +26,7 @@ azure_connection_string = config['azure']['connection_string']
 azure_container_name = config['azure']['container_name']
 
 yolo_model = YOLO(yoga_yolo_model_path)
+
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
