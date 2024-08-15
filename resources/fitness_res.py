@@ -5,7 +5,7 @@ import random
 import mediapipe as mp
 
 from common.utils import load_config
-from fitness_analytics.fitness_class import process
+from fitness_analytics.fitness_class import Fitness
 
 config = load_config('configs/config.ini')
 logger = logging.Logger('INFO')
@@ -20,14 +20,16 @@ mp_pose = mp.solutions.pose
 def analyze_fitness_video(video_blob_name, drill_name):
     try:
         output_blob_name = f"processed_{video_blob_name}"
-        response = process(
+        fitness_response = Fitness(
             drill_name,
             video_blob_name,
             output_blob_name,
             azure_connection_string,
             azure_container_name
         )
-        logger.info(f"Fitness video's final stats are as follows :- {response}")
-        return response
+        logger.info(f"Fitness video's final stats are as follows :- {fitness_response.response}")
+        fitness_response=fitness_response.response
+        print(f"Fitness: {fitness_response}")
+        return fitness_response
     except Exception as e:
-        logger.error(f"Some error with yoga video processing :- {e}")
+        logger.error(f"Some error with fitness video processing :- {e}")
