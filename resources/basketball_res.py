@@ -1,5 +1,6 @@
 import logging
-
+import sys
+import os
 from ultralytics import YOLO
 
 from basketball_analytics.basket_ball_class import BasketBallGame
@@ -22,7 +23,7 @@ azure_connection_string = config['azure']['connection_string']
 azure_container_name = config['azure']['container_name']
 
 
-def analyze_basketball_parameters(video_blob_name, param_list):
+def analyze_basketball_parameters(video_blob_name):
     try:
         output_blob_name = f"processed_{video_blob_name}"
         shots_data = BasketBallGame(
@@ -35,8 +36,11 @@ def analyze_basketball_parameters(video_blob_name, param_list):
             azure_connection_string,
             azure_container_name
         )
-        shots_response_data = [{key: shot_data[key] for key in param_list} for shot_data in shots_data.to_list()]
-        video_data = download_blob(output_blob_name)
-        return shots_response_data
+        shot_data=shots_data.all_shot_data
+        print(f"shot data: {shot_data}")
+        return shot_data
     except Exception as e:
-        logger.info(f"Some error with basketball video processing :- {e}")
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        logger.error(f'Some error with basketball video processing {exc_tb.tb_lineno}th line '
+                         f'in {fname}, error {exc_type}')
