@@ -153,7 +153,6 @@ class Yoga:
                     logit = self.clf_model(keypoints_tensor)
                     class_probabilities = torch.softmax(logit, dim=1)
                     pred = self.yoga_classes[class_probabilities.argmax(dim=1).item()]
-                    print("third if")
                     if class_probabilities.max() > self.pose_classifying_threshold:
                         self.current_prediction = pred
                 logger.info(f"Prediction for the current frame is :- {self.current_prediction}")

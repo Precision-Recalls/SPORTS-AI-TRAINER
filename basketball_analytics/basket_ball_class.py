@@ -1,3 +1,6 @@
+import os
+import sys
+
 import cv2
 import numpy as np
 
@@ -81,7 +84,10 @@ class BasketBallGame:
                 if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
                     break
         except Exception as e:
-            logger.error(f'There is some issue with basketball video file processing: {e}')
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(f'There is some issue with basketball video file processing at {exc_tb.tb_lineno}th line '
+                         f'in {fname}, error {exc_type}')
         finally:
             self.cap.release()
             self.video_writer.release()

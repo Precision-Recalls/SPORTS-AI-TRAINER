@@ -1,9 +1,15 @@
 import math
+import os
+import sys
+import logging
+
 import cv2
 import numpy as np
 from enum import Enum
 
 from common.utils import scale_text
+
+logger = logging.Logger('ERROR')
 
 
 class shotResult(Enum):
@@ -65,50 +71,55 @@ class ShotDetector:
         # Threshold for the y-coordinate change to be considered as a dribble
         self.dribble_threshold = 3
         self.individual_shot_data = {}
-        self.scale_factor=None
+        self.scale_factor = None
 
     def run(self, frame_count, frame, step_counter, object_detection_results, pose_results):
-        self.frame_count = frame_count
-        self.frame = frame
-        self.pose_results = pose_results
-        self.detection_results = object_detection_results
-        self.step_counter = step_counter
-        self.individual_shot_data = {}
+        try:
+            self.frame_count = frame_count
+            self.frame = frame
+            self.pose_results = pose_results
+            self.detection_results = object_detection_results
+            self.step_counter = step_counter
+            self.individual_shot_data = {}
 
-        for r in object_detection_results:
-            boxes = r.boxes
-            for box in boxes:
-                # Bounding box
-                x1, y1, x2, y2 = box.xyxy[0]
-                x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-                w, h = x2 - x1, y2 - y1
+            for r in object_detection_results:
+                boxes = r.boxes
+                for box in boxes:
+                    # Bounding box
+                    x1, y1, x2, y2 = box.xyxy[0]
+                    x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+                    w, h = x2 - x1, y2 - y1
 
-                # Confidence
-                conf = math.ceil((box.conf[0] * 100)) / 100
-                # Class Name
-                cls = int(box.cls[0])
-                current_class = self.class_names[cls]
-                self.center = (int(x1 + w / 2), int(y1 + h / 2))
+                    # Confidence
+                    conf = math.ceil((box.conf[0] * 100)) / 100
+                    # Class Name
+                    cls = int(box.cls[0])
+                    current_class = self.class_names[cls]
+                    self.center = (int(x1 + w / 2), int(y1 + h / 2))
 
-                cv2.rectangle(self.frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                # Only create ball points if high confidence or near hoop
-                if current_class == 'ball':
-                    if (conf > .3 or (
-                            self.in_hoop_region() and conf > 0.15)):
-                        self.ball_pos.append((self.center, self.frame_count, w, h, conf))
-                        self.calculate_release_parameters()
-                        # Update the dribble count
-                        self.update_dribble_count()
+                    cv2.rectangle(self.frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                    # Only create ball points if high confidence or near hoop
+                    if current_class == 'ball':
+                        if (conf > .3 or (
+                                self.in_hoop_region() and conf > 0.15)):
+                            self.ball_pos.append((self.center, self.frame_count, w, h, conf))
+                            self.calculate_release_parameters()
+                            # Update the dribble count
+                            self.update_dribble_count()
 
-                # Create hoop points if high confidence
-                if conf > .5 and current_class == "basket":
-                    self.hoop_pos.append((self.center, self.frame_count, w, h, conf))
-                if conf > 0.5 and current_class == "person":
-                    self.player_pos.append((self.center, self.frame_count, w, h, conf))
-        self.clean_motion()
-        self.shot_detection()
-        self.display_score()
-        return self.frame, self.individual_shot_data
+                    # Create hoop points if high confidence
+                    if conf > .5 and current_class == "basket":
+                        self.hoop_pos.append((self.center, self.frame_count, w, h, conf))
+                    if conf > 0.5 and current_class == "person":
+                        self.player_pos.append((self.center, self.frame_count, w, h, conf))
+            self.clean_motion()
+            self.shot_detection()
+            self.display_score()
+            return self.frame, self.individual_shot_data
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(f'There is issue in shot detector at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
 
     def calculate_release_parameters(self):
         try:
@@ -128,7 +139,7 @@ class ShotDetector:
 
             ball_above_elbow = y_centre < right_elbow[1]
             ball_within_distance = (6 * radius) > np.linalg.norm(ball_position - right_wrist_array) >= (3 * radius)
-            
+
             # Check if the ball is above the left elbow and within a certain distance from the right wrist
             if not self.release_detected and ball_above_elbow and ball_within_distance:
                 # Calculate the release angle while throwing
@@ -136,11 +147,12 @@ class ShotDetector:
                 dx = ball_pos_x - right_wrist[0]
                 dy = ball_pos_y - right_wrist[1]
                 release_angle = np.degrees(np.arctan2(dy, dx))
+                scale_factor = (0.45 / self.hoop_pos[-1][2])
 
                 # calculate player level from hoop while throwing
                 player_top_y_coordinate = self.player_pos[-1][0][1] - (self.player_pos[-1][3] / 2)
                 hoop_top_y_coordinate = self.hoop_pos[-1][0][1] - (self.hoop_pos[-1][3] / 2)
-                player_level = (player_top_y_coordinate - hoop_top_y_coordinate)*scale_factor
+                player_level = (player_top_y_coordinate - hoop_top_y_coordinate) * scale_factor
 
                 # calculate player's distance from basket while throwing
                 player_centre_x = self.player_pos[-1][0][0]
@@ -148,7 +160,8 @@ class ShotDetector:
                 hoop_center_x = self.hoop_pos[-1][0][0]
                 hoop_width = self.hoop_pos[-1][2]
                 player_distance_from_basket = (
-                        ((hoop_center_x - player_centre_x) - (player_width / 2) - (hoop_width / 2))*scale_factor)+0.9
+                                                      ((hoop_center_x - player_centre_x) - (player_width / 2) - (
+                                                                  hoop_width / 2)) * scale_factor) + 0.9
                 if release_angle < 0:
                     release_angle = -release_angle
                 self.release_detected = True
@@ -166,21 +179,26 @@ class ShotDetector:
                     # Calculate the time elapsed between the first and second positions after release
                     time_elapsed = (ball_positions_after_release[1][1] - ball_positions_after_release[0][
                         1]) / self.frame_rate
+                    scale_factor1 = (0.24 / max(ball_positions_after_release[0][2], ball_positions_after_release[0][3]))
 
                     # Calculate the distance traveled by the ball
                     x1, y1 = ball_positions_after_release[1][0]
                     x2, y2 = ball_positions_after_release[0][0]
-                    distance_traveled = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+                    distance_traveled_pixels = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+                    distance_traveled_meters = distance_traveled_pixels * scale_factor1
 
                     # Calculate the speed of the ball
                     self.current_shot_speed = distance_traveled_meters / time_elapsed
 
                     # Calculate the energy of the ball (assuming a constant mass)
                     ball_mass = 0.625  # Mass of a standard basketball in kg
-                    self.current_shot_power = (0.5 * ball_mass * self.current_shot_speed ** 2) / time_elapsed
+                    self.current_shot_power = (0.5 * ball_mass * self.current_shot_speed ** 2)
 
         except Exception as e:
-            print(f"Error occurred while calculating release angle: {e}")
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'There is issue in release parameters calculation at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
 
     def update_dribble_count(self):
         # Check if this is not the first frame
@@ -273,7 +291,7 @@ class ShotDetector:
 
         if self.current_shot_power is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
-                                                               f"Ball Power : {self.current_shot_power:.2f}",
+                                                               f"Ball Energy : {self.current_shot_power:.2f} Joule",
                                                                (10, 135), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
