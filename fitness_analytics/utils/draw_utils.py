@@ -89,16 +89,34 @@ def draw_keypoints_and_connections(f, results):
                      DrawingSpec(color=BODY_COLOR_BGR, thickness=2))
 
 
-def draw_features(f, body_features, fps, skip_frame=SKIP_FRAME, feature_flag=True, angle_flag=True):
-    writer_fps = int(fps / (skip_frame + 1))
-    if feature_flag:
-        cv2.putText(f, 'Total Reps: ' + str(body_features.total_reps),
-                    (20, 80), cv2.FONT_HERSHEY_COMPLEX, 1.1, (102, 255, 0), 2)
-        cv2.putText(f, 'Time Elapsed: ' + str(round(len(body_features.angles) / writer_fps, 0)),
-                    (20, 120), cv2.FONT_HERSHEY_COMPLEX, 1.1, (102, 255, 0), 2)
-        cv2.putText(f, 'Direction: ' + str(body_features.directions[-1]),
-                    (20, 160), cv2.FONT_HERSHEY_COMPLEX, 1.1, (102, 255, 0), 2)
-    if angle_flag:
-        cv2.putText(f, f'{body_features.body_part}: ' + str(body_features.angles[-1]) + ' deg',
-                    (body_features.coords[-1][0], body_features.coords[-1][1] + 45), cv2.FONT_HERSHEY_COMPLEX, 1.1,
-                    (102, 255, 0), 2)
+# def draw_features(f, body_features, fps, skip_frame=SKIP_FRAME, feature_flag=True, angle_flag=True):
+#     writer_fps = int(fps / (skip_frame + 1))
+#     if feature_flag:
+#         cv2.putText(f, 'Total Reps: ' + str(body_features.total_reps),
+#                     (20, 80), cv2.FONT_HERSHEY_COMPLEX, 1.1, (102, 255, 0), 2)
+#         cv2.putText(f, 'Time Elapsed: ' + str(round(len(body_features.angles) / writer_fps, 0)),
+#                     (20, 120), cv2.FONT_HERSHEY_COMPLEX, 1.1, (102, 255, 0), 2)
+#         cv2.putText(f, 'Direction: ' + str(body_features.directions[-1]),
+#                     (20, 160), cv2.FONT_HERSHEY_COMPLEX, 1.1, (102, 255, 0), 2)
+#     if angle_flag:
+#         cv2.putText(f, f'{body_features.body_part}: ' + str(body_features.angles[-1]) + ' deg',
+#                     (body_features.coords[-1][0], body_features.coords[-1][1] + 45), cv2.FONT_HERSHEY_COMPLEX, 1.1,
+#                     (102, 255, 0), 2)
+def draw_features(frame, derived_features, fps, skip_frame=SKIP_FRAME, feature_flag=True, angle_flag=True):
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    font_scale = 1.0
+    thickness = 3
+    text_color = (255, 255, 255)  # white
+
+    derived_features_json = derived_features.return_json()
+    y_pos = 20
+    for key, value in derived_features_json.items():
+        if isinstance(value, dict):
+            for sub_key, sub_value in value.items():
+                cv2.putText(frame, f"{key}: {sub_key} = {sub_value:.2f}", (10, y_pos), font, font_scale, text_color, thickness)
+                print(f"{key}: {sub_key} = {sub_value:.2f}")
+                y_pos += 30
+        else:
+            cv2.putText(frame, f"{key}: {value:.2f}", (10, y_pos), font, font_scale, text_color, thickness)
+            print(f"{key}: {value:.2f}")
+            y_pos += 30
