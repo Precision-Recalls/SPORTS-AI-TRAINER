@@ -40,7 +40,7 @@ def analyze_basketball_parameters(video_blob_name):
         print(f"shot data: {shot_data}")
         return shot_data
     except Exception as e:
-        exc_type, exc_tb = sys.exc_info()
+        exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         logger.error(f'Some error with basketball video processing {exc_tb.tb_lineno}th line '
                          f'in {fname}, error {exc_type}')

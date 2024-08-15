@@ -117,7 +117,7 @@ class Yoga:
             # TODO we can also add flexibility, toughness, overall accuracy etc.
             self.yoga_final_stats = {'pose_counts': self.pose_counter, 'pose_duration': self.pose_duration}
         except Exception as e:
-            exc_type, exc_tb = sys.exc_info()
+            exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             logger.error(
                 f'There is some error with yoga video processing at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
@@ -166,7 +166,7 @@ class Yoga:
                         self.current_prediction = pred
                 logger.info(f"Prediction for the current frame is :- {self.current_prediction}")
         except Exception as e:
-            exc_type, exc_tb = sys.exc_info()
+            exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             logger.error(
                 f'Some issue with prediction method at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
@@ -190,7 +190,7 @@ class Yoga:
                                                                                       -2]) / self.frame_rate, 2))
                 self.pose_counter[self.current_prediction] += 1
         except Exception as e:
-            exc_type, exc_tb = sys.exc_info()
+            exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             logger.error(
                 f'Issue with pose repetition count at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
@@ -206,7 +206,7 @@ class Yoga:
                     round(calculate_pck(self.predicted_keypoints, ground_truth_keypoints, self.threshold), 2), 1)
                 logger.info(f"Pose accuracy is :- {self.pck_accuracy}")
         except Exception as e:
-            exc_type, exc_tb = sys.exc_info()
+            exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             logger.error(
                 f'Issue with pose accuracy calculation at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
@@ -230,7 +230,7 @@ class Yoga:
             self.prev_prediction = self.current_prediction
             self.processed_frame = add_text(image_text_dict, self.frame)
         except Exception as e:
-            exc_type, exc_tb = sys.exc_info()
+            exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             logger.error(
                 f'ssue with display parameters method  at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')

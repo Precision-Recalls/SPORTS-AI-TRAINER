@@ -42,7 +42,7 @@ def start_yoga_classifier_training():
         end_time = datetime.datetime.now()
         logger.info(f"Training ended at :- {end_time} and it took :- {end_time - start_time}")
     except Exception as e:
-        exc_type, exc_tb = sys.exc_info()
+        exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         logger.error(f'There is some issue with yoga classifier training {exc_tb.tb_lineno}th line '
                          f'in {fname}, error {exc_type}')
@@ -60,7 +60,7 @@ def analyze_yoga_video(video_blob_name):
         return yoga_class_response
     
     except Exception as e:
-        exc_type, exc_tb = sys.exc_info()
+        exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         logger.error(f'Some error with yoga video processing {exc_tb.tb_lineno}th line '
                          f'in {fname}, error {exc_type}')

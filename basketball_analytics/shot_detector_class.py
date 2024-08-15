@@ -153,6 +153,8 @@ class ShotDetector:
                 player_top_y_coordinate = self.player_pos[-1][0][1] - (self.player_pos[-1][3] / 2)
                 hoop_top_y_coordinate = self.hoop_pos[-1][0][1] - (self.hoop_pos[-1][3] / 2)
                 player_level = (player_top_y_coordinate - hoop_top_y_coordinate) * scale_factor
+                player_level = format(player_level, ".2f")  
+
 
                 # calculate player's distance from basket while throwing
                 player_centre_x = self.player_pos[-1][0][0]
@@ -162,8 +164,10 @@ class ShotDetector:
                 player_distance_from_basket = (
                                                       ((hoop_center_x - player_centre_x) - (player_width / 2) - (
                                                                   hoop_width / 2)) * scale_factor) + 0.9
+                player_distance_from_basket = format(player_distance_from_basket, ".2f")
                 if release_angle < 0:
                     release_angle = -release_angle
+                    release_angle= format(release_angle,".2f")
                 self.release_detected = True
                 self.current_release_angle = release_angle
                 self.current_level_of_player = player_level
@@ -188,14 +192,17 @@ class ShotDetector:
                     distance_traveled_meters = distance_traveled_pixels * scale_factor1
 
                     # Calculate the speed of the ball
-                    self.current_shot_speed = distance_traveled_meters / time_elapsed
+                    speed = distance_traveled_meters / time_elapsed
+                    self.current_shot_speed = format(speed, ".2f")
 
                     # Calculate the energy of the ball (assuming a constant mass)
                     ball_mass = 0.625  # Mass of a standard basketball in kg
-                    self.current_shot_power = (0.5 * ball_mass * self.current_shot_speed ** 2)
+                    energy = (0.5 * ball_mass * speed ** 2)
+                    energy = format(energy, ".2f")
+                    self.current_shot_power = energy
 
         except Exception as e:
-            exc_type, exc_tb = sys.exc_info()
+            exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             logger.error(
                 f'There is issue in release parameters calculation at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
@@ -257,18 +264,18 @@ class ShotDetector:
 
         if self.current_release_angle is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
-                                                               f"Release angle: {self.current_release_angle:.2f}",
+                                                               f"Release angle: {self.current_release_angle}",
                                                                (10, 155), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
         if self.current_level_of_player is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
-                                                               f"Player's Level From Rim: {self.current_level_of_player:.2f} m",
+                                                               f"Player's Level From Rim: {self.current_level_of_player} m",
                                                                (10, 175), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
         if self.current_player_distance_from_basket is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
-                                                               f"Player's Distance From Rim: {self.current_player_distance_from_basket:.2f} m",
+                                                               f"Player's Distance From Rim: {self.current_player_distance_from_basket} m",
                                                                (10, 195), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
@@ -285,13 +292,13 @@ class ShotDetector:
         # y_position += 20  # Increase the y-position for the next shot time
         if self.current_shot_speed is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
-                                                               f"Ball Speed : {self.current_shot_speed:.2f} m/s",
+                                                               f"Ball Speed : {self.current_shot_speed} m/s",
                                                                (10, 115), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
         if self.current_shot_power is not None:
             text, position, font_scale, thickness = scale_text(self.frame,
-                                                               f"Ball Energy : {self.current_shot_power:.2f} Joule",
+                                                               f"Ball Energy : {self.current_shot_power} Joule",
                                                                (10, 135), 1, 2)
             cv2.putText(self.frame, text, position, cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0), thickness)
 
@@ -303,7 +310,7 @@ class ShotDetector:
             y_position = 30  # Adjust the y-position as needed
 
             for i, shot_time in enumerate(self.shot_times):
-                text = f"Shot {i + 1} time: {shot_time:.2f} seconds"
+                text = f"Shot {i + 1} time: {shot_time} seconds"
                 text, _, font_scale, thickness = scale_text(self.frame, text, (x_position, y_position), 1, 2)
                 cv2.putText(self.frame, text, (x_position, y_position), cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 0, 0),
                             thickness)
@@ -369,6 +376,7 @@ class ShotDetector:
 
                     if self.release_frame is not None:
                         shot_time = (self.down_frame - self.release_frame) / self.frame_rate
+                        shot_time = format(shot_time,".2f")
                         self.shot_times.append(shot_time)  # Append the shot time to the list
 
                     # If it is a make, put a green overlay
@@ -383,16 +391,16 @@ class ShotDetector:
                         self.fade_counter = self.fade_frames
 
                     self.individual_shot_data = {
-                        'attempts': self.attempts,
-                        'goals': self.makes,
+                        'Attempts': f"{self.attempts}",
+                        'Makes': self.makes,
                         'shot_desc': self.last_shot_description,
                         'dribble_count': self.frame_dribble[-1] - self.frame_dribble[-2],
-                        'release_angle': self.current_release_angle,
-                        'level_from_rim': self.current_level_of_player,
-                        'distance_from_basket': self.current_player_distance_from_basket,
-                        'shot_speed': self.current_shot_speed,
-                        'shot_power': self.current_shot_power,
-                        'shot_time': self.shot_times[-1],
+                        'release_angle': f"{self.current_release_angle} degree" ,
+                        'level_from_rim': f"{self.current_level_of_player} m",
+                        'distance_from_basket': f"{ self.current_player_distance_from_basket} m",
+                        'shot_speed': f"{self.current_shot_speed} m/s",
+                        'shot_energy': f"{self.current_shot_power} J",
+                        'shot_time': f"{self.shot_times[-1]} seconds",
                         'steps': self.frame_steps[-1] - self.frame_steps[-2]
                     }
                     self.up = False
