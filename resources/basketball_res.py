@@ -1,5 +1,6 @@
 import logging
-
+import sys
+import os
 from ultralytics import YOLO
 
 from basketball_analytics.basket_ball_class import BasketBallGame
@@ -37,4 +38,7 @@ def analyze_basketball_parameters(video_blob_name):
         shots_data = basketball_cls.all_shot_data
         return shots_data
     except Exception as e:
-        logger.info(f"Some error with basketball video processing :- {e}")
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        logger.error(f'Some error with basketball video processing {exc_tb.tb_lineno}th line '
+                         f'in {fname}, error {exc_type}')
