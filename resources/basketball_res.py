@@ -19,7 +19,8 @@ sample_video_path = config['paths']['sample_video_path']
 class_names = eval(config['constants']['class_names'])
 body_index = eval(config['constants']['body_index'])
 azure_connection_string = config['azure']['connection_string']
-azure_container_name = config['azure']['container_name']
+azure_input_container_name = config['azure']['input_container_name']
+azure_output_container_name=config['azure']['output_container_name']
 
 
 def analyze_basketball_parameters(video_blob_name):
@@ -33,7 +34,7 @@ def analyze_basketball_parameters(video_blob_name):
             output_blob_name,
             body_index,
             azure_connection_string,
-            azure_container_name
+            azure_input_container_name,azure_output_container_name
         )
         shots_data = basketball_cls.all_shot_data
         return shots_data

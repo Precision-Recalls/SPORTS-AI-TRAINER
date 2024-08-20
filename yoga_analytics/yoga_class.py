@@ -47,7 +47,7 @@ def calculate_pck(detected_keypoints, ground_truth_keypoints, threshold):
 class Yoga:
     def __init__(self, yoga_classes, video_blob_name, output_blob_name, yolo_model,
                  yoga_classifier_model_path, yoga_pose_mapping_filepath, pose_coordinates_path,
-                 azure_connection_string, azure_container_name):
+                 azure_connection_string, azure_input_container_name,azure_output_container_name):
         self.yoga_classifier_model_path = yoga_classifier_model_path
         self.model_yolo = yolo_model
         self.yoga_classes = yoga_classes
@@ -58,9 +58,10 @@ class Yoga:
         self.output_blob_name = output_blob_name
 
         self.blob_service_client = BlobServiceClient.from_connection_string(azure_connection_string)
-        container_client = self.blob_service_client.get_container_client(azure_container_name)
+        container_client = self.blob_service_client.get_container_client(azure_input_container_name)
+        container_client2= self.blob_service_client.get_container_client(azure_output_container_name)
         self.video_blob_client = container_client.get_blob_client(self.video_blob_name)
-        self.output_blob_client = container_client.get_blob_client(self.output_blob_name)
+        self.output_blob_client = container_client2.get_blob_client(self.output_blob_name)
 
         with tempfile.NamedTemporaryFile(suffix='.mp4', delete=False) as temp_video_file:
             self.video_blob_client.download_blob().readinto(temp_video_file)
