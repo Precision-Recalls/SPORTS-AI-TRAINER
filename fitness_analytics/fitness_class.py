@@ -111,17 +111,18 @@ logger = logging.Logger('ERROR')
 
 class Fitness:
     def __init__(self, drill_name, video_blob_name, output_blob_name,
-                 azure_connection_string, azure_container_name):
+                 azure_connection_string, azure_input_container_name,azure_output_container_name):
         self.drill_name = drill_name
         self.video_blob_name = video_blob_name
         self.output_blob_name = output_blob_name
         self.azure_connection_string = azure_connection_string
-        self.azure_container_name = azure_container_name
+        self.azure_container_name = azure_input_container_name
         self.response = {}  
         self.blob_service_client = BlobServiceClient.from_connection_string(azure_connection_string)
-        container_client = self.blob_service_client.get_container_client(azure_container_name)
+        container_client = self.blob_service_client.get_container_client(azure_input_container_name)
+        container_client2= self.blob_service_client.get_container_client(azure_output_container_name)
         self.video_blob_client = container_client.get_blob_client(video_blob_name)
-        self.output_blob_client = container_client.get_blob_client(output_blob_name)
+        self.output_blob_client = container_client2.get_blob_client(output_blob_name)
 
         with tempfile.NamedTemporaryFile(suffix='.mp4', delete=False) as temp_video_file:
             self.video_blob_client.download_blob().readinto(temp_video_file)
