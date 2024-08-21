@@ -2,7 +2,7 @@ import logging
 import sys
 import os
 from ultralytics import YOLO
-
+from azure.servicebus import ServiceBusClient, ServiceBusMessage
 from basketball_analytics.basket_ball_class import BasketBallGame
 from common.utils import load_config
 
@@ -21,7 +21,10 @@ body_index = eval(config['constants']['body_index'])
 azure_connection_string = config['azure']['connection_string']
 azure_input_container_name = config['azure']['input_container_name']
 azure_output_container_name=config['azure']['output_container_name']
-
+azure_service_bus_connection_string=config['azure']['azure_service_bus_connection_string']
+servicebus_client = ServiceBusClient.from_connection_string(azure_service_bus_connection_string)
+queue_client = servicebus_client.get_queue_client("your_queue_name")
+sender = queue_client.get_sender()
 
 def analyze_basketball_parameters(video_blob_name):
     try:
@@ -37,7 +40,10 @@ def analyze_basketball_parameters(video_blob_name):
             azure_input_container_name,azure_output_container_name
         )
         shots_data = basketball_cls.all_shot_data
-        return shots_data
+        # Send a message to the Service Bus topic
+        message = ServiceBusMessage(str(shots_data))
+        message.application_properties = {"MessageType": "Basketball","VideoID":video_blob_name}
+        sender.send_message(message)
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

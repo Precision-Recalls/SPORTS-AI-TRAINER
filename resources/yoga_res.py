@@ -5,7 +5,7 @@ import sys
 import os
 import mediapipe as mp
 from ultralytics import YOLO
-
+from azure.servicebus import ServiceBusClient, ServiceBusMessage
 from common.utils import load_config
 from yoga_analytics.yoga_class import Yoga
 from yoga_analytics.yoga_classifier_trainer import YogaClassifierTrainingClass
@@ -25,7 +25,10 @@ yoga_classes = eval(config['constants']['yoga_classes'])
 azure_connection_string = config['azure']['connection_string']
 azure_input_container_name = config['azure']['input_container_name']
 azure_output_container_name = config['azure']['output_container_name']
-
+azure_service_bus_connection_string=config['azure']['azure_service_bus_connection_string']
+servicebus_client = ServiceBusClient.from_connection_string(azure_service_bus_connection_string)
+queue_client = servicebus_client.get_queue_client("your_queue_name")
+sender = queue_client.get_sender()
 yolo_model = YOLO(yoga_yolo_model_path)
 
 mp_drawing = mp.solutions.drawing_utils
@@ -55,7 +58,11 @@ def analyze_yoga_video(video_blob_name):
                           yoga_pose_mapping_filepath, pose_coordinates_path, azure_connection_string,
                           azure_input_container_name, azure_output_container_name)
         yoga_class_response = yoga_class.yoga_final_stats
-        return yoga_class_response
+
+        # Send a message to the Service Bus topic
+        message = ServiceBusMessage(str(yoga_class_response))
+        message.application_properties = {"MessageType": "Yoga","VideoID":video_blob_name}
+        sender.send_message(message)
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
