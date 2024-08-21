@@ -1,13 +1,12 @@
 import logging
 import os
 import sys
-from enum import Enum
 from threading import Thread
 
 from flask import Flask, request, jsonify
 
 from common.azure_storage import upload_blob
-from common.utils import load_config, create_api_response
+from common.utils import load_config, create_api_response, DrillType, get_service_bus_connection_obj
 from resources.basketball_res import analyze_basketball_parameters
 from resources.fitness_res import analyze_fitness_video
 from resources.yoga_res import analyze_yoga_video
@@ -17,13 +16,9 @@ logger = logging.Logger('CRITICAL')
 
 config = load_config('configs/config.ini')
 allowed_extensions = eval(config['constants']['allowed_extensions'])
-
-
-class DrillType(Enum):
-    Yoga = 'yoga'
-    BasketBall = 'basketball'
-    Fitness = 'fitness'
-    Others = 'others'
+azure_service_bus_connection_string = config['azure']['azure_service_bus_connection_string']
+queue_name = config['azure']['queue_name']
+sender = get_service_bus_connection_obj(azure_service_bus_connection_string, queue_name)
 
 
 def allowed_file(filename):
@@ -70,15 +65,15 @@ def process_video():
         drill_name = data['drill_name']  # 'pull_up_bar', 'dead lift'
 
         if drill_type == DrillType.Yoga.value:
-            thread = Thread(target=analyze_yoga_video, args=(filename,))
+            thread = Thread(target=analyze_yoga_video, args=(filename, sender))
             thread.start()
             logger.info(f"Yoga thread started for {filename} file")
         elif drill_type == DrillType.BasketBall.value:
-            thread = Thread(target=analyze_basketball_parameters, args=(filename,))
+            thread = Thread(target=analyze_basketball_parameters, args=(filename, sender))
             thread.start()
             logger.info(f"BasketBall thread started for {filename} file")
         elif drill_type == DrillType.Fitness.value:
-            thread = Thread(target=analyze_fitness_video, args=(filename, drill_name))
+            thread = Thread(target=analyze_fitness_video, args=(filename, drill_name, sender))
             thread.start()
             logger.info(f"Fitness thread started for {filename} file")
         return jsonify({"message": "File received and processing started"}), 200

@@ -1,12 +1,28 @@
 import configparser
 import logging
 import os
+from enum import Enum
+
 import cv2
 import numpy as np
+from azure.servicebus import ServiceBusClient
 from flask import jsonify
 import sys
 
 logger = logging.Logger('CRITICAL')
+
+
+class DrillType(Enum):
+    Yoga = 'yoga'
+    BasketBall = 'basketball'
+    Fitness = 'fitness'
+    Others = 'others'
+
+
+def get_service_bus_connection_obj(azure_service_bus_connection_string, queue_name):
+    service_bus_client = ServiceBusClient.from_connection_string(azure_service_bus_connection_string)
+    queue_client = service_bus_client.get_queue_sender(queue_name)
+    return queue_client
 
 
 def create_api_response(message, status_code):
