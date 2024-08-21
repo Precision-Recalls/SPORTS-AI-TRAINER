@@ -1,10 +1,13 @@
-import base64
 import logging
 import os
+import sys
+
 from ultralytics import YOLO
+
 from basketball_analytics.basket_ball_class import BasketBallGame
-from common.utils import load_config
-from common.azure_storage import upload_blob,download_blob
+from common.azure_service_bus import send_message_to_bus
+from common.utils import load_config, DrillType
+
 logger = logging.Logger('INFO')
 
 config = load_config('configs/config.ini')
@@ -17,35 +20,29 @@ sample_video_path = config['paths']['sample_video_path']
 # Define the body part indices and class names
 class_names = eval(config['constants']['class_names'])
 body_index = eval(config['constants']['body_index'])
+azure_connection_string = config['azure']['connection_string']
+azure_input_container_name = config['azure']['input_container_name']
+azure_output_container_name = config['azure']['output_container_name']
 
-output_folder = config['paths']['output_folder']
 
-def analyze_basketball_parameters(video_blob_name, socketio, param_list):
-    # ...
-    output_blob_name = f"processed_{video_blob_name}"
-    # filename, file_extension = os.path.splitext(os.path.basename(file_path))
-    # processed_filename = f"processed_{filename}{file_extension}"
-    # processed_video_path = os.path.join(output_folder, processed_filename)
-
-    shots_data = BasketBallGame(
-        object_detection_model,
-        pose_detection_model,
-        class_names,video_blob_name,
-        output_blob_name,
-        # file_path,
-        # processed_video_path,
-        body_index
-    )
-    # ...
-    shots_response_data = [{key: shot_data[key] for key in param_list} for shot_data in shots_data.to_list()]
-    video_data = download_blob(output_blob_name)
-    encoded_video = base64.b64encode(video_data).decode('utf-8')
-    socketio.emit('video_processed', {'video': encoded_video})
-    socketio.emit('video_processed', {'analytics': shots_response_data})
-    # with open(processed_video_path, 'rb') as video_file:
-    #     video_data = video_file.read()
-    #     encoded_video = base64.b64encode(video_data).decode('utf-8')
-
-    # # Emit the complete video to the client
-    # socketio.emit('video_processed', {'video': encoded_video})
-    # socketio.emit('video_processed', {'analytics': shots_response_data})
+def analyze_basketball_parameters(video_blob_name, sender):
+    try:
+        output_blob_name = f"processed_{video_blob_name}"
+        basketball_cls = BasketBallGame(
+            object_detection_model,
+            pose_detection_model,
+            class_names,
+            video_blob_name,
+            output_blob_name,
+            body_index,
+            azure_connection_string,
+            azure_input_container_name, azure_output_container_name
+        )
+        shots_data = basketball_cls.all_shot_data
+        # Send a message to the Service Bus topic
+        send_message_to_bus(sender, shots_data, DrillType.BasketBall.value, video_blob_name)
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        logger.error(f'Some error with basketball video processing {exc_tb.tb_lineno}th line '
+                     f'in {fname}, error {exc_type}')

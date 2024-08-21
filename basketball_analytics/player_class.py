@@ -1,6 +1,7 @@
 from common.utils import calculate_angle
 import logging
-
+import sys
+import os
 logger = logging.Logger('CRITICAL')
 
 
@@ -42,7 +43,10 @@ class Player:
                 if self.wait_frames > 0:
                     self.wait_frames -= 1
         except Exception as e:
-            print(f"There is some error in steps counting :- {e}")
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(f'There is some error in steps counting at {exc_tb.tb_lineno}th line '
+                         f'in {fname}, error {exc_type}')
         return self.steps
 
     def calculate_elbow_angles(self, rounded_pose_results):
@@ -65,4 +69,7 @@ class Player:
             angles["right_elbow"] = right_elbow_angle
             return angles
         except Exception as e:
-            logger.error(f"Unable to calculate elbow angles. :- {e}")
+            exc_type, exc_obj,exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(f'Unable to calculate elbow angles. {exc_tb.tb_lineno}th line '
+                         f'in {fname}, error {exc_type}')

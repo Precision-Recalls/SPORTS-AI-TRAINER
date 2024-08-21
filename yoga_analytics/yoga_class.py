@@ -1,13 +1,21 @@
 import logging
 import pickle
-
+import tempfile
+import sys
+import os
+import cv2
+import mediapipe as mp
 import numpy as np
 import torch
+from azure.storage.blob import BlobServiceClient
 
-from common.utils import add_text
+from common.utils import add_text, write_video
 from yoga_analytics.yoga_classifier_trainer import YogaClassifier
 
 logger = logging.Logger('CRITICAL')
+
+mp_drawing = mp.solutions.drawing_utils
+mp_pose = mp.solutions.pose
 
 
 def create_pose_mappings(yoga_pose_mapping_filepath):
@@ -37,16 +45,36 @@ def calculate_pck(detected_keypoints, ground_truth_keypoints, threshold):
 
 
 class Yoga:
-    def __init__(self, yoga_classes, yolo_model, yoga_classifier_model_path, yoga_pose_mapping_filepath,
-                 pose_coordinates_path):
-        self.yoga_classes = yoga_classes
+    def __init__(self, yoga_classes, video_blob_name, output_blob_name, yolo_model,
+                 yoga_classifier_model_path, yoga_pose_mapping_filepath, pose_coordinates_path,
+                 azure_connection_string, azure_input_container_name,azure_output_container_name):
         self.yoga_classifier_model_path = yoga_classifier_model_path
         self.model_yolo = yolo_model
+        self.yoga_classes = yoga_classes
         self.pose_map = create_pose_mappings(yoga_pose_mapping_filepath)
         self.pose_coordinates_path = pose_coordinates_path
         self.pose_classifying_threshold = 0.7
+        self.video_blob_name = video_blob_name
+        self.output_blob_name = output_blob_name
+
+        self.blob_service_client = BlobServiceClient.from_connection_string(azure_connection_string)
+        container_client = self.blob_service_client.get_container_client(azure_input_container_name)
+        container_client2= self.blob_service_client.get_container_client(azure_output_container_name)
+        self.video_blob_client = container_client.get_blob_client(self.video_blob_name)
+        self.output_blob_client = container_client2.get_blob_client(self.output_blob_name)
+
+        with tempfile.NamedTemporaryFile(suffix='.mp4', delete=False) as temp_video_file:
+            self.video_blob_client.download_blob().readinto(temp_video_file)
+            temp_video_file.seek(0)
+            self.cap = cv2.VideoCapture(temp_video_file.name)
+
+        self.frame_rate = self.cap.get(cv2.CAP_PROP_FPS)
+        self.video_writer = write_video(self.cap, self.output_blob_client)
+
+        self.yoga_final_stats = {}
+        self.processed_frame = None
         self.clf_model = None
-        self.image = None
+        self.frame = None
         self.repetition_count = 0
         self.pck_accuracy = 0.0
         self.prev_prediction = 'No Pose'
@@ -55,22 +83,50 @@ class Yoga:
         self.pose_duration = {}
         self.pose_frames = {}
         self.predicted_keypoints = None
-        self.frame_rate = 0.0
         self.current_frame = 0
         self.threshold = 0.7  # Example threshold distance
         with open(self.pose_coordinates_path, "rb") as fp:  # Unpickling
             self.pose_coordinates = pickle.load(fp)
+        self.run()
 
-    def run(self, image, frame_rate):
-        self.clf_model = self.load_yoga_classifier_model()
-        self.image = image
-        self.current_frame += 1
-        self.frame_rate = frame_rate
-        self.make_prediction()
-        self.count_repetition()
-        self.calculate_pose_accuracy()
-        output_image = self.display_parameters()
-        return output_image
+    def run(self):
+        try:
+            self.clf_model = self.load_yoga_classifier_model()
+            while True:
+                ret, self.frame = self.cap.read()
+                if not ret:
+                    # End of the video or an error occurred
+                    break
+                with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
+                    results = pose.process(self.frame)
+                    if results.pose_landmarks:
+                        mp_drawing.draw_landmarks(self.frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
+                                                  mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2,
+                                                                         circle_radius=1),
+                                                  mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2,
+                                                                         circle_radius=1))
+                        self.make_prediction()
+                        self.count_repetition()
+                        self.calculate_pose_accuracy()
+                        self.display_parameters()
+                        # cv2.imshow('output_frame', self.processed_frame)
+                        self.video_writer.write(self.processed_frame)
+                        self.current_frame += 1
+                        # Close if 'q' is clicked
+                        if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
+                            break
+            # TODO we can also add flexibility, toughness, overall accuracy etc.
+            self.yoga_final_stats = {'pose_counts': self.pose_counter, 'pose_duration': self.pose_duration}
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'There is some error with yoga video processing at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
+
+        finally:
+            self.cap.release()
+            self.video_writer.release()
+            cv2.destroyAllWindows()
 
     def load_yoga_classifier_model(self):
         try:
@@ -81,11 +137,13 @@ class Yoga:
             logger.info('Yoga classifier model got loaded!')
             return model_pose
         except Exception as e:
-            logger.error(f'There is some error in classifier model loading :- {e}')
+            exc_type, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'There is some error in classifier model loading  at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
 
-    def get_pose_keypoints(self, image):
-        results = self.model_yolo(image, verbose=False)
-    
+    def get_pose_keypoints(self):
+        results = self.model_yolo(self.frame, verbose=False)
         for r in results:
             keypoints = r.keypoints.xyn.cpu().numpy()[0]
             keypoints = keypoints.reshape((1, keypoints.shape[0] * keypoints.shape[1]))[0].tolist()
@@ -93,9 +151,9 @@ class Yoga:
 
     def make_prediction(self):
         try:
-            self.predicted_keypoints = self.get_pose_keypoints(self.image)
+            self.predicted_keypoints = self.get_pose_keypoints()
             # Preprocess keypoints data
-            
+
             if self.predicted_keypoints:
                 keypoints_tensor = torch.tensor(self.predicted_keypoints[2:], dtype=torch.float32).unsqueeze(0)
                 self.clf_model.cpu()
@@ -104,12 +162,14 @@ class Yoga:
                     logit = self.clf_model(keypoints_tensor)
                     class_probabilities = torch.softmax(logit, dim=1)
                     pred = self.yoga_classes[class_probabilities.argmax(dim=1).item()]
-                    print("third if")
                     if class_probabilities.max() > self.pose_classifying_threshold:
                         self.current_prediction = pred
                 logger.info(f"Prediction for the current frame is :- {self.current_prediction}")
         except Exception as e:
-            logger.error(f"Some issue with prediction method :- {e}")
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'Some issue with prediction method at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
 
     def count_repetition(self):
         try:
@@ -121,13 +181,18 @@ class Yoga:
                 if self.prev_prediction in self.pose_duration:
                     self.pose_frames[self.prev_prediction].append(self.current_frame)
                     self.pose_duration[self.prev_prediction].append(round((
-                                                                             self.pose_frames[self.prev_prediction][
-                                                                                 -1]
-                                                                             - self.pose_frames[self.prev_prediction][
-                                                                                 -2]) / self.frame_rate, 2))
+                                                                                  self.pose_frames[
+                                                                                      self.prev_prediction][
+                                                                                      -1]
+                                                                                  - self.pose_frames[
+                                                                                      self.prev_prediction][
+                                                                                      -2]) / self.frame_rate, 2))
                 self.pose_counter[self.current_prediction] += 1
         except Exception as e:
-            logger.error(f"Issue with pose repetition count :- {e.__traceback__}")
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'Issue with pose repetition count at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
 
     def calculate_pose_accuracy(self):
         try:
@@ -138,7 +203,10 @@ class Yoga:
                     round(calculate_pck(self.predicted_keypoints, ground_truth_keypoints, self.threshold), 2), 1)
                 logger.info(f"Pose accuracy is :- {self.pck_accuracy}")
         except Exception as e:
-            logger.error(f"Issue with pose accuracy calculation :- {e.__traceback__}")
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'Issue with pose accuracy calculation at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
 
     def display_parameters(self):
         try:
@@ -155,6 +223,33 @@ class Yoga:
                     'count': {'text': f"Count: {pose_counter}", 'position': (15, 200)}
                 }
             self.prev_prediction = self.current_prediction
-            return add_text(image_text_dict, self.image)
+            self.processed_frame = add_text(image_text_dict, self.frame)
         except Exception as e:
-            logger.error(f"Issue with display parameters method :- {e.__traceback__}")
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logger.error(
+                f'ssue with display parameters method  at {exc_tb.tb_lineno}th line in {fname}, error {exc_type}')
+
+    def to_list(self):
+        """
+        Returns the attributes of the class as a list.
+        """
+        return self.yoga_final_stats
+
+    def __iter__(self):
+        """
+        Makes the class iterable by returning an iterator over the list.
+        """
+        return iter(self.to_list())
+
+    def __getitem__(self, index):
+        """
+        Allows indexing into the class as if it were a list.
+        """
+        return self.to_list()[index]
+
+    def __len__(self):
+        """
+        Returns the length of the list (number of elements in the class).
+        """
+        return len(self.to_list())

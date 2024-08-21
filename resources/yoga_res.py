@@ -1,17 +1,13 @@
 import datetime
 import logging
-import os
 import random
-
-from common.azure_storage import upload_blob, download_blob
-import tempfile
-
-import cv2
+import sys
+import os
 import mediapipe as mp
 from ultralytics import YOLO
 
-
-from common.utils import load_config
+from common.azure_service_bus import send_message_to_bus
+from common.utils import load_config, DrillType
 from yoga_analytics.yoga_class import Yoga
 from yoga_analytics.yoga_classifier_trainer import YogaClassifierTrainingClass
 
@@ -22,20 +18,20 @@ now = datetime.datetime.now().date()
 randint = random.randint(100, 200)
 
 yoga_classifier_model_path = config['paths']['yoga_classifier_model_path']
+yoga_yolo_model_path = config['paths']['yoga_pose_model']
 pose_coordinates_path = config['paths']['pose_coordinates_path']
-yoga_output_directory = config['paths']['yoga_output_path']
 image_folder = config['paths']['yoga_poses_image_folder']
 yoga_pose_mapping_filepath = config['paths']['yoga_pose_mapping_filepath']
 yoga_classes = eval(config['constants']['yoga_classes'])
+azure_connection_string = config['azure']['connection_string']
+azure_input_container_name = config['azure']['input_container_name']
+azure_output_container_name = config['azure']['output_container_name']
+azure_service_bus_connection_string = config['azure']['azure_service_bus_connection_string']
 
-yoga_output_video_path = os.path.abspath(os.path.join(yoga_output_directory, f'yoga_output_video_{now}_{randint}.mp4'))
-yoga_output_image_path = os.path.abspath(os.path.join(yoga_output_directory, f'yoga_image_{now}_{randint}.jpg'))
+yolo_model = YOLO(yoga_yolo_model_path)
 
-yolo_model = config['paths']['yoga_pose_model']
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
-yoga_class = Yoga(yoga_classes, yolo_model, yoga_classifier_model_path, yoga_pose_mapping_filepath,
-                  pose_coordinates_path)
 
 
 def start_yoga_classifier_training():
@@ -48,96 +44,24 @@ def start_yoga_classifier_training():
         end_time = datetime.datetime.now()
         logger.info(f"Training ended at :- {end_time} and it took :- {end_time - start_time}")
     except Exception as e:
-        logger.error(f"There is some issue with yoga classifier training :- {e}")
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        logger.error(f'There is some issue with yoga classifier training {exc_tb.tb_lineno}th line '
+                     f'in {fname}, error {exc_type}')
 
 
-def landmark_drawer(frame, frame_rate=None):
-    output_frame = frame
-    with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
-        results = pose.process(frame)
-        if results.pose_landmarks:
-            mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                                      mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=1),
-                                      mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=1))
-            output_frame = yoga_class.run(frame, frame_rate)
-    return output_frame
-
-
-def write_frame(writer, frame):
-    writer.write(frame)
-
-
-def analyze_yoga_image(img_path):
+def analyze_yoga_video(video_blob_name, sender):
     try:
-        img = cv2.imread(img_path)
-        processed_img = landmark_drawer(img)
-        cv2.imwrite(yoga_output_image_path, processed_img)
-        logger.info('Output image file got saved!')
-    except Exception as e:
-        logger.error(f"There is some error in image processing for yoga! :- {e}")
-
-
-# def analyze_yoga_video(video_path, param_list):
-#     try:
-#         input_video_cap = cv2.VideoCapture(video_path)
-#         frame_rate = input_video_cap.get(cv2.CAP_PROP_FPS)
-#         video_writer = common.utils.video_writer(input_video_cap, yoga_output_video_path)
-#         while True:
-#             ret, frame = input_video_cap.read()
-#             if not ret:
-#                 # End of the video or an error occurred
-#                 break
-#             processed_frame = landmark_drawer(frame, frame_rate)
-#             cv2.imshow('output_frame', processed_frame)
-#             write_frame(video_writer, processed_frame)
-#             # Close if 'q' is clicked
-#             if cv2.waitKey(1) & 0xFF == ord('q'):  # higher waitKey slows video down, use 1 for webcam
-#                 break
-#         input_video_cap.release()
-#         video_writer.release()
-#         cv2.destroyAllWindows()
-#     except Exception as e:
-#         logger.error(f"Some error with yoga video processing :- {e.__traceback__}")
-
-def analyze_yoga_video(video_blob_name, param_list):
-    try:
-        input_video_data = download_blob(video_blob_name)
         output_blob_name = f"processed_{video_blob_name}"
-        
-        with tempfile.NamedTemporaryFile(suffix='.mp4', delete=False) as temp_input_file:
-            temp_input_file.write(input_video_data)
-            temp_input_file.seek(0)
-            
-            input_video_cap = cv2.VideoCapture(temp_input_file.name)
-            frame_rate = input_video_cap.get(cv2.CAP_PROP_FPS)
-            
-            temp_output_file = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False)
-            video_writer = cv2.VideoWriter(temp_output_file.name, 
-                                           cv2.VideoWriter_fourcc(*'mp4v'), 
-                                           frame_rate, 
-                                           (int(input_video_cap.get(3)), int(input_video_cap.get(4))))
-            
-            while True:
-                ret, frame = input_video_cap.read()
-                if not ret:
-                    break
-                
-                processed_frame = landmark_drawer(frame, frame_rate)
-                video_writer.write(processed_frame)
-            
-            input_video_cap.release()
-            video_writer.release()
-            
-            with open(temp_output_file.name, 'rb') as processed_video:
-                upload_blob(output_blob_name, processed_video.read())
-            
-            os.unlink(temp_input_file.name)
-            os.unlink(temp_output_file.name)
-        
-        logger.info('Yoga video processing completed and uploaded to blob storage.')
-        
+        yoga_class = Yoga(yoga_classes, video_blob_name, output_blob_name, yolo_model, yoga_classifier_model_path,
+                          yoga_pose_mapping_filepath, pose_coordinates_path, azure_connection_string,
+                          azure_input_container_name, azure_output_container_name)
+        yoga_class_response = yoga_class.yoga_final_stats
+
+        # Send a message to the Service Bus topic
+        send_message_to_bus(sender, yoga_class_response, DrillType.Yoga.value, video_blob_name)
     except Exception as e:
-        logger.error(f"Error in yoga video processing: {e}")
-
-
-
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        logger.error(f'Some error with yoga video processing {exc_tb.tb_lineno}th line '
+                     f'in {fname}, error {exc_type}')
