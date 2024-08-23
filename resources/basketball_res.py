@@ -39,7 +39,6 @@ def analyze_basketball_parameters(video_blob_name, sender):
             azure_input_container_name, azure_output_container_name
         )
         shots_data = basketball_cls.all_shot_data
-        # Send a message to the Service Bus topic
         send_message_to_bus(sender, shots_data, DrillType.BasketBall.value, video_blob_name)
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
