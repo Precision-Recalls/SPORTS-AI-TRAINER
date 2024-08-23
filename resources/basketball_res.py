@@ -7,6 +7,7 @@ from ultralytics import YOLO
 from basketball_analytics.basket_ball_class import BasketBallGame
 from common.azure_service_bus import send_message_to_bus
 from common.utils import load_config, DrillType
+
 logger = logging.Logger('INFO')
 
 config = load_config('configs/config.ini')
@@ -22,6 +23,7 @@ body_index = eval(config['constants']['body_index'])
 azure_connection_string = config['azure']['connection_string']
 azure_input_container_name = config['azure']['input_container_name']
 azure_output_container_name = config['azure']['output_container_name']
+
 
 def analyze_basketball_parameters(video_blob_name, sender):
     try:

@@ -1,8 +1,9 @@
-import logging
-from flask import jsonify
 import json
+import logging
+
 from azure.servicebus import ServiceBusMessage
 from azure.servicebus.exceptions import ServiceBusError
+
 logger = logging.Logger('CRITICAL')
 
 
